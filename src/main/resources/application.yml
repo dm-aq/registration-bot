@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: registration-bot
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      connection-test-query: SELECT 1
+      validation-timeout: 3500
+      minimum-idle: 0
+      max-lifetime: 1200000
+      idle-timeout: 13000
+      maximum-pool-size: 15
+      connection-timeout: 20000
+      driver-class-name: org.postgresql.Driver
+      pool-name: main
+    logging: true
+  liquibase:
+    enabled: true
+    drop-first: false
+    change_log: classpath:liquibase/changelog-master.yaml
+
+bot:
+  username: ${BOT_USERNAME}
+  token: ${BOT_TOKEN}
