@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.repositories.specifications.SetUserStatus
+import ru.registration.bot.repositories.specifications.UserRequest
 
 class ExportRequestState(
     private val chat: Chat?,
@@ -17,6 +18,10 @@ class ExportRequestState(
     fun export() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.REQUEST_READY))
         absSender?.execute(SendMessage(chat?.id, "Спасибо! Заявка заполнена."))
+
+        GoogleSheets(commonFactory, user).send()
+
+        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.IMPORTED))
     }
 
     override fun ask() {

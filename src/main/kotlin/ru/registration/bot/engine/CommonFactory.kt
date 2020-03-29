@@ -10,7 +10,7 @@ import ru.registration.bot.repositories.StateRepository
 import ru.registration.bot.repositories.specifications.CurrentUserState
 
 @Component
-open class CommonFactory(
+class CommonFactory(
     val stateRepo: StateRepository,
     val requestRepository: RequestRepository
 ) {
@@ -25,6 +25,7 @@ open class CommonFactory(
             StateType.DANCESTYLE_STATE -> DanceStyleState(chat, user, absSender, this)
             StateType.NEIGHBORS_STATE -> NeighborsState(chat, user, absSender, this)
             StateType.REQUEST_READY -> ExportRequestState(chat, user, absSender, this)
+            StateType.IMPORTED -> ExportRequestState(chat, user, absSender, this)
             else -> EmptyState(chat, absSender)
         }
 

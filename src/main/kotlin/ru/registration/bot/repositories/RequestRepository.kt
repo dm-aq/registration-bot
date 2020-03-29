@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository
 import ru.registration.bot.engine.commands.Request
 
 @Repository
-open class RequestRepository(
+class RequestRepository(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
 ) {
     fun execute(specification: ExecSpecification) =
