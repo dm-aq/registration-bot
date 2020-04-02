@@ -21,7 +21,7 @@ class RoomCategoryState(
 
     override fun handle(text: String?) {
         // todo validate
-        commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("room_type", Int to (text ?: 0))))
+        commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("room_type", (text?.toInt() ?: 0))))
         DanceStyleState(chat, user, absSender, commonFactory).ask()
     }
 

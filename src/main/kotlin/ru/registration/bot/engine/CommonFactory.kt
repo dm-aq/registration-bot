@@ -5,12 +5,14 @@ import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.commands.flow.*
+import ru.registration.bot.google.GoogleSheetsService
 import ru.registration.bot.repositories.RequestRepository
 import ru.registration.bot.repositories.StateRepository
 import ru.registration.bot.repositories.specifications.CurrentUserState
 
 @Component
-open class CommonFactory(
+class CommonFactory(
+    val googleSheets: GoogleSheetsService,
     val stateRepo: StateRepository,
     val requestRepository: RequestRepository
 ) {
@@ -25,6 +27,7 @@ open class CommonFactory(
             StateType.DANCESTYLE_STATE -> DanceStyleState(chat, user, absSender, this)
             StateType.NEIGHBORS_STATE -> NeighborsState(chat, user, absSender, this)
             StateType.REQUEST_READY -> ExportRequestState(chat, user, absSender, this)
+            StateType.IMPORTED -> ExportRequestState(chat, user, absSender, this)
             else -> EmptyState(chat, absSender)
         }
 

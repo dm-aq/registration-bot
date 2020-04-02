@@ -29,6 +29,11 @@ dependencies {
     implementation group: 'org.liquibase', name: 'liquibase-core', version: '3.8.6'
     runtimeOnly group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
 
+    // google api
+    implementation group: 'com.google.auth', name: 'google-auth-library-credentials', version: '0.20.0'
+    implementation group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.20.0'
+    implementation group: 'com.google.apis', name: 'google-api-services-sheets', version: 'v4-rev20200225-1.30.9'
+
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude group : "org.junit.vintage", module : "junit-vintage-engine"
         exclude module : "mockito-core"

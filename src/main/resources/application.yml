@@ -24,3 +24,8 @@ spring:
 bot:
   username: ${BOT_USERNAME}
   token: ${BOT_TOKEN}
+
+services:
+  sheets:
+    spread-sheet-id: "1qdZpcyTdCnNFsexLeMDvmmjgNhgqcITwXjXvdu2fW40"
+    range: "List1!A2:D"
