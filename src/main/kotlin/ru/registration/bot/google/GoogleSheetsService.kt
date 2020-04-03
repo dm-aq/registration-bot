@@ -11,7 +11,6 @@ import com.google.auth.oauth2.ServiceAccountCredentials
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import ru.registration.bot.engine.commands.Request
-import ru.registration.bot.engine.commands.flow.GoogleSheets
 import javax.annotation.PostConstruct
 
 @Service
@@ -40,7 +39,7 @@ class GoogleSheetsService(
 
     private fun obtainCredentials(): Credentials? {
         return ServiceAccountCredentials
-            .fromStream(GoogleSheets::class.java.getResourceAsStream("/trst-269816-eca0f3ec2434.json"))
+            .fromStream(GoogleSheetsService::class.java.getResourceAsStream("/trst-269816-eca0f3ec2434.json"))
             .createScoped(listOf("https://www.googleapis.com/auth/spreadsheets"))
     }
 
