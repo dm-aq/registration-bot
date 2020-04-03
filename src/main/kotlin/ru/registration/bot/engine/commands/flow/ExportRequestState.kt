@@ -17,15 +17,20 @@ class ExportRequestState(
 
     fun export() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.REQUEST_READY))
+
         absSender?.execute(SendMessage(chat?.id, "Спасибо! Заявка заполнена."))
 
-        GoogleSheets(commonFactory, user).send()
+        val request = commonFactory.requestRepository.query(UserRequest(user?.id)).first()
+
+        PaymentMessage(chat?.id, absSender, commonFactory, request.roomType).send()
+
+        commonFactory.googleSheets.send(request)
 
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.IMPORTED))
     }
 
     override fun ask() {
-        absSender?.execute(SendMessage(chat?.id, "У вас уже есть отправленная заявка."))
+        absSender?.execute(SendMessage(chat?.id, "У вас уже есть заполненная заявка."))
     }
 
     override fun handle(text: String?) {}

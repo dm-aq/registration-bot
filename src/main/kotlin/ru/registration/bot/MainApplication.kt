@@ -5,11 +5,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.telegram.telegrambots.ApiContextInitializer
-import ru.registration.bot.engine.BotProperties
+import ru.registration.bot.configuration.BotProperties
+import ru.registration.bot.configuration.RoomCategoryProperties
 
-@EnableConfigurationProperties(BotProperties::class)
+@EnableConfigurationProperties(
+    value = [BotProperties::class, RoomCategoryProperties::class]
+)
 @SpringBootApplication
-open class MainApplication
+class MainApplication
 
 fun main(args: Array<String>){
     ApiContextInitializer.init()
