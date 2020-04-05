@@ -9,7 +9,7 @@ import ru.registration.bot.engine.commands.RemoveDraftCommand
 import ru.registration.bot.engine.commands.StartCommand
 
 @Component
-open class RegistrationBot(
+class RegistrationBot(
     @Value("\${bot.token}") private val token: String,
     private val commonFactory: CommonFactory): TelegramLongPollingCommandBot() {
 

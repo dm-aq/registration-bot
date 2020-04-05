@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.configuration.RoomCategoryProperties
 import ru.registration.bot.engine.commands.flow.*
 import ru.registration.bot.google.GoogleSheetsService
 import ru.registration.bot.repositories.RequestRepository
@@ -13,6 +14,7 @@ import ru.registration.bot.repositories.specifications.CurrentUserState
 @Component
 class CommonFactory(
     val googleSheets: GoogleSheetsService,
+    val roomCategoryProperties: RoomCategoryProperties,
     val stateRepo: StateRepository,
     val requestRepository: RequestRepository
 ) {
