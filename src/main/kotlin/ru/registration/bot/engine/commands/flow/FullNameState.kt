@@ -20,9 +20,22 @@ class FullNameState(
     }
 
     override fun handle(text: String?) {
-        // todo validate
-        commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("full_name", text ?: "")))
 
-        SexState(chat, user, absSender, commonFactory).ask()
+        if (validate(text)) {
+            commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("full_name", text ?: "")))
+            SexState(chat, user, absSender, commonFactory).ask()
+        }
+    }
+
+    private fun validate(text: String?): Boolean {
+        if(text.isNullOrEmpty() || text.isBlank()){
+            absSender?.execute(SendMessage(chat?.id, "Что-то не так. Тут нет вашего имени."))
+            return false
+        }else if(text.length > 30){
+            absSender?.execute(SendMessage(chat?.id, "Имя слишком длинное."))
+            return false
+        }
+
+        return true
     }
 }
