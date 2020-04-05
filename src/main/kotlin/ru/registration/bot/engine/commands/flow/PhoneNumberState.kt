@@ -21,8 +21,22 @@ class PhoneNumberState(
     }
 
     override fun handle(text: String?){
-        // todo validate
-        commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("phone", text ?: "")))
-        FullNameState(chat, user, absSender, commonFactory).ask()
+        if(validation(text ?: "")) {
+            commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("phone", text ?: "")))
+            FullNameState(chat, user, absSender, commonFactory).ask()
+        }
+    }
+
+    private fun validation(text: String): Boolean {
+        if (!"(\\+7)|(8)\\d{3}\\d{3}-?\\d{4}".toRegex().matches(text)){
+            absSender?.execute(SendMessage(chat?.id, """
+                Номер телефона должен быть в одном из следующих форматов: 
+                +7XXXYYYZZZZ
+                8XXXYYYZZZZ
+            """.trimIndent()))
+            return false
+        }
+
+        return true
     }
 }
