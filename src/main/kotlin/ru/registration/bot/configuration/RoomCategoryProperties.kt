@@ -4,5 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 
 @ConstructorBinding
-@ConfigurationProperties("rooms")
-data class RoomCategoryProperties(val prices: Map<Int, String>)
+@ConfigurationProperties("room")
+data class RoomCategoryProperties(val categories: Map<Int, Category>)
+
+data class Category(val price: String, val description: String)

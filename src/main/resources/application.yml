@@ -25,11 +25,17 @@ bot:
   username: ${BOT_USERNAME}
   token: ${BOT_TOKEN}
 
-rooms:
-  prices:
-    2: 2500
-    3: 1700
-    4: 1400
+room:
+  categories:
+    2:
+      price: 2500
+      description: Двухместный номер
+    3:
+      price: 1700
+      description: Трехместный номер
+    4:
+      price: 1400
+      description: Четырехместный номер
 
 dance-styles:
   values:

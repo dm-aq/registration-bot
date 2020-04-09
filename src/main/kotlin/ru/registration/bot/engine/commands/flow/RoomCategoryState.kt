@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
+import java.lang.NumberFormatException
 
 class RoomCategoryState(
     private val chat: Chat?,
@@ -16,13 +17,39 @@ class RoomCategoryState(
 ): State {
     override fun ask() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.ROOM_STATE))
-        absSender?.execute(SendMessage(chat?.id, "Категория номера:"))
+        absSender?.execute(SendMessage(chat?.id, "Выберите категорию номера:\n${getCategories()}"))
     }
+
+    private fun getCategories() =
+        commonFactory.roomCategoryProperties.categories
+            .map { "${it.key}: ${it.value.description} (${it.value.price} руб/чел)" }.toList().joinToString("\n")
 
     override fun handle(text: String?) {
-        // todo validate
-        commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("room_type", (text?.toInt() ?: 0))))
-        DanceStyleState(chat, user, absSender, commonFactory).ask()
+        if (validate(text ?: "0")) {
+            commonFactory.requestRepository.execute(
+                UpdateRequestField(
+                    user?.id,
+                    Pair("room_type", (text?.toInt() ?: 0))
+                )
+            )
+            DanceStyleState(chat, user, absSender, commonFactory).ask()
+        }
     }
 
+    private fun validate(text: String) =
+        try {
+            commonFactory.roomCategoryProperties.categories.containsKey(text.toInt())
+                .also {
+                    if (!it) {
+                        sendErrorMessage()
+                    }
+                }
+        }catch(exp: NumberFormatException){
+            sendErrorMessage()
+            false
+        }
+
+    private fun sendErrorMessage(){
+        absSender?.execute(SendMessage(chat?.id, "Неверное значение. Попробуйте еще раз."))
+    }
 }

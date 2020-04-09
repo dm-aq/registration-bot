@@ -21,7 +21,7 @@ class PaymentMessage(
     }
 
     private fun calculateCost(): String? {
-        return commonFactory.roomCategoryProperties.prices[roomType]
+        return commonFactory.roomCategoryProperties.categories[roomType]?.price
     }
 
     private fun link(): String {
