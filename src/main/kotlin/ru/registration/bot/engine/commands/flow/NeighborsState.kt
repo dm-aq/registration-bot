@@ -20,9 +20,18 @@ class NeighborsState(
     }
 
     override fun handle(text: String?) {
-        // todo validate
-        commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("neighbors", text ?: "")))
-        ExportRequestState(chat, user, absSender, commonFactory).export()
+        if (validate(text ?: "")) {
+            commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("neighbors", text ?: "")))
+            ExportRequestState(chat, user, absSender, commonFactory).export()
+        }
     }
 
+    private fun validate(text: String): Boolean {
+        if(text.length > 120){
+            absSender?.execute(SendMessage(chat?.id, "Слишком много букв. Будь скромнее."))
+            return false
+        }
+
+        return true
+    }
 }

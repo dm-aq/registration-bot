@@ -16,13 +16,24 @@ class DanceStyleState(
 ): State {
     override fun ask() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.DANCESTYLE_STATE))
-        absSender?.execute(SendMessage(chat?.id, "Танцевальное направление:"))
+        absSender?.execute(SendMessage(chat?.id, """
+                Выберите танцевальное направление:
+                ${commonFactory.danceStyleProperties.values.joinToString(prefix = "[ ", postfix = " ]", separator = " * ")}
+        """.trimIndent()))
     }
 
     override fun handle(text: String?) {
-        // todo validate
-        commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("dance_type", text ?: "")))
-        NeighborsState(chat, user, absSender, commonFactory).ask()
+        if (validate(text ?: "")) {
+            commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("dance_type", text ?: "")))
+            NeighborsState(chat, user, absSender, commonFactory).ask()
+        }
     }
 
+    private fun validate(text: String) =
+        commonFactory.danceStyleProperties.values.contains(text.toLowerCase())
+            .also {
+                if (!it){
+                    absSender?.execute(SendMessage(chat?.id, "Неверное значение. Попробуйте еще раз."))
+                }
+            }
 }
