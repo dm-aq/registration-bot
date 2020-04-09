@@ -20,10 +20,25 @@ class SexState(
     }
 
     override fun handle(text: String?) {
-        // todo validate
-        commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("sex", text ?: "")))
-
-        RoomCategoryState(chat, user, absSender, commonFactory).ask()
+        try{
+            val sex: Sex = Sex.parse(text ?: "")
+            commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("sex", sex.value)))
+            RoomCategoryState(chat, user, absSender, commonFactory).ask()
+        }catch (exp: IllegalArgumentException){
+            absSender?.execute(SendMessage(chat?.id, "Попробуйте еще раз."))
+        }
     }
+}
 
+enum class Sex(val value: String){
+    MALE("M"), FEMALE("F");
+
+    companion object {
+        fun parse(text: String): Sex =
+            when (text.toUpperCase()) {
+                "M", "MALE", "М", "МУЖЧИНА" -> MALE
+                "F", "FEMALE", "Ж", "ЖЕНЩИНА" -> FEMALE
+                else -> throw IllegalArgumentException("Illegal sex value: $text")
+            }
+    }
 }
