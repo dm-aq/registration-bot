@@ -6,10 +6,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.telegram.telegrambots.ApiContextInitializer
 import ru.registration.bot.configuration.BotProperties
+import ru.registration.bot.configuration.DanceStyleProperties
 import ru.registration.bot.configuration.RoomCategoryProperties
 
 @EnableConfigurationProperties(
-    value = [BotProperties::class, RoomCategoryProperties::class]
+    value = [BotProperties::class, RoomCategoryProperties::class, DanceStyleProperties::class]
 )
 @SpringBootApplication
 class MainApplication
