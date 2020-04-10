@@ -23,8 +23,8 @@ class SexState(
 
     private fun createInlineKeyboard(): InlineKeyboardMarkup {
         val row = listOf(
-            InlineKeyboardButton().setText("\uD83D\uDD7A").setCallbackData("M"),
-            InlineKeyboardButton().setText("\uD83D\uDC83").setCallbackData("F")
+            InlineKeyboardButton().setText("\uD83D\uDD7A").setCallbackData("М"),
+            InlineKeyboardButton().setText("\uD83D\uDC83").setCallbackData("Ж")
         )
 
         return InlineKeyboardMarkup().setKeyboard(listOf(row))
