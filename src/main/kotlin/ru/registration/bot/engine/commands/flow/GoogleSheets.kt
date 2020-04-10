@@ -10,7 +10,7 @@ class GoogleSheets(
 )
 {
     fun send() {
-        val request = commonFactory.requestRepository.query(UserRequest(user?.id)).first()
+        val request = commonFactory.requestRepository.query(UserRequest(user?.id, StateType.REQUEST_READY)).first()
         commonFactory.googleSheets.send(request)
     }
 }
