@@ -13,7 +13,7 @@ class StartState(
     private val commonFactory: CommonFactory
 ): State {
     override fun ask() {
-        commonFactory.requestRepository.execute(InitUserRequest(user?.id, StateType.START_STATE))
+        commonFactory.requestRepository.execute(InitUserRequest(user, StateType.START_STATE))
 
         PhoneNumberState(chat, user, absSender, commonFactory).ask()
     }

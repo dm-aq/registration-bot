@@ -11,9 +11,9 @@ class UserRequest(
     private val state: StateType
 ) : QuerySpecification<Request> {
     override val sql: String
-        get() = "select id, full_name, phone, sex, room_type, dance_type, neighbors, updstmp " +
+        get() = "select id, telegram_login, full_name, phone, sex, room_type, dance_type, neighbors, updstmp " +
                 "from requests " +
-                "where user_id = :user_id and state = :state order by updstmp desc"
+                "where user_id = :user_id and state = :state order by updstmp desc limit 1"
     override val sqlParameterSource: Map<String?, *>
         get() = MapSqlParameterSource()
             .addValue("user_id", userId)
@@ -24,6 +24,7 @@ class UserRequest(
                 rs, _ ->
             Request.Builder()
                 .requestId(rs.getInt("id"))
+                .telegramLogin(rs.getString("telegram_login") ?: "")
                 .fullName(rs.getString("full_name"))
                 .phone(rs.getString("phone"))
                 .sex(rs.getString("sex"))

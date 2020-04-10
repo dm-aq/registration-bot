@@ -3,6 +3,7 @@
 create table requests (
 id bigint primary key,
 user_id bigint,
+telegram_login varchar(100),
 full_name varchar(30),
 phone varchar(20),
 sex varchar(1),

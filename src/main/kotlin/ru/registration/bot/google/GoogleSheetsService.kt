@@ -49,6 +49,7 @@ class GoogleSheetsService(
             .append(spreadsheetId, range,
                 ValueRange().setValues(listOf(listOf(
                     request.phone,
+                    request.telegramLogin,
                     request.fullName,
                     request.sex,
                     request.roomType,
