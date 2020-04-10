@@ -19,7 +19,10 @@ class ExportRequestState(
     fun export() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.NEIGHBORS_STATE, StateType.REQUEST_READY))
 
-        absSender?.execute(SendMessage(chat?.id, "Спасибо! Заявка заполнена."))
+        absSender?.execute(SendMessage(chat?.id, """
+            Спасибо! Заявка заполнена.
+            Мы свяжемся с вами в течении 24 часов.
+        """.trimIndent()))
 
         val request = commonFactory.requestRepository.query(UserRequest(user?.id, StateType.REQUEST_READY)).first()
 
