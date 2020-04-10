@@ -26,8 +26,6 @@ class ExportRequestState(
 
         val request = commonFactory.requestRepository.query(UserRequest(user?.id, StateType.REQUEST_READY)).first()
 
-        PaymentMessage(chat?.id, absSender, commonFactory, request.roomType).send()
-
         commonFactory.googleSheets.send(request)
 
         commonFactory.stateRepo.execute(SetUserStatusByReqId(request.requestId, StateType.EXPORTED))
