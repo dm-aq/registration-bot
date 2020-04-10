@@ -3,6 +3,8 @@ package ru.registration.bot.engine.commands.flow
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.User
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.repositories.specifications.SetUserStatus
@@ -16,7 +18,16 @@ class SexState(
 ): State {
     override fun ask() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.SEX_STATE))
-        absSender?.execute(SendMessage(chat?.id, "Пол:"))
+        absSender?.execute(SendMessage(chat?.id, "Пол:").setReplyMarkup(createInlineKeyboard()))
+    }
+
+    private fun createInlineKeyboard(): InlineKeyboardMarkup {
+        val row = listOf(
+            InlineKeyboardButton().setText("\uD83D\uDD7A").setCallbackData("M"),
+            InlineKeyboardButton().setText("\uD83D\uDC83").setCallbackData("F")
+        )
+
+        return InlineKeyboardMarkup().setKeyboard(listOf(row))
     }
 
     override fun handle(text: String?) {
