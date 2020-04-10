@@ -16,7 +16,7 @@ class PhoneNumberState(
 ): State {
 
     override fun ask(){
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.PHONE_STATE))
+        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.START_STATE, StateType.PHONE_STATE))
         absSender?.execute(SendMessage(chat?.id, "Введите ваш номер телефона:"))
     }
 

@@ -11,7 +11,9 @@ class UserRequest(
     private val state: StateType
 ) : QuerySpecification<Request> {
     override val sql: String
-        get() = "select full_name, phone, sex, room_type, dance_type, neighbors from requests where user_id = :user_id and state = :state"
+        get() = "select id, full_name, phone, sex, room_type, dance_type, neighbors, updstmp " +
+                "from requests " +
+                "where user_id = :user_id and state = :state order by updstmp desc"
     override val sqlParameterSource: Map<String?, *>
         get() = MapSqlParameterSource()
             .addValue("user_id", userId)
@@ -21,12 +23,14 @@ class UserRequest(
         get() = RowMapper<Request> {
                 rs, _ ->
             Request.Builder()
+                .requestId(rs.getInt("id"))
                 .fullName(rs.getString("full_name"))
                 .phone(rs.getString("phone"))
                 .sex(rs.getString("sex"))
                 .roomType(rs.getInt("room_type"))
                 .danceType(rs.getString("dance_type"))
                 .neighbors(rs.getString("neighbors"))
+                .creationDateTime(rs.getTimestamp("updstmp").toLocalDateTime())
                 .build()
         }
 }

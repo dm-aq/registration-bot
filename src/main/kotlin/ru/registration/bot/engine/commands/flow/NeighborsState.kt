@@ -15,7 +15,7 @@ class NeighborsState(
     private val commonFactory: CommonFactory
 ): State {
     override fun ask() {
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.NEIGHBORS_STATE))
+        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.DANCESTYLE_STATE, StateType.NEIGHBORS_STATE))
         absSender?.execute(SendMessage(chat?.id, "С кем будуте жить:"))
     }
 

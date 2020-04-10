@@ -15,7 +15,7 @@ class FullNameState(
     private val commonFactory: CommonFactory
 ): State {
     override fun ask() {
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.FULL_NAME_STATE))
+        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.PHONE_STATE, StateType.FULL_NAME_STATE))
         absSender?.execute(SendMessage(chat?.id, "Как вас зовут:"))
     }
 

@@ -11,6 +11,7 @@ import com.google.auth.oauth2.ServiceAccountCredentials
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import ru.registration.bot.engine.commands.Request
+import java.time.format.DateTimeFormatter
 import javax.annotation.PostConstruct
 
 @Service
@@ -52,7 +53,8 @@ class GoogleSheetsService(
                     request.sex,
                     request.roomType,
                     request.danceType,
-                    request.neighbors
+                    request.neighbors,
+                    request.creationDateTime?.format(DateTimeFormatter.ISO_DATE_TIME)
                 ))))
             .setValueInputOption("RAW")
             .execute()

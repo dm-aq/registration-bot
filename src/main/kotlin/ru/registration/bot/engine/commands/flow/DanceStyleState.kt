@@ -17,7 +17,7 @@ class DanceStyleState(
     private val commonFactory: CommonFactory
 ): State {
     override fun ask() {
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.DANCESTYLE_STATE))
+        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.ROOM_STATE, StateType.DANCESTYLE_STATE))
         absSender?.execute(
             SendMessage(chat?.id, "Выберите танцевальное направление:")
                 .setReplyMarkup(getInlineKeyboard())

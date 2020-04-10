@@ -9,11 +9,21 @@ class UpdateRequestField(
     private val pair: Pair<String, Any>
 ): ExecSpecification {
     override val sql: String
-        get() = "update requests set ${pair.first} = :${pair.first} where user_id = :user_id and state <> :finishedState"
+        get() = "update requests set ${pair.first} = :${pair.first}, updstmp = current_timestamp " +
+                "where user_id = :user_id and state in (:draft_states)"
     override val sqlParameterSource: Map<String, *>
         get() = MapSqlParameterSource()
             .addValue("${pair.first}", pair.second)
             .addValue("user_id", userId)
-            .addValue("finishedState", StateType.EXPORTED.state)
-            .values
+            .addValue("draft_states",
+                listOf(
+                    StateType.START_STATE.state,
+                    StateType.FULL_NAME_STATE.state,
+                    StateType.PHONE_STATE.state,
+                    StateType.SEX_STATE.state,
+                    StateType.ROOM_STATE.state,
+                    StateType.DANCESTYLE_STATE.state,
+                    StateType.NEIGHBORS_STATE.state
+                )
+            ).values
 }

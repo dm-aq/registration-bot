@@ -16,20 +16,18 @@ class RemoveDraftCommand(
     override fun execute(absSender: AbsSender?, user: User?, chat: Chat?, arguments: Array<out String>?) {
 
         when(commonFactory.currentUserStateType(user)){
-            StateType.PHONE_STATE -> removeDraft(user, chat, absSender)
-            StateType.FULL_NAME_STATE -> removeDraft(user, chat, absSender)
-            StateType.SEX_STATE -> removeDraft(user, chat, absSender)
-            StateType.DANCESTYLE_STATE -> removeDraft(user, chat, absSender)
-            StateType.ROOM_STATE -> removeDraft(user, chat, absSender)
-            StateType.NEIGHBORS_STATE -> removeDraft(user, chat, absSender)
+            StateType.PHONE_STATE -> removeDraft(StateType.PHONE_STATE, user, chat, absSender)
+            StateType.FULL_NAME_STATE -> removeDraft(StateType.FULL_NAME_STATE, user, chat, absSender)
+            StateType.SEX_STATE -> removeDraft(StateType.SEX_STATE, user, chat, absSender)
+            StateType.DANCESTYLE_STATE -> removeDraft(StateType.DANCESTYLE_STATE, user, chat, absSender)
+            StateType.ROOM_STATE -> removeDraft(StateType.ROOM_STATE, user, chat, absSender)
+            StateType.NEIGHBORS_STATE -> removeDraft(StateType.NEIGHBORS_STATE, user, chat, absSender)
             else -> sendWarningMessage(chat, absSender)
         }
     }
 
-    private fun removeDraft(user: User?, chat: Chat?, absSender: AbsSender?){
-        //            todo удалить данные из бд
-//            stateFactory.stateRepo.execute(RemoveRegistrationRequest(..))
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.PHONE_STATE))
+    private fun removeDraft(oldState: StateType, user: User?, chat: Chat?, absSender: AbsSender?){
+        commonFactory.stateRepo.execute(SetUserStatus(user?.id, oldState, StateType.PHONE_STATE))
         absSender?.execute(SendMessage(chat?.id, "Черновик удален."))
     }
 

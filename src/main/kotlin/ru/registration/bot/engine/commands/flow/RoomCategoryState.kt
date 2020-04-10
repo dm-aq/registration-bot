@@ -18,7 +18,7 @@ class RoomCategoryState(
     private val commonFactory: CommonFactory
 ): State {
     override fun ask() {
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.ROOM_STATE))
+        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.SEX_STATE, StateType.ROOM_STATE))
         absSender?.execute(
             SendMessage(chat?.id, "Выберите категорию номера:\n${getCategories()}")
                 .setReplyMarkup(getInlineKeyboard())

@@ -17,7 +17,7 @@ class SexState(
     private val commonFactory: CommonFactory
 ): State {
     override fun ask() {
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.SEX_STATE))
+        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.FULL_NAME_STATE, StateType.SEX_STATE))
         absSender?.execute(SendMessage(chat?.id, "Пол:").setReplyMarkup(createInlineKeyboard()))
     }
 

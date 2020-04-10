@@ -4,20 +4,19 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import ru.registration.bot.engine.commands.flow.StateType
 import ru.registration.bot.repositories.ExecSpecification
 
-class SetUserStatus(
-    private val id: Int?,
-    private val oldState: StateType,
+class SetUserStatusByReqId(
+    private val requestId: Int?,
     private val newState: StateType
-) : ExecSpecification {
+): ExecSpecification {
     override val sql: String
-        get() = "update requests set state = :new_state, updstmp = current_timestamp " +
-                "where user_id = :user_id and state = :previous_state"
-
+        get() =  "update requests set state = :new_state, updstmp = current_timestamp " +
+                "where id = :req_id"
     override val sqlParameterSource: Map<String, *>
         get() =
             MapSqlParameterSource()
+                .addValue("state", newState.state)
+                .addValue("req_id", requestId)
                 .addValue("new_state", newState.state)
-                .addValue("user_id", id)
-                .addValue("previous_state", oldState.state)
                 .values
+
 }
