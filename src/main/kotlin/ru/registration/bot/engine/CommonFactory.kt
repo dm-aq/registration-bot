@@ -31,7 +31,7 @@ class CommonFactory(
             StateType.DANCESTYLE_STATE -> DanceStyleState(chat, user, absSender, this)
             StateType.NEIGHBORS_STATE -> NeighborsState(chat, user, absSender, this)
             StateType.REQUEST_READY -> ExportRequestState(chat, user, absSender, this)
-            StateType.IMPORTED -> ExportRequestState(chat, user, absSender, this)
+            StateType.EXPORTED -> ExportRequestState(chat, user, absSender, this)
             else -> EmptyState(chat, absSender)
         }
 

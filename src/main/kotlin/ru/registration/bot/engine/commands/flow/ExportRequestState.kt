@@ -20,13 +20,13 @@ class ExportRequestState(
 
         absSender?.execute(SendMessage(chat?.id, "Спасибо! Заявка заполнена."))
 
-        val request = commonFactory.requestRepository.query(UserRequest(user?.id)).first()
+        val request = commonFactory.requestRepository.query(UserRequest(user?.id, StateType.REQUEST_READY)).first()
 
         PaymentMessage(chat?.id, absSender, commonFactory, request.roomType).send()
 
         commonFactory.googleSheets.send(request)
 
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.IMPORTED))
+        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.EXPORTED))
     }
 
     override fun ask() {

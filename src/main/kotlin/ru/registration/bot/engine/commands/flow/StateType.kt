@@ -9,7 +9,7 @@ enum class StateType(val state: Int) {
     DANCESTYLE_STATE(15),
     NEIGHBORS_STATE(16),
     REQUEST_READY(2),
-    IMPORTED(21);
+    EXPORTED(21);
 
     companion object {
         private val values = values();
