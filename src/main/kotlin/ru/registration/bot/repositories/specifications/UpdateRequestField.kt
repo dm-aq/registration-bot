@@ -17,13 +17,14 @@ class UpdateRequestField(
             .addValue("user_id", userId)
             .addValue("draft_states",
                 listOf(
-                    StateType.START_STATE.state,
-                    StateType.FULL_NAME_STATE.state,
-                    StateType.PHONE_STATE.state,
-                    StateType.SEX_STATE.state,
-                    StateType.ROOM_STATE.state,
-                    StateType.DANCESTYLE_STATE.state,
-                    StateType.NEIGHBORS_STATE.state
+                    StateType.START_STATE.name,
+                    StateType.FULL_NAME_STATE.name,
+                    StateType.MAIL_STATE.name,
+                    StateType.PHONE_STATE.name,
+                    StateType.SEX_STATE.name,
+                    StateType.ROOM_STATE.name,
+                    StateType.DANCESTYLE_STATE.name,
+                    StateType.NEIGHBORS_STATE.name
                 )
             ).values
 }

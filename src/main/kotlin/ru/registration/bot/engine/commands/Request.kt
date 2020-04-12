@@ -7,6 +7,7 @@ class Request private constructor(
     val telegramLogin: String?,
     val phone: String?,
     val fullName: String?,
+    val email: String?,
     val sex: String?,
     val roomType: Int?,
     val danceType: String?,
@@ -19,6 +20,7 @@ class Request private constructor(
         var telegramLogin: String? = null,
         var phone: String? = null,
         var fullName: String? = null,
+        var email: String? = null,
         var sex: String? = null,
         var roomType: Int? = null,
         var danceType: String? = null,
@@ -29,12 +31,13 @@ class Request private constructor(
         fun telegramLogin(telegramLogin: String) = apply { this.telegramLogin = telegramLogin }
         fun phone(phone: String) = apply { this.phone = phone }
         fun fullName(fullName: String) = apply { this.fullName = fullName }
+        fun email(email: String) = apply { this.email = email }
         fun sex(sex: String) = apply { this.sex = sex }
         fun roomType(roomType: Int) = apply { this.roomType = roomType }
         fun danceType(danceType: String) = apply { this.danceType = danceType }
         fun neighbors(neighbors: String) = apply { this.neighbors = neighbors }
         fun creationDateTime(creationDateTime: LocalDateTime) = apply { this.creationDateTime = creationDateTime }
 
-        fun build() = Request(requestId, telegramLogin, phone, fullName, sex, roomType, danceType, neighbors, creationDateTime)
+        fun build() = Request(requestId, telegramLogin, phone, fullName, email, sex, roomType, danceType, neighbors, creationDateTime)
     }
 }

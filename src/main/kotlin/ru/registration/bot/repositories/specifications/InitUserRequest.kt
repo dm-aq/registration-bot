@@ -16,7 +16,7 @@ class InitUserRequest(
         get() = MapSqlParameterSource()
             .addValue("user_id", user?.id)
             .addValue("telegram_login", user?.userName)
-            .addValue("state", state.state)
+            .addValue("state", state.name)
             .values
 
 }

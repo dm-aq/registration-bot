@@ -14,9 +14,9 @@ class SetUserStatusByReqId(
     override val sqlParameterSource: Map<String, *>
         get() =
             MapSqlParameterSource()
-                .addValue("state", newState.state)
+                .addValue("state", newState.name)
                 .addValue("req_id", requestId)
-                .addValue("new_state", newState.state)
+                .addValue("new_state", newState.name)
                 .values
 
 }

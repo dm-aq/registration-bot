@@ -26,13 +26,13 @@ class CommonFactory(
             StateType.START_STATE -> StartState(chat, user, absSender, this)
             StateType.PHONE_STATE -> PhoneNumberState(chat, user, absSender, this)
             StateType.FULL_NAME_STATE -> FullNameState(chat, user, absSender, this)
+            StateType.MAIL_STATE -> MailState(chat, user, absSender, this)
             StateType.SEX_STATE -> SexState(chat, user, absSender, this)
             StateType.ROOM_STATE -> RoomCategoryState(chat, user, absSender, this)
             StateType.DANCESTYLE_STATE -> DanceStyleState(chat, user, absSender, this)
             StateType.NEIGHBORS_STATE -> NeighborsState(chat, user, absSender, this)
             StateType.REQUEST_READY -> ExportRequestState(chat, user, absSender, this)
             StateType.EXPORTED -> ExportRequestState(chat, user, absSender, this)
-            else -> EmptyState(chat, absSender)
         }
 
     fun currentUserStateType(user: User?) =

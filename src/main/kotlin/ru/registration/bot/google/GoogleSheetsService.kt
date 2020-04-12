@@ -51,6 +51,7 @@ class GoogleSheetsService(
                     request.phone,
                     request.telegramLogin,
                     request.fullName,
+                    request.email,
                     request.sex,
                     request.roomType,
                     request.danceType,

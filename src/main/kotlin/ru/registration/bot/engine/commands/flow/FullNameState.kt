@@ -23,7 +23,7 @@ class FullNameState(
 
         if (validate(text)) {
             commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("full_name", text ?: "")))
-            SexState(chat, user, absSender, commonFactory).ask()
+            MailState(chat, user, absSender, commonFactory).ask()
         }
     }
 

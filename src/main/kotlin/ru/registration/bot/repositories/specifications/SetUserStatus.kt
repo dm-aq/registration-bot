@@ -16,8 +16,8 @@ class SetUserStatus(
     override val sqlParameterSource: Map<String, *>
         get() =
             MapSqlParameterSource()
-                .addValue("new_state", newState.state)
+                .addValue("new_state", newState.name)
                 .addValue("user_id", id)
-                .addValue("previous_state", oldState.state)
+                .addValue("previous_state", oldState.name)
                 .values
 }
