@@ -18,6 +18,7 @@ class RemoveDraftCommand(
         when(commonFactory.currentUserStateType(user)){
             StateType.PHONE_STATE -> removeDraft(StateType.PHONE_STATE, user, chat, absSender)
             StateType.FULL_NAME_STATE -> removeDraft(StateType.FULL_NAME_STATE, user, chat, absSender)
+            StateType.MAIL_STATE -> removeDraft(StateType.MAIL_STATE, user, chat, absSender)
             StateType.SEX_STATE -> removeDraft(StateType.SEX_STATE, user, chat, absSender)
             StateType.DANCESTYLE_STATE -> removeDraft(StateType.DANCESTYLE_STATE, user, chat, absSender)
             StateType.ROOM_STATE -> removeDraft(StateType.ROOM_STATE, user, chat, absSender)
