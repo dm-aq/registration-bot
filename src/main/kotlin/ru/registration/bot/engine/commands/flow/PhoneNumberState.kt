@@ -21,13 +21,13 @@ class PhoneNumberState(
     }
 
     override fun handle(text: String?){
-        if(validation(text ?: "")) {
+        if(validate(text ?: "")) {
             commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("phone", text ?: "")))
             FullNameState(chat, user, absSender, commonFactory).ask()
         }
     }
 
-    private fun validation(text: String): Boolean {
+    private fun validate(text: String): Boolean {
         if (!"(\\+7)|(8)\\d{3}\\d{3}-?\\d{4}".toRegex().matches(text)){
             absSender?.execute(SendMessage(chat?.id, """
                 Номер телефона должен быть в одном из следующих форматов: 

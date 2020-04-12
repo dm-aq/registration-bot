@@ -24,7 +24,8 @@ class UpdateRequestField(
                     StateType.SEX_STATE.name,
                     StateType.ROOM_STATE.name,
                     StateType.DANCESTYLE_STATE.name,
-                    StateType.NEIGHBORS_STATE.name
+                    StateType.NEIGHBORS_STATE.name,
+                    StateType.REQUEST_READY.name
                 )
             ).values
 }

@@ -10,5 +10,6 @@ enum class StateType {
     DANCESTYLE_STATE,
     NEIGHBORS_STATE,
     REQUEST_READY,
+    REQUEST_APPROVED,
     EXPORTED;
 }

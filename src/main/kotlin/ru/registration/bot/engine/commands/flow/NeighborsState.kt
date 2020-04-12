@@ -22,7 +22,7 @@ class NeighborsState(
     override fun handle(text: String?) {
         if (validate(text ?: "")) {
             commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("neighbors", text ?: "")))
-            ExportRequestState(chat, user, absSender, commonFactory).export()
+            DraftReadyState(chat, user, absSender, commonFactory).ask()
         }
     }
 

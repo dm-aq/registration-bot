@@ -31,7 +31,8 @@ class CommonFactory(
             StateType.ROOM_STATE -> RoomCategoryState(chat, user, absSender, this)
             StateType.DANCESTYLE_STATE -> DanceStyleState(chat, user, absSender, this)
             StateType.NEIGHBORS_STATE -> NeighborsState(chat, user, absSender, this)
-            StateType.REQUEST_READY -> ExportRequestState(chat, user, absSender, this)
+            StateType.REQUEST_READY -> DraftReadyState(chat, user, absSender, this)
+            StateType.REQUEST_APPROVED -> ExportRequestState(chat, user, absSender, this)
             StateType.EXPORTED -> ExportRequestState(chat, user, absSender, this)
         }
 

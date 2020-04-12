@@ -23,6 +23,7 @@ class RemoveDraftCommand(
             StateType.DANCESTYLE_STATE -> removeDraft(StateType.DANCESTYLE_STATE, user, chat, absSender)
             StateType.ROOM_STATE -> removeDraft(StateType.ROOM_STATE, user, chat, absSender)
             StateType.NEIGHBORS_STATE -> removeDraft(StateType.NEIGHBORS_STATE, user, chat, absSender)
+            StateType.REQUEST_READY -> removeDraft(StateType.REQUEST_READY, user, chat, absSender)
             else -> sendWarningMessage(chat, absSender)
         }
     }

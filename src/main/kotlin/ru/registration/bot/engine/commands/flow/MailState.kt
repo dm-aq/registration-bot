@@ -20,13 +20,13 @@ class MailState(
     }
 
     override fun handle(text: String?){
-        if(validation(text ?: "")) {
+        if(validate(text ?: "")) {
             commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("email", text ?: "")))
             SexState(chat, user, absSender, commonFactory).ask()
         }
     }
 
-    private fun validation(text: String): Boolean{
+    private fun validate(text: String): Boolean{
         if (!"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}\$"
                 .toRegex(RegexOption.IGNORE_CASE).matches(text)){
             absSender?.execute(SendMessage(chat?.id, "Адрес какой-то не такой :("))
