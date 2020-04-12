@@ -9,10 +9,16 @@ import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.*
 
 class RegistrationCommand(
-    private val commonFactory: CommonFactory
-) : BotCommand("/new_registration", "Start new registration") {
+    private val commonFactory: CommonFactory,
+    private val allowedUsers: Set<String>
+    ) : BotCommand("/new_registration", "Start new registration") {
 
     override fun execute(absSender: AbsSender?, user: User?, chat: Chat?, arguments: Array<out String>?) {
+
+        if (!allowedUsers.contains(user?.userName)){
+            absSender?.execute(SendMessage(chat?.id, "Вам пока сюда нельзя :("))
+            return
+        }
 
         val currentState = commonFactory.create(chat, user, absSender)
 

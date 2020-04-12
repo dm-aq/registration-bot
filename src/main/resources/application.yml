@@ -44,6 +44,8 @@ dance-styles:
     - сальса
     - буги-вуги
 
+users-allow: dm_aq
+
 services:
   sheets:
     spread-sheet-id: "1qdZpcyTdCnNFsexLeMDvmmjgNhgqcITwXjXvdu2fW40"
