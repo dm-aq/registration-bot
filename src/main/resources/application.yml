@@ -2,9 +2,9 @@ spring:
   application:
     name: registration-bot
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
     hikari:
       connection-test-query: SELECT 1
       validation-timeout: 3500
