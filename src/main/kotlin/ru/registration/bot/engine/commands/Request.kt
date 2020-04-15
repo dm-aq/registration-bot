@@ -13,7 +13,7 @@ class Request private constructor(
     val danceType: String?,
     val neighbors: String?,
     val creationDateTime: LocalDateTime?
-){
+) {
 
     data class Builder(
         var requestId: Int? = null,
@@ -26,7 +26,7 @@ class Request private constructor(
         var danceType: String? = null,
         var neighbors: String? = null,
         var creationDateTime: LocalDateTime? = null
-    ){
+    ) {
         fun requestId(requestId: Int) = apply { this.requestId = requestId }
         fun telegramLogin(telegramLogin: String) = apply { this.telegramLogin = telegramLogin }
         fun phone(phone: String) = apply { this.phone = phone }
@@ -38,6 +38,18 @@ class Request private constructor(
         fun neighbors(neighbors: String) = apply { this.neighbors = neighbors }
         fun creationDateTime(creationDateTime: LocalDateTime) = apply { this.creationDateTime = creationDateTime }
 
-        fun build() = Request(requestId, telegramLogin, phone, fullName, email, sex, roomType, danceType, neighbors, creationDateTime)
+        fun build() =
+            Request(
+                requestId,
+                telegramLogin,
+                phone,
+                fullName,
+                email,
+                sex,
+                roomType,
+                danceType,
+                neighbors,
+                creationDateTime
+            )
     }
 }

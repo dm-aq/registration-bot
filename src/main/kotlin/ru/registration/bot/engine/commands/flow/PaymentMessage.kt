@@ -24,7 +24,5 @@ class PaymentMessage(
         return commonFactory.roomCategoryProperties.categories[roomType]?.price
     }
 
-    private fun link(): String {
-        return "http://ya.ru"
-    }
+    private fun link() = "http://ya.ru"
 }

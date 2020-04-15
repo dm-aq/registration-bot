@@ -35,5 +35,7 @@ class ExportRequestState(
         absSender?.execute(SendMessage(chat?.id, "У вас уже есть заполненная заявка."))
     }
 
-    override fun handle(text: String?) {}
+    override fun handle(text: String?) {
+        // there is nothing to do
+    }
 }

@@ -11,7 +11,8 @@ class InitUserRequest(
 ) : ExecSpecification {
     override val sql: String
         get() = "insert into requests(id, user_id, telegram_login, state, insstmp, updstmp) " +
-                "values(nextval('requests_pk_seq'), :user_id, :telegram_login, :state, current_timestamp, current_timestamp) "
+            "values(nextval('requests_pk_seq'), :user_id, " +
+            ":telegram_login, :state, current_timestamp, current_timestamp) "
     override val sqlParameterSource: Map<String, *>
         get() = MapSqlParameterSource()
             .addValue("user_id", user?.id)

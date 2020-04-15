@@ -6,5 +6,4 @@ import org.springframework.boot.context.properties.ConstructorBinding
 // todo remove
 @ConstructorBinding
 @ConfigurationProperties("bot")
-data class BotProperties(val username: String, val token: String) {
-}
+data class BotProperties(val username: String, val token: String)

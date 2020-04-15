@@ -11,6 +11,7 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -44,6 +45,7 @@ dependencies {
 }
 
 detekt {
+    config = files("config/detekt/detekt.yml")
     toolVersion = '1.5.1'
 }
 

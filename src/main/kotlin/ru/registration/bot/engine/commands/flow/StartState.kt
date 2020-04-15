@@ -18,5 +18,7 @@ class StartState(
         PhoneNumberState(chat, user, absSender, commonFactory).ask()
     }
 
-    override fun handle(text: String?) {}
+    override fun handle(text: String?) {
+        // there is nothing to do
+    }
 }
