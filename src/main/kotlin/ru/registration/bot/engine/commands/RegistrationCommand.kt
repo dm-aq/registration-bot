@@ -19,7 +19,7 @@ class RegistrationCommand(
 
     override fun execute(absSender: AbsSender?, user: User?, chat: Chat?, arguments: Array<out String>?) {
 
-        if (!allowedUsers.contains(user?.userName)) {
+        if (allowedUsers.isNotEmpty() && !allowedUsers.contains(user?.userName)) {
             absSender?.execute(SendMessage(chat?.id, "Вам пока сюда нельзя :("))
             return
         }
