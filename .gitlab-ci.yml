@@ -26,8 +26,6 @@ build:
     paths:
       - build/libs/*.jar
     expire_in: 1 week
-  only:
-    - master
 
 test:
   stage: test
@@ -47,6 +45,8 @@ production:
   environment:
     name: production
     url: $HEROKU_APP_HOST
+  only:
+    - master
 
 after_script:
   - echo "End CI"
