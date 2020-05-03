@@ -14,7 +14,7 @@ class StartCommand(
     override fun execute(absSender: AbsSender?, user: User?, chat: Chat?, arguments: Array<out String>?) {
 
         absSender?.execute(SendMessage(chat?.id, """
-            11-12 июля состоится <событие>. Я помогу вам зарегистрироваться.
+            11-12 июля состоится наш ежегодный #ивараВыезд. Я помогу вам зарегистрироваться.
             /new_registration - зарегистрироваться
         """.trimIndent()))
     }

@@ -15,10 +15,9 @@ import ru.registration.bot.configuration.RoomCategoryProperties
 @SpringBootApplication
 class MainApplication
 
-fun main(args: Array<String>){
+fun main(args: Array<String>) {
     ApiContextInitializer.init()
-    runApplication<MainApplication>(*args){
+    runApplication<MainApplication>(*args) {
         setBannerMode(Banner.Mode.OFF)
     }
 }
-
