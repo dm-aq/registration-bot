@@ -14,13 +14,13 @@ import ru.registration.bot.engine.commands.flow.SexState
 
 class RegistrationCommand(
     private val commonFactory: CommonFactory,
-    private val allowedUsers: Set<String>
+    private val registrationClosed: Boolean
 ) : BotCommand("/new_registration", "Start new registration") {
 
     override fun execute(absSender: AbsSender?, user: User?, chat: Chat?, arguments: Array<out String>?) {
 
-        if (allowedUsers.isNotEmpty() && !allowedUsers.contains(user?.userName)) {
-            absSender?.execute(SendMessage(chat?.id, "Вам пока сюда нельзя :("))
+        if (registrationClosed){
+            absSender?.execute(SendMessage(chat?.id, "Регистрация на выезд закрыта"))
             return
         }
 

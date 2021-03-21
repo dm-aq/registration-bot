@@ -44,7 +44,7 @@ dance-styles:
     - сальса
     - буги-вуги
 
-users-allow:
+#registration-closed: true
 
 services:
   sheets:
