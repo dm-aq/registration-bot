@@ -13,10 +13,16 @@ import ru.registration.bot.engine.commands.flow.RoomCategoryState
 import ru.registration.bot.engine.commands.flow.SexState
 
 class RegistrationCommand(
-    private val commonFactory: CommonFactory
+    private val commonFactory: CommonFactory,
+    private val registrationClosed: Boolean
 ) : BotCommand("/new_registration", "Start new registration") {
 
     override fun execute(absSender: AbsSender?, user: User?, chat: Chat?, arguments: Array<out String>?) {
+
+        if (registrationClosed){
+            absSender?.execute(SendMessage(chat?.id, "Регистрация на выезд закрыта"))
+            return
+        }
 
         val currentState = commonFactory.create(chat, user, absSender)
 

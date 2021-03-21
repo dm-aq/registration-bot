@@ -14,11 +14,12 @@ import ru.registration.bot.engine.commands.StartCommand
 @Component
 class RegistrationBot(
     @Value("\${bot.token}") private val token: String,
+    @Value("\${registration-closed:false}") private val registrationClosed: Boolean,
     private val commonFactory: CommonFactory): TelegramLongPollingCommandBot() {
 
     init {
         register(StartCommand(commonFactory))
-        register(RegistrationCommand(commonFactory))
+        register(RegistrationCommand(commonFactory, registrationClosed))
         register(RemoveDraftCommand(commonFactory))
     }
 
