@@ -19,6 +19,8 @@ class StartState(
     }
 
     override fun handle(text: String?) {
-        // there is nothing to do
+        if (text == "new_registration"){
+            ask()
+        }
     }
 }
