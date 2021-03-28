@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.commands.RemoveDraftCommand
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UserRequest
 
@@ -34,16 +35,26 @@ class DraftReadyState(
         absSender?.execute(SendMessage(chat?.id, message).setReplyMarkup(getInlineKeyboard()))
     }
 
-    private fun getInlineKeyboard(): InlineKeyboardMarkup{
-        val row = listOf(
-            InlineKeyboardButton().setText("Отправить").setCallbackData("отправить")
-        )
-        return InlineKeyboardMarkup().setKeyboard(listOf(row))
-    }
+    private fun getInlineKeyboard(): InlineKeyboardMarkup =
+        InlineKeyboardMarkup()
+            .setKeyboard(
+                listOf(
+                    listOf(InlineKeyboardButton().setText("Отправить").setCallbackData("отправить")),
+                    listOf(InlineKeyboardButton().setText("Удалить черновик").setCallbackData("удалить"))
+                )
+            )
 
     override fun handle(text: String?) {
         if (validate(text ?: "")) {
             ExportRequestState(chat, user, absSender, commonFactory).export()
+        }
+
+        when(text ?: ""){
+            "отправить" ->
+                ExportRequestState(chat, user, absSender, commonFactory).export()
+            "удалить" ->
+                RemoveDraftCommand(commonFactory)
+                    .execute(absSender, user, chat, null)
         }
     }
 

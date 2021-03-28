@@ -31,6 +31,13 @@ class RemoveDraftCommand(
     private fun removeDraft(oldState: StateType, user: User?, chat: Chat?, absSender: AbsSender?){
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, oldState, StateType.PHONE_STATE))
         absSender?.execute(SendMessage(chat?.id, "Черновик удален."))
+        absSender?.execute(
+            SendMessage(
+                chat?.id,
+                "Для того, чтобы заполнить заявку еще раз нажмите " +
+                    "${String(Character.toChars(0x1F449))} /new_registration"
+            )
+        )
     }
 
     private fun sendWarningMessage(chat: Chat?, absSender: AbsSender?){
