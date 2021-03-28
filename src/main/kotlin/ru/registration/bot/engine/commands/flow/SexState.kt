@@ -42,7 +42,7 @@ class SexState(
 }
 
 enum class Sex(val value: String){
-    MALE("M"), FEMALE("F");
+    MALE("М"), FEMALE("Ж");
 
     companion object {
         fun parse(text: String): Sex =
