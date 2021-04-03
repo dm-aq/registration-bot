@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.commands.Emoji
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
@@ -21,14 +22,16 @@ class SexState(
         absSender?.execute(SendMessage(chat?.id, "Пол:").setReplyMarkup(createInlineKeyboard()))
     }
 
-    private fun createInlineKeyboard(): InlineKeyboardMarkup {
-        val row = listOf(
-            InlineKeyboardButton().setText("\uD83D\uDD7A").setCallbackData("М"),
-            InlineKeyboardButton().setText("\uD83D\uDC83").setCallbackData("Ж")
-        )
-
-        return InlineKeyboardMarkup().setKeyboard(listOf(row))
-    }
+    private fun createInlineKeyboard() =
+        InlineKeyboardMarkup()
+            .setKeyboard(
+                listOf(
+                    listOf(
+                        InlineKeyboardButton().setText(Emoji.DANCING_MAN.toString()).setCallbackData("М"),
+                        InlineKeyboardButton().setText(Emoji.DANCING_WOMAN.toString()).setCallbackData("Ж")
+                    )
+                )
+            )
 
     override fun handle(text: String?) {
         try{

@@ -2,6 +2,7 @@ package ru.registration.bot.engine.commands
 
 import java.time.LocalDateTime
 
+// todo refactor
 class Request private constructor(
     val requestId: Int?,
     val telegramLogin: String?,
