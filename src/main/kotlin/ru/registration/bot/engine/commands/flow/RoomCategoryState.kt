@@ -9,7 +9,6 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
-import java.lang.NumberFormatException
 
 class RoomCategoryState(
     private val chat: Chat?,
@@ -20,7 +19,7 @@ class RoomCategoryState(
     override fun ask() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.SEX_STATE, StateType.ROOM_STATE))
         absSender?.execute(
-            SendMessage(chat?.id, "Выберите категорию номера:\n${getCategories()}")
+            SendMessage(chat?.id, "Выберите тип размещения:\n${getCategories()}")
                 .setReplyMarkup(getInlineKeyboard())
         )
     }

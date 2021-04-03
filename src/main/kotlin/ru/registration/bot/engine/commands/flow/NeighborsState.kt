@@ -16,7 +16,7 @@ class NeighborsState(
 ): State {
     override fun ask() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.DANCESTYLE_STATE, StateType.NEIGHBORS_STATE))
-        absSender?.execute(SendMessage(chat?.id, "С кем будуте жить:"))
+        absSender?.execute(SendMessage(chat?.id, "С кем будете жить"))
     }
 
     override fun handle(text: String?) {
@@ -28,7 +28,7 @@ class NeighborsState(
 
     private fun validate(text: String): Boolean {
         if(text.length > 120){
-            absSender?.execute(SendMessage(chat?.id, "Слишком много букв. Будь скромнее."))
+            absSender?.execute(SendMessage(chat?.id, "Слишком много букв. Будьте скромнее."))
             return false
         }
 

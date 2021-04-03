@@ -35,7 +35,7 @@ class RemoveDraftCommand(
             SendMessage(
                 chat?.id,
                 "Для того, чтобы заполнить заявку еще раз нажмите " +
-                    "${String(Character.toChars(0x1F449))} /new_registration"
+                    "${Emoji.POINT_FINGER_RIGHT} /new_registration"
             )
         )
     }
