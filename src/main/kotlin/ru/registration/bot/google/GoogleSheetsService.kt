@@ -22,7 +22,8 @@ class GoogleSheetsService(
 
     companion object {
         // todo вынести в конфигурацию
-        val jacksonFactory: JsonFactory = JacksonFactory.getDefaultInstance()
+        private val jacksonFactory: JsonFactory = JacksonFactory.getDefaultInstance()
+        private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")
     }
 
     private lateinit var service: Sheets
@@ -48,15 +49,15 @@ class GoogleSheetsService(
         service.spreadsheets().values()
             .append(spreadsheetId, range,
                 ValueRange().setValues(listOf(listOf(
-                    request.phone,
-                    request.telegramLogin,
-                    request.fullName,
+                    request.creationDateTime?.format(dateTimeFormatter),
                     request.email,
-                    request.sex,
+                    request.fullName,
+                    request.phone,
                     request.roomType,
                     request.danceType,
                     request.neighbors,
-                    request.creationDateTime?.format(DateTimeFormatter.ISO_DATE_TIME)
+                    request.sex,
+                    request.telegramLogin
                 ))))
             .setValueInputOption("RAW")
             .execute()

@@ -27,16 +27,19 @@ class PhoneNumberState(
         }
     }
 
+    // todo refactor separate class
     private fun validate(text: String): Boolean {
-        if (!"(\\+7)|(8)\\d{3}\\d{3}-?\\d{4}".toRegex().matches(text)){
+        if (!text.matches(phoneRegEx)){
             absSender?.execute(SendMessage(chat?.id, """
-                Номер телефона должен быть в одном из следующих форматов: 
-                +7XXXYYYZZZZ
-                8XXXYYYZZZZ
+                Номер телефона должен быть в следующем формате: 8XXXYYYZZZZ
             """.trimIndent()))
             return false
         }
 
         return true
+    }
+
+    companion object {
+        private val phoneRegEx = "(8)\\d{3}\\d{3}-?\\d{4}".toRegex()
     }
 }
