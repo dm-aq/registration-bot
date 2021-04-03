@@ -5,6 +5,7 @@ import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.commands.Emoji
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.SetUserStatusByReqId
 import ru.registration.bot.repositories.specifications.UserRequest
@@ -20,11 +21,23 @@ class ExportRequestState(
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.REQUEST_READY, StateType.REQUEST_APPROVED))
 
         absSender?.execute(SendMessage(chat?.id, """
-            Спасибо! Заявка заполнена.
-            Мы свяжемся с вами в течении 24 часов.
+            Круто, что вы едете с нами в этом году! 
+            
+            Обработка заявок производится вручную и может занимать до 2 суток. 
+            Подтверждение придёт на указанную почту.
+            
+            Если по истечение 2-х суток вы не получите от нас письма, свяжитесь с Надеждой ${Emoji.POINT_FINGER_RIGHT} @na_dy_mi ${Emoji.POINT_FINGER_LEFT}
+
         """.trimIndent()))
 
-        val request = commonFactory.requestRepository.query(UserRequest(user?.id, StateType.REQUEST_APPROVED)).first()
+        absSender?.execute(SendMessage(chat?.id, """
+            Если хотите зарегистрировать другого человека нажмите 
+            ${Emoji.POINT_FINGER_RIGHT} /new_registration ${Emoji.POINT_FINGER_LEFT}
+        """.trimIndent()))
+
+        val request = commonFactory.requestRepository
+            .query(UserRequest(user?.id, StateType.REQUEST_APPROVED))
+            .first()
 
         commonFactory.googleSheets.send(request)
 

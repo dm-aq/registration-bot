@@ -45,9 +45,6 @@ class DraftReadyState(
             )
 
     override fun handle(text: String?) {
-        if (validate(text ?: "")) {
-            ExportRequestState(chat, user, absSender, commonFactory).export()
-        }
 
         when(text ?: ""){
             "отправить" ->
@@ -56,9 +53,5 @@ class DraftReadyState(
                 RemoveDraftCommand(commonFactory)
                     .execute(absSender, user, chat, null)
         }
-    }
-
-    private fun validate(text: String): Boolean{
-        return "отправить".equals(text, true)
     }
 }
