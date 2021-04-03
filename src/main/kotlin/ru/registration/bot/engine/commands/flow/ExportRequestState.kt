@@ -26,7 +26,8 @@ class ExportRequestState(
             Обработка заявок производится вручную и может занимать до 2 суток. 
             Подтверждение придёт на указанную почту.
             
-            Если по истечение 2-х суток вы не получите от нас письма, свяжитесь с Надеждой ${Emoji.POINT_FINGER_RIGHT} @na_dy_mi ${Emoji.POINT_FINGER_LEFT}
+            Если по истечение 2-х суток вы не получите от нас письма, 
+            свяжитесь с Надеждой ${Emoji.POINT_FINGER_RIGHT} @na_dy_mi ${Emoji.POINT_FINGER_LEFT}
 
         """.trimIndent()))
 
