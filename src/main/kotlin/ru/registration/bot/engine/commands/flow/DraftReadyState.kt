@@ -51,7 +51,7 @@ class DraftReadyState(
                 ExportRequestState(chat, user, absSender, commonFactory).export()
             "удалить" ->
                 RemoveDraftCommand(commonFactory)
-                    .execute(absSender, user, chat, null)
+                    .execute(absSender, user, chat, null) // todo refactor
         }
     }
 }

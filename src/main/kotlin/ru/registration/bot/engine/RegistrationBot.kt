@@ -2,33 +2,23 @@ package ru.registration.bot.engine
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.User
-import ru.registration.bot.engine.commands.RegistrationCommand
-import ru.registration.bot.engine.commands.RemoveDraftCommand
-import ru.registration.bot.engine.commands.StartCommand
+import ru.registration.bot.BaseTelegramLongPollingBot
+import ru.registration.bot.RegistrationBotCommand
 
 @Component
 class RegistrationBot(
+    @Value("\${bot.username}") private val botName: String,
     @Value("\${bot.token}") private val token: String,
-    @Value("\${registration-closed:false}") private val registrationClosed: Boolean,
-    private val commonFactory: CommonFactory): TelegramLongPollingCommandBot() {
+    private val commonFactory: CommonFactory,
+    commands: List<RegistrationBotCommand>
+    ): BaseTelegramLongPollingBot(botName, token) {
 
     init {
-        register(StartCommand(commonFactory))
-        register(RegistrationCommand(commonFactory, registrationClosed))
-        register(RemoveDraftCommand(commonFactory))
-    }
-
-    override fun getBotUsername(): String {
-        return "IvaraBot"
-    }
-
-    override fun getBotToken(): String {
-        return token
+        commands.forEach { register(it) }
     }
 
     override fun processNonCommandUpdate(update: Update?) {
