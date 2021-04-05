@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.RegistrationBotCommand
+import ru.registration.bot.aspect.Secured
 import ru.registration.bot.engine.CommonFactory
 
 @Component
@@ -20,6 +21,7 @@ class StartCommand(
 
     override fun getDescription() = ""
 
+    @Secured
     override fun processMessage(absSender: AbsSender?, message: Message?, arguments: Array<out String>?) =
         execute(absSender, message!!.from, message.chat, arguments)
 

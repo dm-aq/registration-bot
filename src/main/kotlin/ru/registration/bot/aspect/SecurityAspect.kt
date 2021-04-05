@@ -13,15 +13,15 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 @Aspect
 @Component
 class SecurityAspect(
-    @Value("\${allowed-user-id:}")  private val allowedUserId: String
+    @Value("\${allowed-user-ids:}")  private val allowedUserIds: String
 ) {
 
     @Around("@annotation(Secured)")
     fun checkUser(joinPoint: ProceedingJoinPoint): Any? {
         val message: Message = joinPoint.args[1] as Message
-        val senderId = message.from.id
+        val sender = message.from.userName
 
-        if(allowedUserId.isNotEmpty() && allowedUserId == senderId.toString()) {
+        if(allowedUserIds.isNotEmpty() && allowedUserIds.split(",").contains(sender)) {
             return joinPoint.proceed()
         }
 
