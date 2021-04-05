@@ -46,6 +46,8 @@ dance-styles:
 
 #registration-closed: true
 
+allowed-user-ids: SiberianGull,Varennik,Nikastrofa,na_dy_mi,dm_aq
+
 services:
   sheets:
     spread-sheet-id: "11DKYgL_3CPgRh8rl-q7-H02nQSOW1qgscojYzLoMRaM"
