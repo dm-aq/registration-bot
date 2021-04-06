@@ -28,13 +28,13 @@ bot:
 room:
   categories:
     2:
-      price: 2500
+      price: 11500
       description: Двухместный номер
     3:
-      price: 1700
+      price: 9900
       description: Трехместный номер
     4:
-      price: 1400
+      price: 9900
       description: Четырехместный номер
 
 dance-styles:
