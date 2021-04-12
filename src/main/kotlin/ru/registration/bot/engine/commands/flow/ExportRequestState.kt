@@ -32,7 +32,7 @@ class ExportRequestState(
         """.trimIndent()))
 
         absSender?.execute(SendMessage(chat?.id, """
-        Обратите внимание, что на каждого человека необходимо заполнить отдельную форму регистрации.
+            Обратите внимание, что на каждого человека необходимо заполнить отдельную форму регистрации.
             Если хотите зарегистрировать еще одного человека нажмите 
             ${Emoji.POINT_FINGER_RIGHT} /new_registration ${Emoji.POINT_FINGER_LEFT}
         """.trimIndent()))

@@ -15,7 +15,7 @@ class DanceStyleState(
     private val user: User?,
     private val absSender: AbsSender?,
     private val commonFactory: CommonFactory
-): State {
+) : State {
     override fun ask() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.ROOM_STATE, StateType.DANCESTYLE_STATE))
         absSender?.execute(
@@ -24,13 +24,14 @@ class DanceStyleState(
         )
     }
 
-    private fun getInlineKeyboard(): InlineKeyboardMarkup{
-        val row = commonFactory.danceStyleProperties.values
-            .map { InlineKeyboardButton().setText(it).setCallbackData(it) }
-            .toList()
-
-        return InlineKeyboardMarkup().setKeyboard(listOf(row))
-    }
+    private fun getInlineKeyboard() =
+        InlineKeyboardMarkup()
+            .setKeyboard(
+                commonFactory.danceStyleProperties.values.asSequence()
+                    .map { InlineKeyboardButton().setText(it).setCallbackData(it) }
+                    .chunked(3)
+                    .toList()
+            )
 
     override fun handle(text: String?) {
         if (validate(text ?: "")) {
@@ -42,7 +43,7 @@ class DanceStyleState(
     private fun validate(text: String) =
         commonFactory.danceStyleProperties.values.contains(text.toLowerCase())
             .also {
-                if (!it){
+                if (!it) {
                     absSender?.execute(SendMessage(chat?.id, "Неверное значение. Попробуйте еще раз."))
                 }
             }
