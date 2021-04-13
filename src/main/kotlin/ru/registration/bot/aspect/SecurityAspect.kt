@@ -21,7 +21,7 @@ class SecurityAspect(
         val message: Message = joinPoint.args[1] as Message
         val sender = message.from.userName
 
-        if(allowedUserIds.isNotEmpty() && allowedUserIds.split(",").contains(sender)) {
+        if(allowedUserIds.isEmpty() || (allowedUserIds.isNotEmpty() && allowedUserIds.split(",").contains(sender))) {
             return joinPoint.proceed()
         }
 
