@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: registration-bot
+  datasource:
+    url: jdbc:postgresql://localhost:5434/reg_bot
+    username: postgres
+    password: Passw9rd0
+    hikari:
+      connection-test-query: SELECT 1
+      validation-timeout: 3500
+      minimum-idle: 0
+      max-lifetime: 1200000
+      idle-timeout: 13000
+      maximum-pool-size: 15
+      connection-timeout: 20000
+      driver-class-name: org.postgresql.Driver
+      pool-name: main
+    logging: true
+  liquibase:
+    enabled: true
+    drop-first: false
+    change_log: classpath:liquibase/changelog-master.yaml
+
+bot:
+  username: IvaraBot
+  token: 756507649:AAFayGuFVPg06dM2re6f7ZGcKirc6mTXiaY
+
+room:
+  categories:
+    2:
+      price: 11500
+      description: Двухместный номер
+    3:
+      price: 9900
+      description: Трехместный номер
+    4:
+      price: 9900
+      description: Четырехместный номер
+
+dance-styles:
+  values:
+    - хастл
+    - wcs
+    - бачата
+    - буги
+    - танго
+    - другое
+
+#registration-closed: true
+
+#allowed-user-ids: SiberianGull,Varennik,Nikastrofa,na_dy_mi,dm_aq
+
+services:
+  sheets:
+    spread-sheet-id: "11DKYgL_3CPgRh8rl-q7-H02nQSOW1qgscojYzLoMRaM"
+    range: "Ответы на форму (1)!A2:D"
