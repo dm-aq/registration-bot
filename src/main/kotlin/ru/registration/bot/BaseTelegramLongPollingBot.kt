@@ -28,7 +28,6 @@ abstract class BaseTelegramLongPollingBot(
             val message = update.message
             if (message.isCommand && !filter(message)) {
                 if (!commandRegistry.executeCommand(this, message)) {
-                    //we have received a not registered command, handle it as invalid
                     processInvalidCommandUpdate(update)
                 }
                 return

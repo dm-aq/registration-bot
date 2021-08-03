@@ -8,7 +8,6 @@ import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.RegistrationBotCommand
-import ru.registration.bot.aspect.Secured
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.DanceStyleState
 import ru.registration.bot.engine.commands.flow.FullNameState
@@ -26,13 +25,12 @@ class RegistrationCommand(
 
     override fun getDescription() = ""
 
-    @Secured
     override fun processMessage(absSender: AbsSender?, message: Message?, arguments: Array<out String>?) =
         execute(absSender, message!!.from, message.chat, arguments)
 
     private fun execute(absSender: AbsSender?, user: User?, chat: Chat?, arguments: Array<out String>?) {
 
-        if (registrationClosed){
+        if (registrationClosed) {
             absSender?.execute(SendMessage(chat?.id, "Регистрация на выезд закрыта"))
             return
         }

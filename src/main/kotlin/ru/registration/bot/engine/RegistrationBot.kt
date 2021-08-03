@@ -15,7 +15,7 @@ class RegistrationBot(
     @Value("\${bot.token}") private val token: String,
     private val commonFactory: CommonFactory,
     commands: List<RegistrationBotCommand>
-    ): BaseTelegramLongPollingBot(botName, token) {
+) : BaseTelegramLongPollingBot(botName, token) {
 
     init {
         commands.forEach { register(it) }
@@ -27,15 +27,15 @@ class RegistrationBot(
         var user: User?
         var text: String?
 
-        if (update?.hasCallbackQuery() == true){
-            chat = update?.callbackQuery?.message?.chat
-            user = update?.callbackQuery?.from
-            text = update?.callbackQuery?.data
+        if (update?.hasCallbackQuery() == true) {
+            chat = update.callbackQuery?.message?.chat
+            user = update.callbackQuery?.from
+            text = update.callbackQuery?.data
 
             this.execute(SendMessage(chat?.id, text))
-        }else{
+        } else {
             chat = update?.message?.chat
-            user =  update?.message?.from
+            user = update?.message?.from
             text = update?.message?.text
         }
 
