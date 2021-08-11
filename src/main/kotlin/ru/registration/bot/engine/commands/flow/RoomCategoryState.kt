@@ -15,7 +15,7 @@ class RoomCategoryState(
     private val user: User?,
     private val absSender: AbsSender?,
     private val commonFactory: CommonFactory
-): State {
+) : State {
     override fun ask() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.SEX_STATE, StateType.ROOM_STATE))
         absSender?.execute(
@@ -30,7 +30,7 @@ class RoomCategoryState(
 
     private fun getInlineKeyboard(): InlineKeyboardMarkup {
         val row = commonFactory.roomCategoryProperties.categories.keys
-            .map{InlineKeyboardButton().setText(it.toString()).setCallbackData(it.toString())}
+            .map { InlineKeyboardButton().setText(it.toString()).setCallbackData(it.toString()) }
             .toList()
 
         return InlineKeyboardMarkup().setKeyboard(listOf(row))
@@ -56,12 +56,12 @@ class RoomCategoryState(
                         sendErrorMessage()
                     }
                 }
-        }catch(exp: NumberFormatException){
+        } catch (exp: NumberFormatException) {
             sendErrorMessage()
             false
         }
 
-    private fun sendErrorMessage(){
+    private fun sendErrorMessage() {
         absSender?.execute(SendMessage(chat?.id, "Неверное значение. Попробуйте еще раз."))
     }
 }

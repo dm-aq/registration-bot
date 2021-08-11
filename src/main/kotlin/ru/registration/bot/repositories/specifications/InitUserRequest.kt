@@ -19,5 +19,4 @@ class InitUserRequest(
             .addValue("telegram_login", user?.userName)
             .addValue("state", state.name)
             .values
-
 }

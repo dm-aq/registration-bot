@@ -4,8 +4,8 @@ plugins {
     id("org.springframework.boot") version "2.4.5"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("io.gitlab.arturbosch.detekt") version "1.17.1"
-    kotlin("jvm") version "1.4.10"
-    kotlin("plugin.spring") version "1.4.10"
+    kotlin("jvm") version "1.4.32"
+    kotlin("plugin.spring") version "1.4.32"
 }
 
 group = "ru.dm"
@@ -28,6 +28,9 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:1.8.3")
 
     implementation("net.logstash.logback:logstash-logback-encoder:5.2")
+
+    // detekt
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
 
     // telegram
     implementation("org.telegram:telegrambots-spring-boot-starter:4.9.1")

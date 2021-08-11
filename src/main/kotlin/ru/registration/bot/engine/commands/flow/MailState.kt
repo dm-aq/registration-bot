@@ -13,22 +13,22 @@ class MailState(
     private val user: User?,
     private val absSender: AbsSender?,
     private val commonFactory: CommonFactory
-): State {
+) : State {
     override fun ask() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.FULL_NAME_STATE, StateType.MAIL_STATE))
         absSender?.execute(SendMessage(chat?.id, "Адрес электронной почты:"))
     }
 
-    override fun handle(text: String?){
-        if(validate(text ?: "")) {
+    override fun handle(text: String?) {
+        if (validate(text ?: "")) {
             commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("email", text ?: "")))
             SexState(chat, user, absSender, commonFactory).ask()
         }
     }
 
-    private fun validate(text: String): Boolean{
+    private fun validate(text: String): Boolean {
         if (!"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}\$"
-                .toRegex(RegexOption.IGNORE_CASE).matches(text)){
+                .toRegex(RegexOption.IGNORE_CASE).matches(text)) {
             absSender?.execute(SendMessage(chat?.id, "Адрес какой-то не такой :("))
             return false
         }

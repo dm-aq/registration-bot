@@ -7,9 +7,9 @@ import ru.registration.bot.repositories.ExecSpecification
 class SetUserStatusByReqId(
     private val requestId: Int?,
     private val newState: StateType
-): ExecSpecification {
+) : ExecSpecification {
     override val sql: String
-        get() =  "update requests set state = :new_state, updstmp = current_timestamp " +
+        get() = "update requests set state = :new_state, updstmp = current_timestamp " +
                 "where id = :req_id"
     override val sqlParameterSource: Map<String, *>
         get() =
@@ -18,5 +18,4 @@ class SetUserStatusByReqId(
                 .addValue("req_id", requestId)
                 .addValue("new_state", newState.name)
                 .values
-
 }

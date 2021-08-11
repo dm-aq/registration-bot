@@ -7,7 +7,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 class EmptyState(
     private val chat: Chat?,
     private val absSender: AbsSender?
-    ): State {
+) : State {
     override fun ask() {
         absSender?.execute(SendMessage(chat?.id, "EmptyState -> ask()"))
     }

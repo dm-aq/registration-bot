@@ -16,7 +16,7 @@ class DraftReadyState(
     private val user: User?,
     private val absSender: AbsSender?,
     private val commonFactory: CommonFactory
-): State {
+) : State {
     override fun ask() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.NEIGHBORS_STATE, StateType.REQUEST_READY))
         val request = commonFactory.requestRepository.query(UserRequest(user?.id, StateType.REQUEST_READY)).first()
@@ -46,7 +46,7 @@ class DraftReadyState(
 
     override fun handle(text: String?) {
 
-        when(text ?: ""){
+        when (text ?: "") {
             "отправить" ->
                 ExportRequestState(chat, user, absSender, commonFactory).export()
             "удалить" ->

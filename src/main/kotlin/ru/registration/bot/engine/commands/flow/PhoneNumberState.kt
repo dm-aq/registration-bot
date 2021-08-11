@@ -13,15 +13,15 @@ class PhoneNumberState(
     private val user: User?,
     private val absSender: AbsSender?,
     private val commonFactory: CommonFactory
-): State {
+) : State {
 
-    override fun ask(){
+    override fun ask() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.START_STATE, StateType.PHONE_STATE))
         absSender?.execute(SendMessage(chat?.id, "Введите ваш номер телефона:"))
     }
 
-    override fun handle(text: String?){
-        if(validate(text ?: "")) {
+    override fun handle(text: String?) {
+        if (validate(text ?: "")) {
             commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("phone", text ?: "")))
             FullNameState(chat, user, absSender, commonFactory).ask()
         }
@@ -29,7 +29,7 @@ class PhoneNumberState(
 
     // todo refactor separate class
     private fun validate(text: String): Boolean {
-        if (!text.matches(phoneRegEx)){
+        if (!text.matches(phoneRegEx)) {
             absSender?.execute(SendMessage(chat?.id, """
                 Номер телефона должен быть в следующем формате: 8XXXYYYZZZZ
             """.trimIndent()))

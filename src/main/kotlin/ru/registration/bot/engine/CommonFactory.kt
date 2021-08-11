@@ -32,7 +32,7 @@ class CommonFactory(
 ) {
 
     fun create(chat: Chat?, user: User?, absSender: AbsSender?, text: String? = null) =
-        when(currentUserStateType(user)){
+        when (currentUserStateType(user)) {
             StateType.START_STATE -> StartState(chat, user, absSender, this)
             StateType.PHONE_STATE -> PhoneNumberState(chat, user, absSender, this)
             StateType.FULL_NAME_STATE -> FullNameState(chat, user, absSender, this)

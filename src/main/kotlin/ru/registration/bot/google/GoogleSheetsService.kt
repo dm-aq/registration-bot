@@ -29,7 +29,7 @@ class GoogleSheetsService(
     private lateinit var service: Sheets
 
     @PostConstruct
-    fun init(){
+    fun init() {
         val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
 
         service = Sheets.Builder(httpTransport,
@@ -45,7 +45,7 @@ class GoogleSheetsService(
             .createScoped(listOf("https://www.googleapis.com/auth/spreadsheets"))
     }
 
-    fun send(request: Request){
+    fun send(request: Request) {
         service.spreadsheets().values()
             .append(spreadsheetId, range,
                 ValueRange().setValues(listOf(listOf(

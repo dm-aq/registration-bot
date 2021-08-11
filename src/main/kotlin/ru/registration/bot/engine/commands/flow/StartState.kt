@@ -11,7 +11,7 @@ class StartState(
     private val user: User?,
     private val absSender: AbsSender?,
     private val commonFactory: CommonFactory
-): State {
+) : State {
     override fun ask() {
         commonFactory.requestRepository.execute(InitUserRequest(user, StateType.START_STATE))
 
@@ -19,7 +19,7 @@ class StartState(
     }
 
     override fun handle(text: String?) {
-        if (text == "new_registration"){
+        if (text == "new_registration") {
             ask()
         }
     }

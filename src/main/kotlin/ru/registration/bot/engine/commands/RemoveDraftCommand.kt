@@ -25,7 +25,7 @@ class RemoveDraftCommand(
 
     fun execute(absSender: AbsSender?, user: User?, chat: Chat?, arguments: Array<out String>?) {
 
-        when(commonFactory.currentUserStateType(user)){
+        when (commonFactory.currentUserStateType(user)) {
             StateType.PHONE_STATE -> removeDraft(StateType.PHONE_STATE, user, chat, absSender)
             StateType.FULL_NAME_STATE -> removeDraft(StateType.FULL_NAME_STATE, user, chat, absSender)
             StateType.MAIL_STATE -> removeDraft(StateType.MAIL_STATE, user, chat, absSender)
@@ -38,7 +38,7 @@ class RemoveDraftCommand(
         }
     }
 
-    private fun removeDraft(oldState: StateType, user: User?, chat: Chat?, absSender: AbsSender?){
+    private fun removeDraft(oldState: StateType, user: User?, chat: Chat?, absSender: AbsSender?) {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, oldState, StateType.PHONE_STATE))
         absSender?.execute(SendMessage(chat?.id, "Черновик удален."))
         absSender?.execute(
@@ -50,7 +50,7 @@ class RemoveDraftCommand(
         )
     }
 
-    private fun sendWarningMessage(chat: Chat?, absSender: AbsSender?){
+    private fun sendWarningMessage(chat: Chat?, absSender: AbsSender?) {
         absSender?.execute(SendMessage(chat?.id, "У вас нет черновика."))
     }
 }

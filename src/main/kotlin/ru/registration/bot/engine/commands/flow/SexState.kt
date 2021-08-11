@@ -1,5 +1,6 @@
 package ru.registration.bot.engine.commands.flow
 
+import mu.KotlinLogging
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.User
@@ -11,12 +12,14 @@ import ru.registration.bot.engine.commands.Emoji
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
+private val logger = KotlinLogging.logger {}
+
 class SexState(
     private val chat: Chat?,
     private val user: User?,
     private val absSender: AbsSender?,
     private val commonFactory: CommonFactory
-): State {
+) : State {
     override fun ask() {
         commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.MAIL_STATE, StateType.SEX_STATE))
         absSender?.execute(SendMessage(chat?.id, "Пол:").setReplyMarkup(createInlineKeyboard()))
@@ -34,17 +37,18 @@ class SexState(
             )
 
     override fun handle(text: String?) {
-        try{
+        try {
             val sex: Sex = Sex.parse(text ?: "")
             commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("sex", sex.value)))
             RoomCategoryState(chat, user, absSender, commonFactory).ask()
-        }catch (exp: IllegalArgumentException){
+        } catch (exp: IllegalArgumentException) {
+            logger.warn(exp) { "Wrong gender value" }
             absSender?.execute(SendMessage(chat?.id, "Попробуйте еще раз."))
         }
     }
 }
 
-enum class Sex(val value: String){
+enum class Sex(val value: String) {
     MALE("М"), FEMALE("Ж");
 
     companion object {

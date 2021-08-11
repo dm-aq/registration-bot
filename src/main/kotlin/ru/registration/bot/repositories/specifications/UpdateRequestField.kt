@@ -7,7 +7,7 @@ import ru.registration.bot.repositories.ExecSpecification
 class UpdateRequestField(
     private val userId: Int?,
     private val pair: Pair<String, Any>
-): ExecSpecification {
+) : ExecSpecification {
     override val sql: String
         get() = "update requests set ${pair.first} = :${pair.first}, updstmp = current_timestamp " +
                 "where user_id = :user_id and state in (:draft_states)"

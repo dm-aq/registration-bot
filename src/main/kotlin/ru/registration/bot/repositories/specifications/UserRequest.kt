@@ -22,19 +22,18 @@ class UserRequest(
             .addValue("state", state.name)
             .values
     override val rowMapper: RowMapper<Request>
-        get() = RowMapper<Request> {
-                rs, _ ->
-            Request.Builder()
-                .requestId(rs.getInt("id"))
-                .telegramLogin(rs.getString("telegram_login") ?: "")
-                .fullName(rs.getString("full_name"))
-                .email(rs.getString("email"))
-                .phone(rs.getString("phone"))
-                .sex(rs.getString("sex"))
-                .roomType(rs.getInt("room_type"))
-                .danceType(rs.getString("dance_type"))
-                .neighbors(rs.getString("neighbors"))
-                .creationDateTime(rs.getTimestamp("updstmp").toLocalDateTime())
-                .build()
+        get() = RowMapper<Request> { rs, _ ->
+            Request(
+                requestId = rs.getInt("id"),
+                telegramLogin = rs.getString("telegram_login") ?: "",
+                fullName = rs.getString("full_name"),
+                email = rs.getString("email"),
+                phone = rs.getString("phone"),
+                sex = rs.getString("sex"),
+                roomType = rs.getInt("room_type"),
+                danceType = rs.getString("dance_type"),
+                neighbors = rs.getString("neighbors"),
+                creationDateTime = rs.getTimestamp("updstmp").toLocalDateTime()
+            )
         }
 }

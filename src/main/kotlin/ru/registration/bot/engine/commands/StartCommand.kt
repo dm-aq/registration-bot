@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.RegistrationBotCommand
 
 @Component
-class StartCommand: RegistrationBotCommand {
+class StartCommand : RegistrationBotCommand {
 
     override fun getCommandIdentifier() = "start"
 
