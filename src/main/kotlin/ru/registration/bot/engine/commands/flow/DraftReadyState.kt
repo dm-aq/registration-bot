@@ -2,12 +2,14 @@ package ru.registration.bot.engine.commands.flow
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
+import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.RemoveDraftCommand
+import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UserRequest
 
@@ -44,9 +46,9 @@ class DraftReadyState(
                 )
             )
 
-    override fun handle(text: String?) {
+    override fun handle(update: Update?) {
 
-        when (text ?: "") {
+        when (update?.text ?: "") {
             "отправить" ->
                 ExportRequestState(chat, user, absSender, commonFactory).export()
             "удалить" ->

@@ -2,6 +2,7 @@ package ru.registration.bot.engine.commands.flow
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
+import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
@@ -50,7 +51,7 @@ class ExportRequestState(
         absSender?.execute(SendMessage(chat?.id, "У вас уже есть заполненная заявка."))
     }
 
-    override fun handle(text: String?) {
+    override fun handle(update: Update?) {
         // there is nothing to do
     }
 }

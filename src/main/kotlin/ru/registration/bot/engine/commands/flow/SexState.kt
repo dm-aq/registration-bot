@@ -3,12 +3,14 @@ package ru.registration.bot.engine.commands.flow
 import mu.KotlinLogging
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
+import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.Emoji
+import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
@@ -36,9 +38,9 @@ class SexState(
                 )
             )
 
-    override fun handle(text: String?) {
+    override fun handle(update: Update?) {
         try {
-            val sex: Sex = Sex.parse(text ?: "")
+            val sex: Sex = Sex.parse(update?.text ?: "")
             commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("sex", sex.value)))
             RoomCategoryState(chat, user, absSender, commonFactory).ask()
         } catch (exp: IllegalArgumentException) {

@@ -2,9 +2,11 @@ package ru.registration.bot.engine.commands.flow
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
+import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
@@ -19,9 +21,10 @@ class MailState(
         absSender?.execute(SendMessage(chat?.id, "Адрес электронной почты:"))
     }
 
-    override fun handle(text: String?) {
-        if (validate(text ?: "")) {
-            commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("email", text ?: "")))
+    override fun handle(update: Update?) {
+        val text = update?.text ?: ""
+        if (validate(text)) {
+            commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("email", text)))
             SexState(chat, user, absSender, commonFactory).ask()
         }
     }

@@ -2,11 +2,13 @@ package ru.registration.bot.engine.commands.flow
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
+import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
@@ -36,12 +38,12 @@ class RoomCategoryState(
         return InlineKeyboardMarkup().setKeyboard(listOf(row))
     }
 
-    override fun handle(text: String?) {
-        if (validate(text ?: "0")) {
+    override fun handle(update: Update?) {
+        if (validate(update?.text ?: "0")) {
             commonFactory.requestRepository.execute(
                 UpdateRequestField(
                     user?.id,
-                    Pair("room_type", (text?.toInt() ?: 0))
+                    Pair("room_type", (update?.text?.toInt() ?: 0))
                 )
             )
             DanceStyleState(chat, user, absSender, commonFactory).ask()

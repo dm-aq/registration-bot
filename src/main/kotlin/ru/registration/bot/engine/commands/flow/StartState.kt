@@ -1,9 +1,11 @@
 package ru.registration.bot.engine.commands.flow
 
 import org.telegram.telegrambots.meta.api.objects.Chat
+import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.InitUserRequest
 
 class StartState(
@@ -18,8 +20,8 @@ class StartState(
         PhoneNumberState(chat, user, absSender, commonFactory).ask()
     }
 
-    override fun handle(text: String?) {
-        if (text == "new_registration") {
+    override fun handle(update: Update?) {
+        if (update?.text == "new_registration") {
             ask()
         }
     }

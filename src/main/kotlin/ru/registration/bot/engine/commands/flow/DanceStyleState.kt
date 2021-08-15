@@ -2,11 +2,13 @@ package ru.registration.bot.engine.commands.flow
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
+import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
@@ -33,9 +35,10 @@ class DanceStyleState(
                     .toList()
             )
 
-    override fun handle(text: String?) {
-        if (validate(text ?: "")) {
-            commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("dance_type", text ?: "")))
+    override fun handle(update: Update?) {
+        val text = update?.text ?: ""
+        if (validate(text)) {
+            commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("dance_type", text)))
             NeighborsState(chat, user, absSender, commonFactory).ask()
         }
     }
