@@ -12,13 +12,13 @@ import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
-import ru.registration.bot.engine.commands.flow.StateType.PHONE_STATE
-import ru.registration.bot.engine.commands.flow.StateType.START_STATE
+import ru.registration.bot.engine.commands.flow.StateType.MAIL_STATE
+import ru.registration.bot.engine.commands.flow.StateType.SEX_STATE
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
-class PhoneNumberStateAskTest{
+class SexStateAskTest {
     @Test
-    fun `asking for phone number`() {
+    fun `asking for gender`() {
         // arrange
         val user: User = mock{
             on { id } doReturn 213
@@ -28,22 +28,22 @@ class PhoneNumberStateAskTest{
         }
         val absSender: AbsSender = mock()
         val commonFactory: CommonFactory = mock(defaultAnswer = RETURNS_DEEP_STUBS)
-        val phoneState = PhoneNumberState(chat, user, absSender, commonFactory)
+        val sexState = SexState(chat, user, absSender, commonFactory)
 
         // act
-        phoneState.ask()
+        sexState.ask()
 
         // assert
         val statusCaptor = argumentCaptor<SetUserStatus>()
         verify(commonFactory.stateRepo).execute(statusCaptor.capture())
         assertEquals(
-            SetUserStatus(213, START_STATE, PHONE_STATE).sqlParameterSource,
+            SetUserStatus(213, MAIL_STATE, SEX_STATE).sqlParameterSource,
             statusCaptor.firstValue.sqlParameterSource
         )
 
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(1, messageCaptor.firstValue.chatId.toInt())
-        assertEquals("Введите ваш номер телефона:", messageCaptor.firstValue.text)
+        assertEquals("Пол:", messageCaptor.firstValue.text)
     }
 }
