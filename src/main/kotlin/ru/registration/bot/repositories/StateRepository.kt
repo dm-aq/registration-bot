@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository
 import ru.registration.bot.engine.commands.flow.StateType
 
 @Repository
-open class StateRepository(
+class StateRepository(
     private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
