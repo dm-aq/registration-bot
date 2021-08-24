@@ -19,6 +19,7 @@ import ru.registration.bot.configuration.RoomCategoryProperties
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.StateType.ROOM_STATE
 import ru.registration.bot.engine.commands.flow.StateType.SEX_STATE
+import ru.registration.bot.engine.commands.flow.states.SexState
 import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.SetUserStatus
 

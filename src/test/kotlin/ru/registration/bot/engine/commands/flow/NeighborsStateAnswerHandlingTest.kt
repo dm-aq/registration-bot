@@ -19,6 +19,7 @@ import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.Request
 import ru.registration.bot.engine.commands.flow.StateType.NEIGHBORS_STATE
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
+import ru.registration.bot.engine.commands.flow.states.NeighborsState
 import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.SetUserStatus
 

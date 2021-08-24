@@ -14,6 +14,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.StateType.PHONE_STATE
 import ru.registration.bot.engine.commands.flow.StateType.START_STATE
+import ru.registration.bot.engine.commands.flow.states.PhoneNumberState
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
 class PhoneNumberStateAskTest{

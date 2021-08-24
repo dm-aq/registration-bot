@@ -9,11 +9,11 @@ import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.RegistrationBotCommand
 import ru.registration.bot.engine.CommonFactory
-import ru.registration.bot.engine.commands.flow.DanceStyleState
-import ru.registration.bot.engine.commands.flow.FullNameState
-import ru.registration.bot.engine.commands.flow.NeighborsState
-import ru.registration.bot.engine.commands.flow.RoomCategoryState
-import ru.registration.bot.engine.commands.flow.SexState
+import ru.registration.bot.engine.commands.flow.states.DanceStyleState
+import ru.registration.bot.engine.commands.flow.states.FullNameState
+import ru.registration.bot.engine.commands.flow.states.NeighborsState
+import ru.registration.bot.engine.commands.flow.states.RoomCategoryState
+import ru.registration.bot.engine.commands.flow.states.SexState
 
 @Component
 class RegistrationCommand(

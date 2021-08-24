@@ -1,4 +1,4 @@
-package ru.registration.bot.engine.commands.flow
+package ru.registration.bot.engine.commands.flow.states
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
@@ -7,6 +7,10 @@ import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.Emoji
+import ru.registration.bot.engine.commands.flow.State
+import ru.registration.bot.engine.commands.flow.StateType.EXPORTED
+import ru.registration.bot.engine.commands.flow.StateType.REQUEST_APPROVED
+import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.SetUserStatusByReqId
 import ru.registration.bot.repositories.specifications.UserRequest
@@ -19,7 +23,7 @@ class ExportRequestState(
 ) : State {
 
     fun export() {
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.REQUEST_READY, StateType.REQUEST_APPROVED))
+        commonFactory.stateRepo.execute(SetUserStatus(user?.id, REQUEST_READY, REQUEST_APPROVED))
 
         absSender?.execute(SendMessage(chat?.id, """
             Круто, что вы едете с нами в этом году! 
@@ -39,19 +43,19 @@ class ExportRequestState(
         """.trimIndent()))
 
         val request = commonFactory.requestRepository
-            .query(UserRequest(user?.id, StateType.REQUEST_APPROVED))
+            .query(UserRequest(user?.id, REQUEST_APPROVED))
             .first()
 
         commonFactory.googleSheets.send(request)
 
-        commonFactory.stateRepo.execute(SetUserStatusByReqId(request.requestId, StateType.EXPORTED))
+        commonFactory.stateRepo.execute(SetUserStatusByReqId(request.requestId, EXPORTED))
     }
 
-    override fun ask() {
-        absSender?.execute(SendMessage(chat?.id, "У вас уже есть заполненная заявка."))
+    override fun ask(userId: Int, chatId: Long) {
+        absSender?.execute(SendMessage(chatId, "У вас уже есть заполненная заявка."))
     }
 
-    override fun handle(update: Update?) {
+    override fun handle(update: Update) {
         // there is nothing to do
     }
 }

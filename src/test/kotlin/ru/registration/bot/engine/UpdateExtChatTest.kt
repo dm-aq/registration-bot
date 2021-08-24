@@ -56,4 +56,9 @@ class UpdateExtChatTest {
         // act & assert
         assertNull(update.chat?.id)
     }
+
+    @Test
+    fun `test chatId`() {
+        TODO("Not yet implemented")
+    }
 }

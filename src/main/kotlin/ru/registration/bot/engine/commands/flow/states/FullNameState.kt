@@ -1,4 +1,4 @@
-package ru.registration.bot.engine.commands.flow
+package ru.registration.bot.engine.commands.flow.states
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
@@ -6,7 +6,12 @@ import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.chatId
+import ru.registration.bot.engine.commands.flow.State
+import ru.registration.bot.engine.commands.flow.StateType.FULL_NAME_STATE
+import ru.registration.bot.engine.commands.flow.StateType.PHONE_STATE
 import ru.registration.bot.engine.text
+import ru.registration.bot.engine.userId
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
@@ -16,16 +21,16 @@ class FullNameState(
     private val absSender: AbsSender?,
     private val commonFactory: CommonFactory
 ) : State {
-    override fun ask() {
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.PHONE_STATE, StateType.FULL_NAME_STATE))
-        absSender?.execute(SendMessage(chat?.id, "Как вас зовут (фио):"))
+    override fun ask(userId: Int, chatId: Long) {
+        commonFactory.stateRepo.execute(SetUserStatus(userId, PHONE_STATE, FULL_NAME_STATE))
+        absSender?.execute(SendMessage(chatId, "Как вас зовут (фио):"))
     }
 
-    override fun handle(update: Update?) {
+    override fun handle(update: Update) {
         val text = update?.text ?: ""
         if (validate(text)) {
             commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("full_name", text)))
-            MailState(chat, user, absSender, commonFactory).ask()
+            MailState(chat, user, absSender, commonFactory).ask(update.userId, update.chatId)
         }
     }
 

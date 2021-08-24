@@ -14,6 +14,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.StateType.MAIL_STATE
 import ru.registration.bot.engine.commands.flow.StateType.SEX_STATE
+import ru.registration.bot.engine.commands.flow.states.SexState
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
 class SexStateAskTest {

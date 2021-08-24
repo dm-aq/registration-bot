@@ -19,6 +19,7 @@ import ru.registration.bot.engine.commands.Request
 import ru.registration.bot.engine.commands.flow.StateType.EXPORTED
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_APPROVED
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
+import ru.registration.bot.engine.commands.flow.states.ExportRequestState
 import ru.registration.bot.repositories.ExecSpecification
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.SetUserStatusByReqId

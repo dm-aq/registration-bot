@@ -1,4 +1,4 @@
-package ru.registration.bot.engine.commands.flow
+package ru.registration.bot.engine.commands.flow.states
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
@@ -8,7 +8,12 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.chatId
+import ru.registration.bot.engine.commands.flow.State
+import ru.registration.bot.engine.commands.flow.StateType.ROOM_STATE
+import ru.registration.bot.engine.commands.flow.StateType.SEX_STATE
 import ru.registration.bot.engine.text
+import ru.registration.bot.engine.userId
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
@@ -18,8 +23,8 @@ class RoomCategoryState(
     private val absSender: AbsSender?,
     private val commonFactory: CommonFactory
 ) : State {
-    override fun ask() {
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.SEX_STATE, StateType.ROOM_STATE))
+    override fun ask(userId: Int, chatId: Long) {
+        commonFactory.stateRepo.execute(SetUserStatus(userId, SEX_STATE, ROOM_STATE))
         absSender?.execute(
             SendMessage(chat?.id, "Выберите тип размещения:\n${getCategories()}")
                 .setReplyMarkup(getInlineKeyboard())
@@ -38,15 +43,15 @@ class RoomCategoryState(
         return InlineKeyboardMarkup().setKeyboard(listOf(row))
     }
 
-    override fun handle(update: Update?) {
-        if (validate(update?.text ?: "0")) {
+    override fun handle(update: Update) {
+        if (validate(update.text ?: "0")) {
             commonFactory.requestRepository.execute(
                 UpdateRequestField(
-                    user?.id,
-                    Pair("room_type", (update?.text?.toInt() ?: 0))
+                    update.userId,
+                    Pair("room_type", (update.text?.toInt() ?: 0))
                 )
             )
-            DanceStyleState(chat, user, absSender, commonFactory).ask()
+            DanceStyleState(chat, user, absSender, commonFactory).ask(update.userId, update.chatId)
         }
     }
 

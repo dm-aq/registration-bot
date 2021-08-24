@@ -21,6 +21,7 @@ import ru.registration.bot.engine.commands.flow.StateType.EXPORTED
 import ru.registration.bot.engine.commands.flow.StateType.PHONE_STATE
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_APPROVED
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
+import ru.registration.bot.engine.commands.flow.states.DraftReadyState
 import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.ExecSpecification
 import ru.registration.bot.repositories.specifications.SetUserStatus

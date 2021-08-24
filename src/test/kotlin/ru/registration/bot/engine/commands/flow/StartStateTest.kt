@@ -15,6 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.commands.flow.states.StartState
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
 class StartStateTest {

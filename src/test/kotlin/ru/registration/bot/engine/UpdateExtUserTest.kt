@@ -56,4 +56,9 @@ class UpdateExtUserTest {
         // act & assert
         assertNull(update.user?.id)
     }
+
+    @Test
+    fun `test userId`() {
+        TODO("Not yet implemented")
+    }
 }

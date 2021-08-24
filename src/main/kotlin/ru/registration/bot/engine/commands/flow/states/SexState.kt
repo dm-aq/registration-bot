@@ -1,4 +1,4 @@
-package ru.registration.bot.engine.commands.flow
+package ru.registration.bot.engine.commands.flow.states
 
 import mu.KotlinLogging
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
@@ -9,8 +9,13 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.Emoji
+import ru.registration.bot.engine.commands.flow.State
+import ru.registration.bot.engine.commands.flow.StateType.MAIL_STATE
+import ru.registration.bot.engine.commands.flow.StateType.SEX_STATE
 import ru.registration.bot.engine.text
+import ru.registration.bot.engine.userId
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
@@ -22,9 +27,9 @@ class SexState(
     private val absSender: AbsSender?,
     private val commonFactory: CommonFactory
 ) : State {
-    override fun ask() {
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.MAIL_STATE, StateType.SEX_STATE))
-        absSender?.execute(SendMessage(chat?.id, "Пол:").setReplyMarkup(createInlineKeyboard()))
+    override fun ask(userId: Int, chatId: Long) {
+        commonFactory.stateRepo.execute(SetUserStatus(userId, MAIL_STATE, SEX_STATE))
+        absSender?.execute(SendMessage(chatId, "Пол:").setReplyMarkup(createInlineKeyboard()))
     }
 
     private fun createInlineKeyboard() =
@@ -38,14 +43,14 @@ class SexState(
                 )
             )
 
-    override fun handle(update: Update?) {
+    override fun handle(update: Update) {
         try {
-            val sex: Sex = Sex.parse(update?.text ?: "")
-            commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("sex", sex.value)))
-            RoomCategoryState(chat, user, absSender, commonFactory).ask()
+            val sex: Sex = Sex.parse(update.text ?: "")
+            commonFactory.requestRepository.execute(UpdateRequestField(update.userId, Pair("sex", sex.value)))
+            RoomCategoryState(chat, user, absSender, commonFactory).ask(update.userId, update.chatId)
         } catch (exp: IllegalArgumentException) {
             logger.warn(exp) { "Wrong gender value" }
-            absSender?.execute(SendMessage(chat?.id, "Попробуйте еще раз."))
+            absSender?.execute(SendMessage(update.chatId, "Попробуйте еще раз."))
         }
     }
 }

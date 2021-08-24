@@ -1,4 +1,4 @@
-package ru.registration.bot.engine.commands.flow
+package ru.registration.bot.engine.commands.flow.states
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
@@ -8,7 +8,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.commands.flow.State
+import ru.registration.bot.engine.commands.flow.StateType.DANCESTYLE_STATE
+import ru.registration.bot.engine.commands.flow.StateType.ROOM_STATE
 import ru.registration.bot.engine.text
+import ru.registration.bot.engine.userId
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
@@ -18,10 +22,10 @@ class DanceStyleState(
     private val absSender: AbsSender?,
     private val commonFactory: CommonFactory
 ) : State {
-    override fun ask() {
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.ROOM_STATE, StateType.DANCESTYLE_STATE))
+    override fun ask(userId: Int, chatId: Long) {
+        commonFactory.stateRepo.execute(SetUserStatus(userId, ROOM_STATE, DANCESTYLE_STATE))
         absSender?.execute(
-            SendMessage(chat?.id, "Выберите танцевальное направление:")
+            SendMessage(chatId, "Выберите танцевальное направление:")
                 .setReplyMarkup(getInlineKeyboard())
         )
     }
@@ -35,10 +39,10 @@ class DanceStyleState(
                     .toList()
             )
 
-    override fun handle(update: Update?) {
-        val text = update?.text ?: ""
+    override fun handle(update: Update) {
+        val text = update.text ?: ""
         if (validate(text)) {
-            commonFactory.requestRepository.execute(UpdateRequestField(user?.id, Pair("dance_type", text)))
+            commonFactory.requestRepository.execute(UpdateRequestField(update.userId, Pair("dance_type", text)))
             NeighborsState(chat, user, absSender, commonFactory).ask()
         }
     }

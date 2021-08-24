@@ -1,4 +1,4 @@
-package ru.registration.bot.engine.commands.flow
+package ru.registration.bot.engine.commands.flow.states
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
@@ -9,6 +9,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.RemoveDraftCommand
+import ru.registration.bot.engine.commands.flow.State
+import ru.registration.bot.engine.commands.flow.StateType.NEIGHBORS_STATE
+import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
 import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UserRequest
@@ -19,9 +22,9 @@ class DraftReadyState(
     private val absSender: AbsSender?,
     private val commonFactory: CommonFactory
 ) : State {
-    override fun ask() {
-        commonFactory.stateRepo.execute(SetUserStatus(user?.id, StateType.NEIGHBORS_STATE, StateType.REQUEST_READY))
-        val request = commonFactory.requestRepository.query(UserRequest(user?.id, StateType.REQUEST_READY)).first()
+    override fun ask(userId: Int, chatId: Long) {
+        commonFactory.stateRepo.execute(SetUserStatus(userId, NEIGHBORS_STATE, REQUEST_READY))
+        val request = commonFactory.requestRepository.query(UserRequest(userId, REQUEST_READY)).first()
 
         val message = """
             Проверьте пожалуйста данные заявки:
@@ -34,7 +37,7 @@ class DraftReadyState(
             Танцевальное направление: ${request.danceType}
             Соседи: ${request.neighbors}
         """.trimIndent()
-        absSender?.execute(SendMessage(chat?.id, message).setReplyMarkup(getInlineKeyboard()))
+        absSender?.execute(SendMessage(chatId, message).setReplyMarkup(getInlineKeyboard()))
     }
 
     private fun getInlineKeyboard(): InlineKeyboardMarkup =
@@ -46,9 +49,9 @@ class DraftReadyState(
                 )
             )
 
-    override fun handle(update: Update?) {
+    override fun handle(update: Update) {
 
-        when (update?.text ?: "") {
+        when (update.text ?: "") {
             "отправить" ->
                 ExportRequestState(chat, user, absSender, commonFactory).export()
             "удалить" ->

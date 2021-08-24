@@ -19,6 +19,7 @@ import ru.registration.bot.configuration.DanceStyleProperties
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.StateType.DANCESTYLE_STATE
 import ru.registration.bot.engine.commands.flow.StateType.NEIGHBORS_STATE
+import ru.registration.bot.engine.commands.flow.states.DanceStyleState
 import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.SetUserStatus
 

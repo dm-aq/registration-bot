@@ -18,6 +18,7 @@ import ru.registration.bot.configuration.RoomCategoryProperties
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.StateType.DANCESTYLE_STATE
 import ru.registration.bot.engine.commands.flow.StateType.ROOM_STATE
+import ru.registration.bot.engine.commands.flow.states.DanceStyleState
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
 class DanceStyleStateAskTest {

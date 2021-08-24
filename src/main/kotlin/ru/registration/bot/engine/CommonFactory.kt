@@ -6,17 +6,18 @@ import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.configuration.DanceStyleProperties
 import ru.registration.bot.configuration.RoomCategoryProperties
-import ru.registration.bot.engine.commands.flow.DanceStyleState
-import ru.registration.bot.engine.commands.flow.DraftReadyState
-import ru.registration.bot.engine.commands.flow.ExportRequestState
-import ru.registration.bot.engine.commands.flow.FullNameState
-import ru.registration.bot.engine.commands.flow.MailState
-import ru.registration.bot.engine.commands.flow.NeighborsState
-import ru.registration.bot.engine.commands.flow.PhoneNumberState
-import ru.registration.bot.engine.commands.flow.RoomCategoryState
-import ru.registration.bot.engine.commands.flow.SexState
-import ru.registration.bot.engine.commands.flow.StartState
+import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.StateType
+import ru.registration.bot.engine.commands.flow.states.DanceStyleState
+import ru.registration.bot.engine.commands.flow.states.DraftReadyState
+import ru.registration.bot.engine.commands.flow.states.ExportRequestState
+import ru.registration.bot.engine.commands.flow.states.FullNameState
+import ru.registration.bot.engine.commands.flow.states.MailState
+import ru.registration.bot.engine.commands.flow.states.NeighborsState
+import ru.registration.bot.engine.commands.flow.states.PhoneNumberState
+import ru.registration.bot.engine.commands.flow.states.RoomCategoryState
+import ru.registration.bot.engine.commands.flow.states.SexState
+import ru.registration.bot.engine.commands.flow.states.StartState
 import ru.registration.bot.google.GoogleSheetsService
 import ru.registration.bot.repositories.RequestRepository
 import ru.registration.bot.repositories.StateRepository
@@ -33,7 +34,7 @@ class CommonFactory(
 
     fun create(chat: Chat?, user: User?, absSender: AbsSender?, text: String? = null) =
         when (currentUserStateType(user)) {
-            StateType.START_STATE -> StartState(chat, user, absSender, this)
+            StateType.START_STATE -> initialState(chat, user, absSender)
             StateType.PHONE_STATE -> PhoneNumberState(chat, user, absSender, this)
             StateType.FULL_NAME_STATE -> FullNameState(chat, user, absSender, this)
             StateType.MAIL_STATE -> MailState(chat, user, absSender, this)
@@ -48,4 +49,11 @@ class CommonFactory(
 
     fun currentUserStateType(user: User?) =
         stateRepo.query(CurrentUserState(user?.id)).firstOrNull() ?: StateType.START_STATE
+
+    private fun initialState(chat: Chat?, user: User?, absSender: AbsSender?): State =
+        StartState(
+            user,
+            this,
+            PhoneNumberState(chat, user, absSender, this)
+        )
 }
