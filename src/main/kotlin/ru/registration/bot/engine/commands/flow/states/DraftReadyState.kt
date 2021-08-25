@@ -1,29 +1,27 @@
 package ru.registration.bot.engine.commands.flow.states
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
-import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.Update
-import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.chat
 import ru.registration.bot.engine.commands.RemoveDraftCommand
 import ru.registration.bot.engine.commands.flow.State
-import ru.registration.bot.engine.commands.flow.StateType.NEIGHBORS_STATE
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
 import ru.registration.bot.engine.text
+import ru.registration.bot.engine.user
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UserRequest
 
 class DraftReadyState(
-    private val chat: Chat?,
-    private val user: User?,
     private val absSender: AbsSender?,
-    private val commonFactory: CommonFactory
+    private val commonFactory: CommonFactory,
+    private val nextState: State
 ) : State {
     override fun ask(userId: Int, chatId: Long) {
-        commonFactory.stateRepo.execute(SetUserStatus(userId, NEIGHBORS_STATE, REQUEST_READY))
+        commonFactory.stateRepo.execute(SetUserStatus(userId, REQUEST_READY))
         val request = commonFactory.requestRepository.query(UserRequest(userId, REQUEST_READY)).first()
 
         val message = """
@@ -53,10 +51,10 @@ class DraftReadyState(
 
         when (update.text ?: "") {
             "отправить" ->
-                ExportRequestState(chat, user, absSender, commonFactory).export()
+                nextState.handle(update)
             "удалить" ->
                 RemoveDraftCommand(commonFactory)
-                    .execute(absSender, user, chat, null) // todo refactor
+                    .execute(absSender, update.user, update.chat, null) // todo refactor
         }
     }
 }

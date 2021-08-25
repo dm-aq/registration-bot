@@ -1,9 +1,7 @@
 package ru.registration.bot.engine.commands.flow.states
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
-import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.Update
-import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
@@ -11,22 +9,20 @@ import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.StateType.ROOM_STATE
-import ru.registration.bot.engine.commands.flow.StateType.SEX_STATE
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.userId
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
 class RoomCategoryState(
-    private val chat: Chat?,
-    private val user: User?,
     private val absSender: AbsSender?,
-    private val commonFactory: CommonFactory
+    private val commonFactory: CommonFactory,
+    private val nextState: State
 ) : State {
     override fun ask(userId: Int, chatId: Long) {
-        commonFactory.stateRepo.execute(SetUserStatus(userId, SEX_STATE, ROOM_STATE))
+        commonFactory.stateRepo.execute(SetUserStatus(userId, ROOM_STATE))
         absSender?.execute(
-            SendMessage(chat?.id, "Выберите тип размещения:\n${getCategories()}")
+            SendMessage(chatId, "Выберите тип размещения:\n${getCategories()}")
                 .setReplyMarkup(getInlineKeyboard())
         )
     }
@@ -44,31 +40,32 @@ class RoomCategoryState(
     }
 
     override fun handle(update: Update) {
-        if (validate(update.text ?: "0")) {
+        if (validate(update.text ?: "0", update.chatId)) {
             commonFactory.requestRepository.execute(
                 UpdateRequestField(
                     update.userId,
                     Pair("room_type", (update.text?.toInt() ?: 0))
                 )
             )
-            DanceStyleState(chat, user, absSender, commonFactory).ask(update.userId, update.chatId)
+            nextState.ask(update.userId, update.chatId)
         }
     }
 
-    private fun validate(text: String) =
+    // todo refactor
+    private fun validate(text: String, chatId: Long) =
         try {
             commonFactory.roomCategoryProperties.categories.containsKey(text.toInt())
                 .also {
                     if (!it) {
-                        sendErrorMessage()
+                        sendErrorMessage(chatId)
                     }
                 }
         } catch (exp: NumberFormatException) {
-            sendErrorMessage()
+            sendErrorMessage(chatId)
             false
         }
 
-    private fun sendErrorMessage() {
-        absSender?.execute(SendMessage(chat?.id, "Неверное значение. Попробуйте еще раз."))
+    private fun sendErrorMessage(chatId: Long) {
+        absSender?.execute(SendMessage(chatId, "Неверное значение. Попробуйте еще раз."))
     }
 }
