@@ -17,13 +17,12 @@ import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
 class DanceStyleState(
-    private val absSender: AbsSender,
     private val stateRepo: StateRepository,
     private val requestRepository: RequestRepository,
     private val danceStyleProperties: DanceStyleProperties,
     private val nextState: State
 ) : State {
-    override fun ask(userId: Int, chatId: Long) {
+    override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
         stateRepo.execute(SetUserStatus(userId, DANCESTYLE_STATE))
         absSender.execute(
             SendMessage(chatId, "Выберите танцевальное направление:")
@@ -40,20 +39,20 @@ class DanceStyleState(
                     .toList()
             )
 
-    override fun handle(update: Update) {
+    override fun handle(update: Update, absSender: AbsSender) {
         val text = update.text ?: ""
-        if (validate(text, update.chatId)) {
+        if (validate(text, update.chatId, absSender)) {
             requestRepository.execute(UpdateRequestField(update.userId, Pair("dance_type", text)))
-            nextState.ask(update.userId, update.chatId)
+            nextState.ask(update.userId, update.chatId, absSender)
         }
     }
 
     // todo refactor
-    private fun validate(text: String, chatId: Long) =
+    private fun validate(text: String, chatId: Long, absSender: AbsSender) =
         danceStyleProperties.values.contains(text.toLowerCase())
             .also {
                 if (!it) {
-                    absSender?.execute(SendMessage(chatId, "Неверное значение. Попробуйте еще раз."))
+                    absSender.execute(SendMessage(chatId, "Неверное значение. Попробуйте еще раз."))
                 }
             }
 }

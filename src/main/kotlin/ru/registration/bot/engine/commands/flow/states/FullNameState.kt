@@ -14,22 +14,21 @@ import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
 class FullNameState(
-    private val absSender: AbsSender,
     private val stateRepo: StateRepository,
     private val requestRepository: RequestRepository,
     private val nextState: State
 ) : State {
-    override fun ask(userId: Int, chatId: Long) {
+    override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
         stateRepo.execute(SetUserStatus(userId, FULL_NAME_STATE))
         absSender.execute(SendMessage(chatId, "Как вас зовут (фио):"))
     }
 
-    override fun handle(update: Update) {
+    override fun handle(update: Update, absSender: AbsSender) {
         val text = update.text ?: ""
         when(validate(text)){
             true -> {
                 requestRepository.execute(UpdateRequestField(update.userId, Pair("full_name", text)))
-                nextState.ask(update.userId, update.chatId)
+                nextState.ask(update.userId, update.chatId, absSender)
             }
 
             text.length > 30 ->

@@ -17,13 +17,12 @@ import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
 class RoomCategoryState(
-    private val absSender: AbsSender,
     private val stateRepo: StateRepository,
     private val requestRepository: RequestRepository,
     private val roomCategoryProperties: RoomCategoryProperties,
     private val nextState: State
 ) : State {
-    override fun ask(userId: Int, chatId: Long) {
+    override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
         stateRepo.execute(SetUserStatus(userId, ROOM_STATE))
         absSender.execute(
             SendMessage(chatId, "Выберите тип размещения:\n${getCategories()}")
@@ -43,33 +42,33 @@ class RoomCategoryState(
         return InlineKeyboardMarkup().setKeyboard(listOf(row))
     }
 
-    override fun handle(update: Update) {
-        if (validate(update.text ?: "0", update.chatId)) {
+    override fun handle(update: Update, absSender: AbsSender) {
+        if (validate(update.text ?: "0", update.chatId, absSender)) {
             requestRepository.execute(
                 UpdateRequestField(
                     update.userId,
                     Pair("room_type", (update.text?.toInt() ?: 0))
                 )
             )
-            nextState.ask(update.userId, update.chatId)
+            nextState.ask(update.userId, update.chatId, absSender)
         }
     }
 
     // todo refactor
-    private fun validate(text: String, chatId: Long) =
+    private fun validate(text: String, chatId: Long, absSender: AbsSender) =
         try {
             roomCategoryProperties.categories.containsKey(text.toInt())
                 .also {
                     if (!it) {
-                        sendErrorMessage(chatId)
+                        sendErrorMessage(chatId, absSender)
                     }
                 }
         } catch (exp: NumberFormatException) {
-            sendErrorMessage(chatId)
+            sendErrorMessage(chatId, absSender)
             false
         }
 
-    private fun sendErrorMessage(chatId: Long) {
-        absSender?.execute(SendMessage(chatId, "Неверное значение. Попробуйте еще раз."))
+    private fun sendErrorMessage(chatId: Long, absSender: AbsSender) {
+        absSender.execute(SendMessage(chatId, "Неверное значение. Попробуйте еще раз."))
     }
 }

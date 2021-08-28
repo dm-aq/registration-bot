@@ -27,7 +27,7 @@ class RegistrationBot(
                         update.chat!!,
                         update.user!!,
                         this
-                    )?.handle(update)
+                    )?.handle(update, this)
                 }
             }
         }

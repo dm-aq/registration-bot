@@ -5,6 +5,7 @@ import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.chat
 import ru.registration.bot.engine.commands.RemoveDraftCommand
 import ru.registration.bot.engine.commands.flow.State
@@ -17,13 +18,12 @@ import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UserRequest
 
 class DraftReadyState(
-    private val absSender: AbsSender,
     private val stateRepo: StateRepository,
     private val requestRepository: RequestRepository,
-    private val removeDraftCommand: RemoveDraftCommand,
+    private val commonFactory: CommonFactory,
     private val nextState: State
 ) : State {
-    override fun ask(userId: Int, chatId: Long) {
+    override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
         stateRepo.execute(SetUserStatus(userId, REQUEST_READY))
         val request = requestRepository.query(UserRequest(userId, REQUEST_READY)).first()
 
@@ -50,15 +50,15 @@ class DraftReadyState(
                 )
             )
 
-    override fun handle(update: Update) {
+    override fun handle(update: Update, absSender: AbsSender) {
 
         when (update.text ?: "") {
             "отправить" ->
-                nextState.handle(update)
+                nextState.handle(update, absSender)
             "удалить" ->
                 update.user?.let {
                     update.chat?.let {
-                        removeDraftCommand
+                        RemoveDraftCommand(stateRepo, commonFactory)
                             .execute(absSender, update.user!!, update.chat!!)
                     }
                 }

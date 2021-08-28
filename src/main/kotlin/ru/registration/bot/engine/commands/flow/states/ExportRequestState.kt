@@ -17,17 +17,16 @@ import ru.registration.bot.repositories.specifications.SetUserStatusByReqId
 import ru.registration.bot.repositories.specifications.UserRequest
 
 class ExportRequestState(
-    private val absSender: AbsSender,
     private val stateRepo: StateRepository,
     private val requestRepository: RequestRepository,
     private val googleSheets: GoogleSheetsService
 ) : State {
 
-    override fun ask(userId: Int, chatId: Long) {
+    override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
         absSender.execute(SendMessage(chatId, "У вас уже есть заполненная заявка."))
     }
 
-    override fun handle(update: Update) {
+    override fun handle(update: Update, absSender: AbsSender) {
         stateRepo.execute(SetUserStatus(update.userId, REQUEST_APPROVED))
 
         absSender.execute(SendMessage(update.chatId, """

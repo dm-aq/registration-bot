@@ -50,7 +50,7 @@ class RegistrationCommand(
             is NeighborsState -> sendContinueMessage(absSender, chat)
         }
 
-        currentState?.ask(user.id, chat.id)
+        currentState?.ask(user.id, chat.id, absSender)
     }
 
     private fun sendContinueMessage(absSender: AbsSender, chat: Chat) {

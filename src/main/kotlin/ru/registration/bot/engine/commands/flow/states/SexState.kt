@@ -20,12 +20,11 @@ import ru.registration.bot.repositories.specifications.UpdateRequestField
 private val logger = KotlinLogging.logger {}
 
 class SexState(
-    private val absSender: AbsSender,
     private val stateRepo: StateRepository,
     private val requestRepository: RequestRepository,
     private val nextState: State
 ) : State {
-    override fun ask(userId: Int, chatId: Long) {
+    override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
         stateRepo.execute(SetUserStatus(userId, SEX_STATE))
         absSender.execute(SendMessage(chatId, "Пол:").setReplyMarkup(createInlineKeyboard()))
     }
@@ -41,11 +40,11 @@ class SexState(
                 )
             )
 
-    override fun handle(update: Update) {
+    override fun handle(update: Update, absSender: AbsSender) {
         try {
             val sex: Sex = Sex.parse(update.text ?: "")
             requestRepository.execute(UpdateRequestField(update.userId, Pair("sex", sex.value)))
-            nextState.ask(update.userId, update.chatId)
+            nextState.ask(update.userId, update.chatId, absSender)
         } catch (exp: IllegalArgumentException) {
             logger.warn(exp) { "Wrong gender value" }
             absSender.execute(SendMessage(update.chatId, "Попробуйте еще раз."))
