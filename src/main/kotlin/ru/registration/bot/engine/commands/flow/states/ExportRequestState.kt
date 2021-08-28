@@ -3,30 +3,34 @@ package ru.registration.bot.engine.commands.flow.states
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
-import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.Emoji
 import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.StateType.EXPORTED
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_APPROVED
 import ru.registration.bot.engine.userId
+import ru.registration.bot.google.GoogleSheetsService
+import ru.registration.bot.repositories.RequestRepository
+import ru.registration.bot.repositories.StateRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.SetUserStatusByReqId
 import ru.registration.bot.repositories.specifications.UserRequest
 
 class ExportRequestState(
-    private val absSender: AbsSender?,
-    private val commonFactory: CommonFactory
+    private val absSender: AbsSender,
+    private val stateRepo: StateRepository,
+    private val requestRepository: RequestRepository,
+    private val googleSheets: GoogleSheetsService
 ) : State {
 
     override fun ask(userId: Int, chatId: Long) {
-        absSender?.execute(SendMessage(chatId, "У вас уже есть заполненная заявка."))
+        absSender.execute(SendMessage(chatId, "У вас уже есть заполненная заявка."))
     }
 
     override fun handle(update: Update) {
-        commonFactory.stateRepo.execute(SetUserStatus(update.userId, REQUEST_APPROVED))
+        stateRepo.execute(SetUserStatus(update.userId, REQUEST_APPROVED))
 
-        absSender?.execute(SendMessage(update.chatId, """
+        absSender.execute(SendMessage(update.chatId, """
             Круто, что вы едете с нами в этом году! 
             
             Обработка заявок производится вручную и может занимать до 2 суток. 
@@ -37,18 +41,18 @@ class ExportRequestState(
 
         """.trimIndent()))
 
-        absSender?.execute(SendMessage(update.chatId, """
+        absSender.execute(SendMessage(update.chatId, """
             Обратите внимание, что на каждого человека необходимо заполнить отдельную форму регистрации.
             Если хотите зарегистрировать еще одного человека нажмите 
             ${Emoji.POINT_FINGER_RIGHT} /new_registration ${Emoji.POINT_FINGER_LEFT}
         """.trimIndent()))
 
-        val request = commonFactory.requestRepository
+        val request = requestRepository
             .query(UserRequest(update.userId, REQUEST_APPROVED))
             .first()
 
-        commonFactory.googleSheets.send(request)
+        googleSheets.send(request)
 
-        commonFactory.stateRepo.execute(SetUserStatusByReqId(request.requestId, EXPORTED))
+        stateRepo.execute(SetUserStatusByReqId(request.requestId, EXPORTED))
     }
 }

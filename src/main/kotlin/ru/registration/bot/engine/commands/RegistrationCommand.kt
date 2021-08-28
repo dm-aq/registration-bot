@@ -25,13 +25,18 @@ class RegistrationCommand(
 
     override fun getDescription() = ""
 
-    override fun processMessage(absSender: AbsSender?, message: Message?, arguments: Array<out String>?) =
-        execute(absSender, message!!.from, message.chat, arguments)
+    override fun processMessage(absSender: AbsSender?, message: Message?, arguments: Array<out String>?) {
+        absSender?.let {
+            message?.let {
+                execute(absSender, message.from, message.chat)
+            }
+        }
+    }
 
-    private fun execute(absSender: AbsSender?, user: User?, chat: Chat?, arguments: Array<out String>?) {
+    private fun execute(absSender: AbsSender, user: User, chat: Chat) {
 
         if (registrationClosed) {
-            absSender?.execute(SendMessage(chat?.id, "Регистрация на выезд закрыта"))
+            absSender.execute(SendMessage(chat.id, "Регистрация на выезд закрыта"))
             return
         }
 
@@ -45,10 +50,10 @@ class RegistrationCommand(
             is NeighborsState -> sendContinueMessage(absSender, chat)
         }
 
-        currentState.ask()
+        currentState?.ask(user.id, chat.id)
     }
 
-    private fun sendContinueMessage(absSender: AbsSender?, chat: Chat?) {
-        absSender?.execute(SendMessage(chat?.id, "Давайте заполним оставшиеся поля в черновике."))
+    private fun sendContinueMessage(absSender: AbsSender, chat: Chat) {
+        absSender.execute(SendMessage(chat.id, "Давайте заполним оставшиеся поля в черновике."))
     }
 }

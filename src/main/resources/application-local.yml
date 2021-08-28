@@ -22,8 +22,8 @@ spring:
     change_log: classpath:liquibase/changelog-master.yaml
 
 bot:
-  username: IvaraBot
-  token: 756507649:AAFayGuFVPg06dM2re6f7ZGcKirc6mTXiaY
+  username: IvaraTestBot
+  token: 1979121327:AAG8unXmc37yXJ_I3MgehO_AAmDipbE8t4s
 
 room:
   categories:
