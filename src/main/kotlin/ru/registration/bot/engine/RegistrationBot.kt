@@ -21,11 +21,15 @@ class RegistrationBot(
     override fun processNonCommandUpdate(update: Update?) {
 
         update?.let {
-            commonFactory.create(
-                update.chat,
-                update.user,
-                this
-            )?.handle(update)
+            update.chat?.let {
+                update.user?.let {
+                    commonFactory.create(
+                        update.chat!!,
+                        update.user!!,
+                        this
+                    )?.handle(update)
+                }
+            }
         }
     }
 }
