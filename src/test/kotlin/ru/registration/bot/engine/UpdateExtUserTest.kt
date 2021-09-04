@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.Answers.RETURNS_DEEP_STUBS
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.User
@@ -31,6 +32,7 @@ class UpdateExtUserTest {
 
         // act & assert
         assertEquals(user.id, update.user?.id)
+        assertEquals(user.id, update.userId)
     }
 
     @Test
@@ -43,6 +45,7 @@ class UpdateExtUserTest {
 
         // act & assert
         assertEquals(user.id, update.user?.id)
+        assertEquals(user.id, update.userId)
     }
 
     @Test
@@ -55,10 +58,6 @@ class UpdateExtUserTest {
 
         // act & assert
         assertNull(update.user?.id)
-    }
-
-    @Test
-    fun `test userId`() {
-        TODO("Not yet implemented")
+        assertThrows<IllegalStateException> { update.userId }
     }
 }

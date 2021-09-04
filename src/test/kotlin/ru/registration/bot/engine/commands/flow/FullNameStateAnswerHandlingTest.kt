@@ -13,8 +13,10 @@ import org.mockito.Answers.RETURNS_DEEP_STUBS
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.flow.states.FullNameState
 import ru.registration.bot.engine.text
+import ru.registration.bot.engine.userId
 import ru.registration.bot.repositories.RequestRepository
 import ru.registration.bot.repositories.StateRepository
 
@@ -31,8 +33,8 @@ class FullNameStateAnswerHandlingTest {
         val fullNameState = FullNameState(stateRepo, requestRepo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "John Smith"
-            on { userId } doReturn userId
-            on { chatId } doReturn chatId
+            on { this.userId } doReturn userId
+            on { this.chatId } doReturn chatId
         }
 
         // act
@@ -40,7 +42,7 @@ class FullNameStateAnswerHandlingTest {
 
         // assert
         verify(requestRepo).execute(any())
-        verify(nextState.ask(eq(userId), eq(chatId), any()))
+        verify(nextState).ask(eq(userId), eq(chatId), any())
     }
 
     @Test
@@ -55,8 +57,8 @@ class FullNameStateAnswerHandlingTest {
         val fullNameState = FullNameState(stateRepo, requestRepo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "John Smith John Smith John Smith John Smith"
-            on { userId } doReturn userId
-            on { chatId } doReturn chatId
+            on { this.userId } doReturn userId
+            on { this.chatId } doReturn chatId
         }
 
         // act
@@ -68,7 +70,7 @@ class FullNameStateAnswerHandlingTest {
 
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
-        assertEquals(chatId, messageCaptor.firstValue.chatId.toInt())
+        assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
         assertEquals("Имя слишком длинное.", messageCaptor.firstValue.text)
     }
 
@@ -84,8 +86,8 @@ class FullNameStateAnswerHandlingTest {
         val fullNameState = FullNameState(stateRepo, requestRepo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn ""
-            on { userId } doReturn userId
-            on { chatId } doReturn chatId
+            on { this.userId } doReturn userId
+            on { this.chatId } doReturn chatId
         }
 
         // act
@@ -97,7 +99,7 @@ class FullNameStateAnswerHandlingTest {
 
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
-        assertEquals(chatId, messageCaptor.firstValue.chatId.toInt())
+        assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
         assertEquals("Что-то не так. Тут нет вашего имени.", messageCaptor.firstValue.text)
     }
 }

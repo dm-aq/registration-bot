@@ -14,8 +14,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.configuration.DanceStyleProperties
+import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.flow.states.DanceStyleState
 import ru.registration.bot.engine.text
+import ru.registration.bot.engine.userId
 import ru.registration.bot.repositories.RequestRepository
 import ru.registration.bot.repositories.StateRepository
 
@@ -33,8 +35,8 @@ class DanceStyleStateAnswerHandlingTest {
         val danceStyleState = DanceStyleState(stateRepo, requestRepo, danceStyleProperties, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "test-style"
-            on { userId } doReturn userId
-            on { chatId } doReturn chatId
+            on { this.userId } doReturn userId
+            on { this.chatId } doReturn chatId
         }
 
         // act
@@ -42,7 +44,7 @@ class DanceStyleStateAnswerHandlingTest {
 
         // assert
         verify(requestRepo).execute(any())
-        verify(nextState.ask(eq(userId), eq(chatId), any()))
+        verify(nextState).ask(eq(userId), eq(chatId), any())
     }
 
     @Test
@@ -58,8 +60,8 @@ class DanceStyleStateAnswerHandlingTest {
         val danceStyleState = DanceStyleState(stateRepo, requestRepo, danceStyleProperties, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "invalid-dance-style"
-            on { userId } doReturn userId
-            on { chatId } doReturn chatId
+            on { this.userId } doReturn userId
+            on { this.chatId } doReturn chatId
         }
 
         // act
@@ -71,7 +73,7 @@ class DanceStyleStateAnswerHandlingTest {
 
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
-        assertEquals(chatId, messageCaptor.firstValue.chatId.toInt())
+        assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
         assertEquals("Неверное значение. Попробуйте еще раз.", messageCaptor.firstValue.text)
     }
 }

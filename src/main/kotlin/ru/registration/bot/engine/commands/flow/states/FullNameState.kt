@@ -27,12 +27,13 @@ class FullNameState(
         val text = update.text ?: ""
         when (isValid(text)) {
             true -> {
-                requestRepository.execute(UpdateRequestField(update.userId, Pair("full_name", text)))
-                nextState.ask(update.userId, update.chatId, absSender)
+                if (text.length > 30) {
+                    absSender.execute(SendMessage(update.chatId, "Имя слишком длинное."))
+                } else {
+                    requestRepository.execute(UpdateRequestField(update.userId, Pair("full_name", text)))
+                    nextState.ask(update.userId, update.chatId, absSender)
+                }
             }
-
-            text.length > 30 ->
-                absSender.execute(SendMessage(update.chatId, "Имя слишком длинное."))
 
             false ->
                 absSender.execute(SendMessage(update.chatId, "Что-то не так. Тут нет вашего имени."))
