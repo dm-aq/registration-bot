@@ -1,13 +1,10 @@
 package ru.registration.bot.repositories.specifications
 
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import org.telegram.telegrambots.meta.api.objects.User
 import ru.registration.bot.engine.commands.flow.StateType.PHONE_STATE
 import ru.registration.bot.engine.configuration.annotation.SpringBootIT
 import ru.registration.bot.repositories.RequestRepository
@@ -30,13 +27,9 @@ class InitUserRequestIT {
         val userId = Random.nextInt()
         val tgLogin = UUID.randomUUID().toString()
         val state = PHONE_STATE
-        val user: User = mock {
-            on { id } doReturn userId
-            on { userName } doReturn tgLogin
-        }
 
         // act
-        requestRepo.execute(InitUserRequest(user, state))
+        requestRepo.execute(InitUserRequest(userId, state))
 
         // assert
         val req = jdbcTemplate.queryForObject(

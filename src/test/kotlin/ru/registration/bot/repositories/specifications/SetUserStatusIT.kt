@@ -40,7 +40,7 @@ class SetUserStatusIT {
         )
 
         // act
-        stateRepo.execute(SetUserStatus(userId, PHONE_STATE, NEIGHBORS_STATE))
+        stateRepo.execute(SetUserStatus(userId, NEIGHBORS_STATE))
 
         // assert
         val req = jdbcTemplate.queryForObject(
