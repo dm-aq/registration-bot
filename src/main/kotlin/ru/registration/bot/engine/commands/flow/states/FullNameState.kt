@@ -25,7 +25,7 @@ class FullNameState(
 
     override fun handle(update: Update, absSender: AbsSender) {
         val text = update.text ?: ""
-        when(validate(text)){
+        when (isValid(text)) {
             true -> {
                 requestRepository.execute(UpdateRequestField(update.userId, Pair("full_name", text)))
                 nextState.ask(update.userId, update.chatId, absSender)
@@ -39,6 +39,6 @@ class FullNameState(
         }
     }
 
-    private fun validate(text: String?): Boolean =
-        text.isNullOrEmpty() || text.isBlank()
+    private fun isValid(text: String?): Boolean =
+        text?.isNotBlank() ?: false
 }

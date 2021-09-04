@@ -25,7 +25,7 @@ class MailState(
 
     override fun handle(update: Update, absSender: AbsSender) {
         val text = update.text ?: ""
-        if (validate(text)) {
+        if (isValid(text)) {
             requestRepository.execute(UpdateRequestField(update.userId, Pair("email", text)))
             nextState.ask(update.userId, update.chatId, absSender)
         } else {
@@ -33,7 +33,7 @@ class MailState(
         }
     }
 
-    private fun validate(text: String): Boolean =
+    private fun isValid(text: String): Boolean =
         "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}\$"
             .toRegex(RegexOption.IGNORE_CASE).matches(text)
 }

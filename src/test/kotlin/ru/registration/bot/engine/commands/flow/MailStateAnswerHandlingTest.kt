@@ -21,14 +21,14 @@ import ru.registration.bot.engine.commands.flow.states.MailState
 import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
-class MailStateAnswerHandlingTest{
+class MailStateAnswerHandlingTest {
     @Test
     fun `handling valid mail`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()
@@ -60,10 +60,10 @@ class MailStateAnswerHandlingTest{
     @Test
     fun `handling invalid mail`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()
@@ -89,10 +89,10 @@ class MailStateAnswerHandlingTest{
     @Test
     fun `handling empty mail`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()

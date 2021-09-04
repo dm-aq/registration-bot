@@ -17,14 +17,14 @@ import ru.registration.bot.engine.commands.flow.StateType.MAIL_STATE
 import ru.registration.bot.engine.commands.flow.states.MailState
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
-class MailStateAskTest{
+class MailStateAskTest {
     @Test
     fun `asking for mail`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()

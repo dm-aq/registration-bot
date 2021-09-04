@@ -24,10 +24,10 @@ class RoomCategoryStateAskTest {
     @Test
     fun `asking for room category`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()

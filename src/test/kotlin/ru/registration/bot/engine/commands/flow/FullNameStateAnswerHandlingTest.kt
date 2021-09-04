@@ -21,14 +21,14 @@ import ru.registration.bot.engine.commands.flow.states.FullNameState
 import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
-class FullNameStateAnswerHandlingTest{
+class FullNameStateAnswerHandlingTest {
     @Test
     fun `handling valid name`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()
@@ -60,10 +60,10 @@ class FullNameStateAnswerHandlingTest{
     @Test
     fun `handling invalid name`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()
@@ -89,10 +89,10 @@ class FullNameStateAnswerHandlingTest{
     @Test
     fun `handling empty name`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()

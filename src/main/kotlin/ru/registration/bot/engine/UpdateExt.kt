@@ -10,7 +10,7 @@ val Update.text: String?
             this.message?.text
         }
 
-val Update.chatId : Long
+val Update.chatId: Long
     get() =
         if (this.hasCallbackQuery()) {
             this.callbackQuery?.message?.chat?.id ?: throw IllegalStateException("There is no chatId")
@@ -26,7 +26,7 @@ val Update.chat
             this.message?.chat
         }
 
-val Update.userId : Int
+val Update.userId: Int
     get() =
         if (this.hasCallbackQuery()) {
             this.callbackQuery?.from?.id ?: throw IllegalStateException("There is no userId")

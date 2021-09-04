@@ -29,7 +29,7 @@ class InitUserRequestIT {
         // arrange
         val userId = Random.nextInt()
         val tgLogin = UUID.randomUUID().toString()
-        val state =  PHONE_STATE
+        val state = PHONE_STATE
         val user: User = mock {
             on { id } doReturn userId
             on { userName } doReturn tgLogin

@@ -17,14 +17,14 @@ import ru.registration.bot.engine.commands.flow.StateType.START_STATE
 import ru.registration.bot.engine.commands.flow.states.PhoneNumberState
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
-class PhoneNumberStateAskTest{
+class PhoneNumberStateAskTest {
     @Test
     fun `asking for phone number`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()

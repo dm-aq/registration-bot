@@ -26,7 +26,7 @@ class PhoneNumberState(
 
     override fun handle(update: Update, absSender: AbsSender) {
         val text = update.text ?: ""
-        if (validate(text)) {
+        if (isValid(text)) {
             requestRepository.execute(UpdateRequestField(update.userId, Pair("phone", text)))
             nextState.ask(update.userId, update.chatId, absSender)
         } else {
@@ -36,7 +36,7 @@ class PhoneNumberState(
         }
     }
 
-    private fun validate(text: String): Boolean = !text.matches(phoneRegEx)
+    private fun isValid(text: String): Boolean = text.matches(phoneRegEx)
 
     companion object {
         private val phoneRegEx = "(8)\\d{3}\\d{3}-?\\d{4}".toRegex()

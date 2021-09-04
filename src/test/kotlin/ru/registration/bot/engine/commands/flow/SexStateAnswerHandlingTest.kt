@@ -27,10 +27,10 @@ class SexStateAnswerHandlingTest {
     @Test
     fun `handling valid gender`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()
@@ -64,10 +64,10 @@ class SexStateAnswerHandlingTest {
     @Test
     fun `handling invalid gender`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()

@@ -5,9 +5,8 @@ import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
-import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.chat
-import ru.registration.bot.engine.commands.RemoveDraftCommand
+import ru.registration.bot.engine.commands.RemoveDraftComponent
 import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
 import ru.registration.bot.engine.text
@@ -20,7 +19,7 @@ import ru.registration.bot.repositories.specifications.UserRequest
 class DraftReadyState(
     private val stateRepo: StateRepository,
     private val requestRepository: RequestRepository,
-    private val commonFactory: CommonFactory,
+    private val removeDraftComponent: RemoveDraftComponent,
     private val nextState: State
 ) : State {
     override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
@@ -58,8 +57,7 @@ class DraftReadyState(
             "удалить" ->
                 update.user?.let {
                     update.chat?.let {
-                        RemoveDraftCommand(stateRepo, commonFactory)
-                            .execute(absSender, update.user!!, update.chat!!)
+                        removeDraftComponent.removeDraft(update.user!!, update.chat!!, absSender)
                     }
                 }
         }

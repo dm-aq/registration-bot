@@ -25,15 +25,15 @@ import ru.registration.bot.engine.commands.flow.states.RoomCategoryState
 import ru.registration.bot.engine.text
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
-class RoomCategoryStateAnswerHandlingTest{
+class RoomCategoryStateAnswerHandlingTest {
 
     @Test
     fun `handling valid room category`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()
@@ -70,10 +70,10 @@ class RoomCategoryStateAnswerHandlingTest{
     @Test
     fun `handling invalid room category`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()

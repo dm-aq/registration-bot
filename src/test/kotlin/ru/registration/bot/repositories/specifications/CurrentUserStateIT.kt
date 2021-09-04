@@ -28,7 +28,7 @@ class CurrentUserStateIT {
         // arrange
         val userId = Random.nextInt()
         val tgLogin = UUID.randomUUID().toString()
-        val state =  PHONE_STATE
+        val state = PHONE_STATE
         jdbcTemplate.update(
             "insert into requests(id, user_id, telegram_login, state, insstmp, updstmp) " +
             "values(nextval('requests_pk_seq'), :user_id, " +
@@ -46,7 +46,6 @@ class CurrentUserStateIT {
         // assert
         assertEquals(1, res.size)
         assertEquals(state, res.first())
-
     }
 
     @Test
@@ -54,7 +53,7 @@ class CurrentUserStateIT {
         // arrange
         val userId = Random.nextInt()
         val tgLogin = UUID.randomUUID().toString()
-        val state =  EXPORTED
+        val state = EXPORTED
         jdbcTemplate.update(
             "insert into requests(id, user_id, telegram_login, state, insstmp, updstmp) " +
                 "values(nextval('requests_pk_seq'), :user_id, " +

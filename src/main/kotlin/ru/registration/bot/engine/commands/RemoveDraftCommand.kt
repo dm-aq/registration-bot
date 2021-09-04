@@ -16,13 +16,11 @@ import ru.registration.bot.engine.commands.flow.StateType.PHONE_STATE
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
 import ru.registration.bot.engine.commands.flow.StateType.ROOM_STATE
 import ru.registration.bot.engine.commands.flow.StateType.SEX_STATE
-import ru.registration.bot.repositories.StateRepository
-import ru.registration.bot.repositories.specifications.SetUserStatus
 
-@Component("removeDraftCommand")
+@Component
 class RemoveDraftCommand(
-    private val stateRepo: StateRepository,
-    private val commonFactory: CommonFactory
+    private val commonFactory: CommonFactory,
+    private val removeDraftComponent: RemoveDraftComponent
 ) : RegistrationBotCommand {
 
     override fun getCommandIdentifier() = "remove_draft"
@@ -40,28 +38,16 @@ class RemoveDraftCommand(
     fun execute(absSender: AbsSender, user: User, chat: Chat) {
 
         when (commonFactory.currentUserStateType(user)) {
-            PHONE_STATE -> removeDraft(user, chat, absSender)
-            FULL_NAME_STATE -> removeDraft(user, chat, absSender)
-            MAIL_STATE -> removeDraft(user, chat, absSender)
-            SEX_STATE -> removeDraft(user, chat, absSender)
-            DANCESTYLE_STATE -> removeDraft(user, chat, absSender)
-            ROOM_STATE -> removeDraft(user, chat, absSender)
-            NEIGHBORS_STATE -> removeDraft(user, chat, absSender)
-            REQUEST_READY -> removeDraft(user, chat, absSender)
+            PHONE_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
+            FULL_NAME_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
+            MAIL_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
+            SEX_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
+            DANCESTYLE_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
+            ROOM_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
+            NEIGHBORS_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
+            REQUEST_READY -> removeDraftComponent.removeDraft(user, chat, absSender)
             else -> sendWarningMessage(chat, absSender)
         }
-    }
-
-    private fun removeDraft(user: User, chat: Chat, absSender: AbsSender) {
-        stateRepo.execute(SetUserStatus(user.id, PHONE_STATE))
-        absSender.execute(SendMessage(chat.id, "Черновик удален."))
-        absSender.execute(
-            SendMessage(
-                chat.id,
-                "Для того, чтобы заполнить заявку еще раз нажмите " +
-                    "${Emoji.POINT_FINGER_RIGHT} /new_registration"
-            )
-        )
     }
 
     private fun sendWarningMessage(chat: Chat, absSender: AbsSender) {

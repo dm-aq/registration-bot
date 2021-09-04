@@ -25,10 +25,10 @@ class PhoneNumberStateAnswerHandlingTest {
     @Test
     fun `handling valid number`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()
@@ -60,10 +60,10 @@ class PhoneNumberStateAnswerHandlingTest {
     @Test
     fun `handling invalid number`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()
@@ -89,10 +89,10 @@ class PhoneNumberStateAnswerHandlingTest {
     @Test
     fun `handling empty number`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()

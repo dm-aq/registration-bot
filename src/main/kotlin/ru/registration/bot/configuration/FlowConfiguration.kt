@@ -2,7 +2,7 @@ package ru.registration.bot.configuration
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.commands.RemoveDraftComponent
 import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.states.DanceStyleState
 import ru.registration.bot.engine.commands.flow.states.DraftReadyState
@@ -82,9 +82,9 @@ class FlowConfiguration {
     fun draftState(
         stateRepo: StateRepository,
         requestRepository: RequestRepository,
-        commonFactory: CommonFactory,
+        removeDraftComponent: RemoveDraftComponent,
         exportState: State
-    ): State = DraftReadyState(stateRepo, requestRepository, commonFactory, exportState)
+    ): State = DraftReadyState(stateRepo, requestRepository, removeDraftComponent, exportState)
 
     @Bean("exportState")
     fun exportRequestState(

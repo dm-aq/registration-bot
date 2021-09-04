@@ -28,10 +28,10 @@ class NeighborsStateAnswerHandlingTest {
     @Test
     fun `handling valid neighbors`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()
@@ -68,10 +68,10 @@ class NeighborsStateAnswerHandlingTest {
     @Test
     fun `handling invalid neighbors`() {
         // arrange
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 213
         }
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn 1
         }
         val absSender: AbsSender = mock()

@@ -16,7 +16,7 @@ class UpdateExtUserTest {
 
     @BeforeEach
     fun setUp() {
-        user = mock{
+        user = mock {
             on { id } doReturn 123
         }
     }
