@@ -8,12 +8,14 @@ import ru.registration.bot.engine.commands.Emoji
 import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.StateType.EXPORTED
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_APPROVED
+import ru.registration.bot.engine.user
 import ru.registration.bot.engine.userId
 import ru.registration.bot.google.GoogleSheetsService
 import ru.registration.bot.repositories.RequestRepository
 import ru.registration.bot.repositories.StateRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.SetUserStatusByReqId
+import ru.registration.bot.repositories.specifications.UpdateRequestField
 import ru.registration.bot.repositories.specifications.UserRequest
 
 class ExportRequestState(
@@ -27,6 +29,7 @@ class ExportRequestState(
     }
 
     override fun handle(update: Update, absSender: AbsSender) {
+        requestRepository.execute(UpdateRequestField(update.userId, Pair("telegram_login", update.user?.userName)))
         stateRepo.execute(SetUserStatus(update.userId, REQUEST_APPROVED))
 
         absSender.execute(SendMessage(update.chatId, """

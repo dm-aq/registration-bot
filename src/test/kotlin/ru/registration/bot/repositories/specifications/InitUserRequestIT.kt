@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import ru.registration.bot.engine.commands.flow.StateType.PHONE_STATE
 import ru.registration.bot.engine.configuration.annotation.SpringBootIT
 import ru.registration.bot.repositories.RequestRepository
-import java.util.UUID
 import kotlin.random.Random
 
 @SpringBootIT
@@ -25,7 +24,6 @@ class InitUserRequestIT {
 
         // arrange
         val userId = Random.nextInt()
-        val tgLogin = UUID.randomUUID().toString()
         val state = PHONE_STATE
 
         // act
@@ -33,10 +31,10 @@ class InitUserRequestIT {
 
         // assert
         val req = jdbcTemplate.queryForObject(
-            "select 1 from requests where user_id = :userId and telegram_login = :tgLogin ",
+            "select 1 from requests where user_id = :userId and state = :state ",
             MapSqlParameterSource()
                 .addValue("userId", userId)
-                .addValue("tgLogin", tgLogin)
+                .addValue("state", state.name)
                 .values,
             Boolean::class.java
         )
