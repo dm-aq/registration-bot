@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.Message
-import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
@@ -17,12 +16,17 @@ class StartCommand : RegistrationBotCommand {
 
     override fun getDescription() = ""
 
-    override fun processMessage(absSender: AbsSender?, message: Message?, arguments: Array<out String>?) =
-        execute(absSender, message!!.from, message.chat, arguments)
+    override fun processMessage(absSender: AbsSender?, message: Message?, arguments: Array<out String>?) {
+        absSender?.let {
+            message?.let {
+                execute(absSender, message.chat)
+            }
+        }
+    }
 
-    private fun execute(absSender: AbsSender?, user: User?, chat: Chat?, arguments: Array<out String>?) {
+    private fun execute(absSender: AbsSender, chat: Chat) {
 
-        absSender?.execute(SendMessage(chat?.id, """
+        absSender.execute(SendMessage(chat.id, """
             12-14 июня состоится наш ежегодный #иваравыезд2021. Я помогу вам зарегистрироваться.
             
             Для того, чтобы начать регистрацию нажмите 

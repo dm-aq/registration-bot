@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 
 class StartCommandTest {
     @Test
-    internal fun name() {
+    fun `command execution`() {
         TODO("Not yet implemented")
     }
 }

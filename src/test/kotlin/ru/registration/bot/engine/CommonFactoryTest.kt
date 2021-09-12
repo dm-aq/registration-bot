@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 
 class CommonFactoryTest {
     @Test
-    internal fun name() {
+    fun name() {
         TODO("Not yet implemented")
     }
 }
