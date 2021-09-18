@@ -13,6 +13,7 @@ import org.mockito.Answers.RETURNS_DEEP_STUBS
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.MessageService
 import ru.registration.bot.configuration.Category
 import ru.registration.bot.configuration.RoomCategoryProperties
 import ru.registration.bot.engine.chatId
@@ -34,7 +35,10 @@ class RoomCategoryStateAnswerHandlingTest {
         val roomProperties = RoomCategoryProperties(
             mapOf(1 to Category("100", "test category"))
         )
-        val roomCategoryState = RoomCategoryState(repo, roomProperties, nextState)
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
+        val roomCategoryState = RoomCategoryState(messages, repo, roomProperties, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "1"
             on { this.userId } doReturn userId
@@ -58,7 +62,10 @@ class RoomCategoryStateAnswerHandlingTest {
         val repo: BotRepository = mock()
         val nextState: State = mock()
         val roomProperties = RoomCategoryProperties(emptyMap())
-        val roomCategoryState = RoomCategoryState(repo, roomProperties, nextState)
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
+        val roomCategoryState = RoomCategoryState(messages, repo, roomProperties, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "1"
             on { this.userId } doReturn userId

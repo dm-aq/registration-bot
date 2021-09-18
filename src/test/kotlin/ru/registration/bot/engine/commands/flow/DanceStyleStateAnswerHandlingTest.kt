@@ -13,6 +13,7 @@ import org.mockito.Answers.RETURNS_DEEP_STUBS
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.MessageService
 import ru.registration.bot.configuration.DanceStyleProperties
 import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.flow.states.DanceStyleState
@@ -30,7 +31,10 @@ class DanceStyleStateAnswerHandlingTest {
         val repo: BotRepository = mock()
         val nextState: State = mock()
         val danceStyleProperties = DanceStyleProperties(listOf("test-style"))
-        val danceStyleState = DanceStyleState(repo, danceStyleProperties, nextState)
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
+        val danceStyleState = DanceStyleState(messages, repo, danceStyleProperties, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "test-style"
             on { this.userId } doReturn userId
@@ -54,7 +58,10 @@ class DanceStyleStateAnswerHandlingTest {
         val repo: BotRepository = mock()
         val nextState: State = mock()
         val danceStyleProperties = DanceStyleProperties(listOf("test-style"))
-        val danceStyleState = DanceStyleState(repo, danceStyleProperties, nextState)
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
+        val danceStyleState = DanceStyleState(messages, repo, danceStyleProperties, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "invalid-dance-style"
             on { this.userId } doReturn userId

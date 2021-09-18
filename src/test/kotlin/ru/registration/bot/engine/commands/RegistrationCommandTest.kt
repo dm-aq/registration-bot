@@ -17,6 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.MessageService
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.states.GenderState
@@ -28,7 +29,10 @@ class RegistrationCommandTest {
     fun `new customer coming`() {
         // arrange
         val commonFactory: CommonFactory = mock()
-        val registrationCommand = RegistrationCommand(false, commonFactory)
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
+        val registrationCommand = RegistrationCommand(false, messages, commonFactory)
         val absSender: AbsSender = mock(defaultAnswer = RETURNS_DEEP_STUBS)
 
         val userId = 123
@@ -57,7 +61,10 @@ class RegistrationCommandTest {
     fun `customer has draft`() {
         // arrange
         val commonFactory: CommonFactory = mock()
-        val registrationCommand = RegistrationCommand(false, commonFactory)
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
+        val registrationCommand = RegistrationCommand(false, messages, commonFactory)
         val absSender: AbsSender = mock(defaultAnswer = RETURNS_DEEP_STUBS)
 
         val userId = 123
@@ -75,7 +82,7 @@ class RegistrationCommandTest {
 
         val repo: BotRepository = mock()
         val nextState: State = mock()
-        val state = GenderState(repo, nextState)
+        val state = GenderState(messages, repo, nextState)
         given { commonFactory.create(any()) }.willReturn(state)
 
         // act
@@ -92,7 +99,10 @@ class RegistrationCommandTest {
     fun `registration is closed`() {
         // arrange
         val commonFactory: CommonFactory = mock()
-        val registrationCommand = RegistrationCommand(true, commonFactory)
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
+        val registrationCommand = RegistrationCommand(true, messages, commonFactory)
         val absSender: AbsSender = mock(defaultAnswer = RETURNS_DEEP_STUBS)
 
         val user: User = mock {
@@ -125,7 +135,10 @@ class RegistrationCommandTest {
     fun `absSender is absent`() {
         // arrange
         val commonFactory: CommonFactory = mock()
-        val registrationCommand = RegistrationCommand(false, commonFactory)
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
+        val registrationCommand = RegistrationCommand(false, messages, commonFactory)
         val absSender: AbsSender? = null
 
         val user: User = mock {
@@ -153,7 +166,10 @@ class RegistrationCommandTest {
     fun `message is absent`() {
         // arrange
         val commonFactory: CommonFactory = mock()
-        val registrationCommand = RegistrationCommand(false, commonFactory)
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
+        val registrationCommand = RegistrationCommand(false, messages, commonFactory)
         val absSender: AbsSender = mock(defaultAnswer = RETURNS_DEEP_STUBS)
 
         val message: Message? = null
