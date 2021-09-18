@@ -41,18 +41,13 @@ class DanceStyleState(
 
     override fun handle(update: Update, absSender: AbsSender) {
         val text = update.text ?: ""
-        if (validate(text, update.chatId, absSender)) {
+        if (text.isValid()){
             requestRepository.execute(UpdateRequestField(update.userId, Pair("dance_type", text)))
             nextState.ask(update.userId, update.chatId, absSender)
+        } else {
+            absSender.execute(SendMessage(update.chatId, "Неверное значение. Попробуйте еще раз."))
         }
     }
 
-    // todo refactor
-    private fun validate(text: String, chatId: Long, absSender: AbsSender) =
-        danceStyleProperties.values.contains(text.toLowerCase())
-            .also {
-                if (!it) {
-                    absSender.execute(SendMessage(chatId, "Неверное значение. Попробуйте еще раз."))
-                }
-            }
+    private fun String.isValid(): Boolean = danceStyleProperties.values.contains(this.toLowerCase())
 }

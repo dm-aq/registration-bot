@@ -43,32 +43,27 @@ class RoomCategoryState(
     }
 
     override fun handle(update: Update, absSender: AbsSender) {
-        if (validate(update.text ?: "0", update.chatId, absSender)) {
-            requestRepository.execute(
-                UpdateRequestField(
-                    update.userId,
-                    Pair("room_type", (update.text?.toInt() ?: 0))
+        try {
+            if(update.text.isValid()){
+                requestRepository.execute(
+                    UpdateRequestField(
+                        update.userId,
+                        Pair("room_type", (update.text?.toInt() ?: 0))
+                    )
                 )
-            )
-            nextState.ask(update.userId, update.chatId, absSender)
+                nextState.ask(update.userId, update.chatId, absSender)
+            } else {
+                sendErrorMessage(update.chatId, absSender)
+            }
+        }catch (exp: NumberFormatException) {
+            sendErrorMessage(update.chatId, absSender)
         }
     }
-
-    // todo refactor
-    private fun validate(text: String, chatId: Long, absSender: AbsSender) =
-        try {
-            roomCategoryProperties.categories.containsKey(text.toInt())
-                .also {
-                    if (!it) {
-                        sendErrorMessage(chatId, absSender)
-                    }
-                }
-        } catch (exp: NumberFormatException) {
-            sendErrorMessage(chatId, absSender)
-            false
-        }
 
     private fun sendErrorMessage(chatId: Long, absSender: AbsSender) {
         absSender.execute(SendMessage(chatId, "Неверное значение. Попробуйте еще раз."))
     }
+
+    private fun String?.isValid(): Boolean =
+        roomCategoryProperties.categories.containsKey(this?.toInt() ?: 0)
 }

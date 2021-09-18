@@ -13,5 +13,5 @@ enum class StateType(
     NEIGHBORS_STATE("neighborsState"),
     REQUEST_READY("draftState"),
     REQUEST_APPROVED("exportState"),
-    EXPORTED("endState"); // todo add final end state
+    EXPORTED("endState");
 }

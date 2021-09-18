@@ -2,7 +2,6 @@ package ru.registration.bot.google
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.JsonFactory
-import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.model.ValueRange
 import com.google.auth.Credentials
@@ -17,14 +16,9 @@ import javax.annotation.PostConstruct
 @Service
 class GoogleSheetsService(
     @Value("\${services.sheets.spread-sheet-id}") private val spreadsheetId: String,
-    @Value("\${services.sheets.range}") private val range: String
+    @Value("\${services.sheets.range}") private val range: String,
+    private val jacksonFactory: JsonFactory
 ) {
-
-    companion object {
-        // todo вынести в конфигурацию
-        private val jacksonFactory: JsonFactory = JacksonFactory.getDefaultInstance()
-        private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")
-    }
 
     private lateinit var service: Sheets
 
@@ -61,5 +55,9 @@ class GoogleSheetsService(
                 ))))
             .setValueInputOption("RAW")
             .execute()
+    }
+
+    companion object {
+        private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")
     }
 }
