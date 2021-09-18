@@ -32,9 +32,9 @@ class StartCommand(
         absSender.execute(SendMessage(chat.id, """
             ${messages.getMessage("greeting")}
             
-            Для того, чтобы начать регистрацию нажмите 
+            ${messages.getMessage("greeting_new_reg")} 
             ${Emoji.POINT_FINGER_RIGHT} /new_registration ${Emoji.POINT_FINGER_LEFT}
-            Если вы ошиблись просто удалите черновик на любом шаге 
+            ${messages.getMessage("greeting_remove_draft")}  
             ${Emoji.POINT_FINGER_RIGHT} /remove_draft ${Emoji.POINT_FINGER_LEFT}
         """.trimIndent())
             .setReplyMarkup(registrationButton())
@@ -46,7 +46,7 @@ class StartCommand(
             listOf(
                 listOf(
                     InlineKeyboardButton()
-                        .setText("Начать регистрацию")
+                        .setText(messages.getMessage("new_reg_btn"))
                         .setCallbackData("new_registration")
                 )
             )
