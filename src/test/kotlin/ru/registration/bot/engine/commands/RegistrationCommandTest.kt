@@ -1,7 +1,6 @@
 package ru.registration.bot.engine.commands
 
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
@@ -34,11 +33,11 @@ class RegistrationCommandTest {
         val absSender: AbsSender = mock(defaultAnswer = RETURNS_DEEP_STUBS)
 
         val userId = 123
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn userId
         }
         val chatId = 1L
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn chatId
         }
         val message: Message = mock {
@@ -46,7 +45,7 @@ class RegistrationCommandTest {
             on { this.chat } doReturn chat
         }
         val startState: State = mock()
-        given { commonFactory.create(any(), any(), any(), anyOrNull()) }.willReturn(startState)
+        given { commonFactory.create(any()) }.willReturn(startState)
 
         // act
         registrationCommand.processMessage(absSender, message, null)
@@ -63,11 +62,11 @@ class RegistrationCommandTest {
         val absSender: AbsSender = mock(defaultAnswer = RETURNS_DEEP_STUBS)
 
         val userId = 123
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn userId
         }
         val chatId = 1L
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn chatId
         }
         val message: Message = mock {
@@ -79,7 +78,7 @@ class RegistrationCommandTest {
         val requestRepo: RequestRepository = mock()
         val nextState: State = mock()
         val state = SexState(stateRepo, requestRepo, nextState)
-        given { commonFactory.create(any(), any(), any(), anyOrNull()) }.willReturn(state)
+        given { commonFactory.create(any()) }.willReturn(state)
 
         // act
         registrationCommand.processMessage(absSender, message, null)
@@ -98,11 +97,11 @@ class RegistrationCommandTest {
         val registrationCommand = RegistrationCommand(true, commonFactory)
         val absSender: AbsSender = mock(defaultAnswer = RETURNS_DEEP_STUBS)
 
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 123
         }
         val chatId = 1L
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn chatId
         }
         val message: Message = mock {
@@ -110,7 +109,7 @@ class RegistrationCommandTest {
             on { this.chat } doReturn chat
         }
         val startState: State = mock()
-        given { commonFactory.create(any(), any(), any(), anyOrNull()) }.willReturn(startState)
+        given { commonFactory.create(any()) }.willReturn(startState)
 
         // act
         registrationCommand.processMessage(absSender, message, null)
@@ -131,11 +130,11 @@ class RegistrationCommandTest {
         val registrationCommand = RegistrationCommand(false, commonFactory)
         val absSender: AbsSender? = null
 
-        val user: User = mock{
+        val user: User = mock {
             on { id } doReturn 123
         }
         val chatId = 1L
-        val chat: Chat = mock{
+        val chat: Chat = mock {
             on { id } doReturn chatId
         }
         val message: Message = mock {
@@ -143,7 +142,7 @@ class RegistrationCommandTest {
             on { this.chat } doReturn chat
         }
         val startState: State = mock()
-        given { commonFactory.create(any(), any(), any(), anyOrNull()) }.willReturn(startState)
+        given { commonFactory.create(any()) }.willReturn(startState)
 
         // act
         registrationCommand.processMessage(absSender, message, null)
@@ -159,16 +158,9 @@ class RegistrationCommandTest {
         val registrationCommand = RegistrationCommand(false, commonFactory)
         val absSender: AbsSender = mock(defaultAnswer = RETURNS_DEEP_STUBS)
 
-        val user: User = mock{
-            on { id } doReturn 123
-        }
-        val chatId = 1L
-        val chat: Chat = mock{
-            on { id } doReturn chatId
-        }
         val message: Message? = null
         val startState: State = mock()
-        given { commonFactory.create(any(), any(), any(), anyOrNull()) }.willReturn(startState)
+        given { commonFactory.create(any()) }.willReturn(startState)
 
         // act
         registrationCommand.processMessage(absSender, message, null)

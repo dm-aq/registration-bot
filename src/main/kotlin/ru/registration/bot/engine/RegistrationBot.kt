@@ -24,9 +24,7 @@ class RegistrationBot(
             update.chat?.let {
                 update.user?.let {
                     commonFactory.create(
-                        update.chat!!,
-                        update.user!!,
-                        this
+                        update.userId
                     )?.handle(update, this)
                 }
             }

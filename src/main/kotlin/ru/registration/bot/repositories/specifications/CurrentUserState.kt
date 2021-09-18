@@ -6,7 +6,7 @@ import ru.registration.bot.engine.commands.flow.StateType
 import ru.registration.bot.repositories.QuerySpecification
 import java.sql.ResultSet
 
-class CurrentUserState(private val userId: Int?) : QuerySpecification<StateType> {
+class CurrentUserState(private val userId: Int) : QuerySpecification<StateType> {
     override val sql: String
         get() = "select state from requests where user_id = :user_id and state in (:draft_states)"
     override val sqlParameterSource: Map<String?, *>

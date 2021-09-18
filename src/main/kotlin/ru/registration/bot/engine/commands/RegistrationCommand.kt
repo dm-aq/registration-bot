@@ -40,7 +40,7 @@ class RegistrationCommand(
             return
         }
 
-        val currentState = commonFactory.create(chat, user, absSender)
+        val currentState = commonFactory.create(user.id)
 
         when (currentState) {
             is FullNameState -> sendContinueMessage(absSender, chat)

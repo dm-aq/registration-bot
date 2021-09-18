@@ -71,4 +71,11 @@ class CurrentUserStateIT {
         // assert
         assertTrue(res.isEmpty())
     }
+
+    @Test
+    fun `no user status`() {
+        val res = stateRepo.query(CurrentUserState(Random.nextInt()))
+
+        assertTrue(res.isEmpty())
+    }
 }

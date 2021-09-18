@@ -37,15 +37,10 @@ class RemoveDraftCommand(
 
     fun execute(absSender: AbsSender, user: User, chat: Chat) {
 
-        when (commonFactory.currentUserStateType(user)) {
-            PHONE_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
-            FULL_NAME_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
-            MAIL_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
-            SEX_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
-            DANCESTYLE_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
-            ROOM_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
-            NEIGHBORS_STATE -> removeDraftComponent.removeDraft(user, chat, absSender)
-            REQUEST_READY -> removeDraftComponent.removeDraft(user, chat, absSender)
+        when (commonFactory.currentUserStateType(user.id)) {
+            PHONE_STATE, FULL_NAME_STATE, MAIL_STATE,
+            SEX_STATE, DANCESTYLE_STATE, ROOM_STATE,
+            NEIGHBORS_STATE, REQUEST_READY -> removeDraftComponent.removeDraft(user.id, chat.id, absSender)
             else -> sendWarningMessage(chat, absSender)
         }
     }

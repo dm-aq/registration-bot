@@ -6,11 +6,13 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.chat
+import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.RemoveDraftComponent
 import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.user
+import ru.registration.bot.engine.userId
 import ru.registration.bot.repositories.RequestRepository
 import ru.registration.bot.repositories.StateRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
@@ -57,7 +59,7 @@ class DraftReadyState(
             "удалить" ->
                 update.user?.let {
                     update.chat?.let {
-                        removeDraftComponent.removeDraft(update.user!!, update.chat!!, absSender)
+                        removeDraftComponent.removeDraft(update.userId, update.chatId, absSender)
                     }
                 }
         }
