@@ -6,6 +6,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.17.1"
     kotlin("jvm") version "1.5.30"
     kotlin("plugin.spring") version "1.5.30"
+    jacoco
 }
 
 group = "ru.dm"
@@ -63,6 +64,13 @@ dependencyManagement {
     imports {
         mavenBom("org.testcontainers:testcontainers-bom:1.15.2")
     }
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
 }
 
 tasks.withType<Test> {
