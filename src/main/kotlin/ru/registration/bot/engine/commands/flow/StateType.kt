@@ -7,7 +7,7 @@ enum class StateType(
     PHONE_STATE("phoneNumberState"),
     FULL_NAME_STATE("fullNameState"),
     MAIL_STATE("mailState"),
-    SEX_STATE("sexState"),
+    GENDER_STATE("genderState"),
     ROOM_STATE("roomCategoryState"),
     DANCESTYLE_STATE("danceStyleState"),
     NEIGHBORS_STATE("neighborsState"),

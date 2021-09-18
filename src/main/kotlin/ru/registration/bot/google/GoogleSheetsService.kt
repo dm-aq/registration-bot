@@ -50,7 +50,7 @@ class GoogleSheetsService(
                     request.roomType,
                     request.danceType,
                     request.neighbors,
-                    request.sex,
+                    request.gender,
                     request.telegramLogin
                 ))))
             .setValueInputOption("RAW")

@@ -21,7 +21,7 @@ class UpdateRequestField(
                     StateType.FULL_NAME_STATE.name,
                     StateType.MAIL_STATE.name,
                     StateType.PHONE_STATE.name,
-                    StateType.SEX_STATE.name,
+                    StateType.GENDER_STATE.name,
                     StateType.ROOM_STATE.name,
                     StateType.DANCESTYLE_STATE.name,
                     StateType.NEIGHBORS_STATE.name,

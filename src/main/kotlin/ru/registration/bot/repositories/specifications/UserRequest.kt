@@ -12,7 +12,7 @@ class UserRequest(
 ) : QuerySpecification<Request> {
     override val sql: String
         get() = "select id, telegram_login, full_name, email, " +
-            "phone, sex, room_type, dance_type, neighbors, " +
+            "phone, gender, room_type, dance_type, neighbors, " +
             "updstmp at time zone 'Europe/Moscow' as updstmp " +
             "from requests " +
             "where user_id = :user_id and state = :state order by updstmp desc limit 1"
@@ -29,7 +29,7 @@ class UserRequest(
                 fullName = rs.getString("full_name"),
                 email = rs.getString("email"),
                 phone = rs.getString("phone"),
-                sex = rs.getString("sex"),
+                gender = rs.getString("gender"),
                 roomType = rs.getInt("room_type"),
                 danceType = rs.getString("dance_type"),
                 neighbors = rs.getString("neighbors"),

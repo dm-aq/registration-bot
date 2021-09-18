@@ -14,13 +14,13 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.chatId
-import ru.registration.bot.engine.commands.flow.states.SexState
+import ru.registration.bot.engine.commands.flow.states.GenderState
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.userId
 import ru.registration.bot.repositories.RequestRepository
 import ru.registration.bot.repositories.StateRepository
 
-class SexStateAnswerHandlingTest {
+class GenderStateAnswerHandlingTest {
     @Test
     fun `handling valid gender`() {
         // arrange
@@ -30,7 +30,7 @@ class SexStateAnswerHandlingTest {
         val stateRepo: StateRepository = mock()
         val requestRepo: RequestRepository = mock()
         val nextState: State = mock()
-        val sexState = SexState(stateRepo, requestRepo, nextState)
+        val sexState = GenderState(stateRepo, requestRepo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "F"
             on { this.userId } doReturn userId
@@ -54,7 +54,7 @@ class SexStateAnswerHandlingTest {
         val stateRepo: StateRepository = mock()
         val requestRepo: RequestRepository = mock()
         val nextState: State = mock()
-        val sexState = SexState(stateRepo, requestRepo, nextState)
+        val sexState = GenderState(stateRepo, requestRepo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "invalid_value"
             on { this.userId } doReturn userId

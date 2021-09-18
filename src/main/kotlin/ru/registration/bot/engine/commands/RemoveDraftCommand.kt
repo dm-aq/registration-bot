@@ -10,12 +10,12 @@ import ru.registration.bot.RegistrationBotCommand
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.StateType.DANCESTYLE_STATE
 import ru.registration.bot.engine.commands.flow.StateType.FULL_NAME_STATE
+import ru.registration.bot.engine.commands.flow.StateType.GENDER_STATE
 import ru.registration.bot.engine.commands.flow.StateType.MAIL_STATE
 import ru.registration.bot.engine.commands.flow.StateType.NEIGHBORS_STATE
 import ru.registration.bot.engine.commands.flow.StateType.PHONE_STATE
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
 import ru.registration.bot.engine.commands.flow.StateType.ROOM_STATE
-import ru.registration.bot.engine.commands.flow.StateType.SEX_STATE
 
 @Component
 class RemoveDraftCommand(
@@ -39,7 +39,7 @@ class RemoveDraftCommand(
 
         when (commonFactory.currentUserStateType(user.id)) {
             PHONE_STATE, FULL_NAME_STATE, MAIL_STATE,
-            SEX_STATE, DANCESTYLE_STATE, ROOM_STATE,
+            GENDER_STATE, DANCESTYLE_STATE, ROOM_STATE,
             NEIGHBORS_STATE, REQUEST_READY -> removeDraftComponent.removeDraft(user.id, chat.id, absSender)
             else -> sendWarningMessage(chat, absSender)
         }

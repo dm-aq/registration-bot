@@ -8,7 +8,7 @@ data class Request(
     val phone: String?,
     val fullName: String?,
     val email: String?,
-    val sex: String?,
+    val gender: String?,
     val roomType: Int?,
     val danceType: String?,
     val neighbors: String?,

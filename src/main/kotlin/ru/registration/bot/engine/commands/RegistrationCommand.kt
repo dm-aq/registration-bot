@@ -11,9 +11,9 @@ import ru.registration.bot.RegistrationBotCommand
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.states.DanceStyleState
 import ru.registration.bot.engine.commands.flow.states.FullNameState
+import ru.registration.bot.engine.commands.flow.states.GenderState
 import ru.registration.bot.engine.commands.flow.states.NeighborsState
 import ru.registration.bot.engine.commands.flow.states.RoomCategoryState
-import ru.registration.bot.engine.commands.flow.states.SexState
 
 @Component
 class RegistrationCommand(
@@ -44,7 +44,7 @@ class RegistrationCommand(
 
         when (currentState) {
             is FullNameState -> sendContinueMessage(absSender, chat)
-            is SexState -> sendContinueMessage(absSender, chat)
+            is GenderState -> sendContinueMessage(absSender, chat)
             is RoomCategoryState -> sendContinueMessage(absSender, chat)
             is DanceStyleState -> sendContinueMessage(absSender, chat)
             is NeighborsState -> sendContinueMessage(absSender, chat)

@@ -50,7 +50,7 @@ class RemoveDraftCommandTest {
             on { this.chat } doReturn chat
         }
 
-        given { commonFactory.currentUserStateType(any()) }.willReturn(StateType.SEX_STATE)
+        given { commonFactory.currentUserStateType(any()) }.willReturn(StateType.GENDER_STATE)
 
         // act
         removeDraftCommand.processMessage(absSender, message, null)

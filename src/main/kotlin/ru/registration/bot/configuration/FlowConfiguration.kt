@@ -8,11 +8,11 @@ import ru.registration.bot.engine.commands.flow.states.DanceStyleState
 import ru.registration.bot.engine.commands.flow.states.DraftReadyState
 import ru.registration.bot.engine.commands.flow.states.ExportRequestState
 import ru.registration.bot.engine.commands.flow.states.FullNameState
+import ru.registration.bot.engine.commands.flow.states.GenderState
 import ru.registration.bot.engine.commands.flow.states.MailState
 import ru.registration.bot.engine.commands.flow.states.NeighborsState
 import ru.registration.bot.engine.commands.flow.states.PhoneNumberState
 import ru.registration.bot.engine.commands.flow.states.RoomCategoryState
-import ru.registration.bot.engine.commands.flow.states.SexState
 import ru.registration.bot.engine.commands.flow.states.StartState
 import ru.registration.bot.google.GoogleSheetsService
 import ru.registration.bot.repositories.RequestRepository
@@ -48,12 +48,12 @@ class FlowConfiguration {
         sexState: State
     ): State = MailState(stateRepo, requestRepository, sexState)
 
-    @Bean("sexState")
-    fun sexState(
+    @Bean("genderState")
+    fun genderState(
         stateRepo: StateRepository,
         requestRepository: RequestRepository,
         roomCategoryState: State
-    ): State = SexState(stateRepo, requestRepository, roomCategoryState)
+    ): State = GenderState(stateRepo, requestRepository, roomCategoryState)
 
     @Bean("roomCategoryState")
     fun roomCategoryState(

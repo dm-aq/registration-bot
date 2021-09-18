@@ -34,7 +34,7 @@ class DraftReadyState(
             Телефон: ${request.phone}
             Почта: ${request.email}
             Ф.И.О.: ${request.fullName}
-            Пол: ${request.sex}
+            Пол: ${request.gender}
             Категория номера: ${request.roomType}
             Танцевальное направление: ${request.danceType}
             Соседи: ${request.neighbors}
