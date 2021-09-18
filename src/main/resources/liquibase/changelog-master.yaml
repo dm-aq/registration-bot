@@ -1,5 +1,3 @@
 databaseChangeLog:
   - include:
       file: liquibase/0_init_schema.sql
-  - include:
-      file: liquibase/1_time_zone.sql

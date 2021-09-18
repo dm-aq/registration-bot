@@ -12,8 +12,8 @@ room_type smallint,
 dance_type varchar(20),
 neighbors text,
 state varchar(20),
-insstmp timestamp not null,
-updstmp timestamp not null
+insstmp timestamptz not null,
+updstmp timestamptz not null
 );
 
 create sequence requests_pk_seq;
