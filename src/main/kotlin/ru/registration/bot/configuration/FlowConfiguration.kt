@@ -36,52 +36,60 @@ class FlowConfiguration {
 
     @Bean("fullNameState")
     fun fullNameState(
+        messages: MessageService,
         botRepository: BotRepository,
         mailState: State
-    ): State = FullNameState(botRepository, mailState)
+    ): State = FullNameState(messages, botRepository, mailState)
 
     @Bean("mailState")
     fun mailState(
+        messages: MessageService,
         botRepository: BotRepository,
         genderState: State
-    ): State = MailState(botRepository, genderState)
+    ): State = MailState(messages, botRepository, genderState)
 
     @Bean("genderState")
     fun genderState(
+        messages: MessageService,
         botRepository: BotRepository,
         roomCategoryState: State
-    ): State = GenderState(botRepository, roomCategoryState)
+    ): State = GenderState(messages, botRepository, roomCategoryState)
 
     @Bean("roomCategoryState")
     fun roomCategoryState(
+        messages: MessageService,
         botRepository: BotRepository,
         roomCategoryProperties: RoomCategoryProperties,
         danceStyleState: State
-    ): State = RoomCategoryState(botRepository, roomCategoryProperties, danceStyleState)
+    ): State = RoomCategoryState(messages, botRepository, roomCategoryProperties, danceStyleState)
 
     @Bean("danceStyleState")
     fun danceStyleState(
+        messages: MessageService,
         botRepository: BotRepository,
         danceStyleProperties: DanceStyleProperties,
         neighborsState: State
-    ): State = DanceStyleState(botRepository, danceStyleProperties, neighborsState)
+    ): State = DanceStyleState(messages, botRepository, danceStyleProperties, neighborsState)
 
     @Bean("neighborsState")
     fun neighborsState(
+        messages: MessageService,
         botRepository: BotRepository,
         draftState: State
-    ): State = NeighborsState(botRepository, draftState)
+    ): State = NeighborsState(messages, botRepository, draftState)
 
     @Bean("draftState")
     fun draftState(
+        messages: MessageService,
         botRepository: BotRepository,
         removeDraftComponent: RemoveDraftComponent,
         exportState: State
-    ): State = DraftReadyState(botRepository, removeDraftComponent, exportState)
+    ): State = DraftReadyState(messages, botRepository, removeDraftComponent, exportState)
 
     @Bean("exportState")
     fun exportRequestState(
+        messages: MessageService,
         botRepository: BotRepository,
         googleSheets: GoogleSheetsService
-    ): State = ExportRequestState(botRepository, googleSheets)
+    ): State = ExportRequestState(messages, botRepository, googleSheets)
 }

@@ -5,6 +5,7 @@ import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.MessageService
 import ru.registration.bot.configuration.RoomCategoryProperties
 import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.flow.State
@@ -16,6 +17,7 @@ import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
 class RoomCategoryState(
+    private val messages: MessageService,
     private val botRepository: BotRepository,
     private val roomCategoryProperties: RoomCategoryProperties,
     private val nextState: State
@@ -23,14 +25,14 @@ class RoomCategoryState(
     override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
         botRepository.execute(SetUserStatus(userId, ROOM_STATE))
         absSender.execute(
-            SendMessage(chatId, "Выберите тип размещения:\n${getCategories()}")
+            SendMessage(chatId, "${messages.getMessage("room_state_ask")}:\n${getCategories()}")
                 .setReplyMarkup(getInlineKeyboard())
         )
     }
 
     private fun getCategories() =
         roomCategoryProperties.categories
-            .map { "${it.key}: ${it.value.description} (${it.value.price} руб/чел)" }.toList().joinToString("\n")
+            .map { "${it.key}: ${it.value.description} ${it.value.price}" }.toList().joinToString("\n")
 
     private fun getInlineKeyboard(): InlineKeyboardMarkup {
         val row = roomCategoryProperties.categories.keys
@@ -59,7 +61,7 @@ class RoomCategoryState(
     }
 
     private fun sendErrorMessage(chatId: Long, absSender: AbsSender) {
-        absSender.execute(SendMessage(chatId, "Неверное значение. Попробуйте еще раз."))
+        absSender.execute(SendMessage(chatId, messages.getMessage("room_state_validation_error")))
     }
 
     private fun String?.isValid(): Boolean =

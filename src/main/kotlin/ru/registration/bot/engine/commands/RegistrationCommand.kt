@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.MessageService
 import ru.registration.bot.RegistrationBotCommand
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.states.DanceStyleState
@@ -18,6 +19,7 @@ import ru.registration.bot.engine.commands.flow.states.RoomCategoryState
 @Component
 class RegistrationCommand(
     @Value("\${registration-closed:false}") private val registrationClosed: Boolean,
+    private val messages: MessageService,
     private val commonFactory: CommonFactory
 ) : RegistrationBotCommand {
 
@@ -36,7 +38,7 @@ class RegistrationCommand(
     private fun execute(absSender: AbsSender, user: User, chat: Chat) {
 
         if (registrationClosed) {
-            absSender.execute(SendMessage(chat.id, "Регистрация на выезд закрыта"))
+            absSender.execute(SendMessage(chat.id, messages.getMessage("registration_command_close")))
             return
         }
 
@@ -54,6 +56,6 @@ class RegistrationCommand(
     }
 
     private fun sendContinueMessage(absSender: AbsSender, chat: Chat) {
-        absSender.execute(SendMessage(chat.id, "Давайте заполним оставшиеся поля в черновике."))
+        absSender.execute(SendMessage(chat.id, messages.getMessage("registration_command_draft")))
     }
 }

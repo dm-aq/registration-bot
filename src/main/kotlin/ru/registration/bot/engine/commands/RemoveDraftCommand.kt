@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.MessageService
 import ru.registration.bot.RegistrationBotCommand
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.StateType.DANCESTYLE_STATE
@@ -19,6 +20,7 @@ import ru.registration.bot.engine.commands.flow.StateType.ROOM_STATE
 
 @Component
 class RemoveDraftCommand(
+    private val messages: MessageService,
     private val commonFactory: CommonFactory,
     private val removeDraftComponent: RemoveDraftComponent
 ) : RegistrationBotCommand {
@@ -46,6 +48,6 @@ class RemoveDraftCommand(
     }
 
     private fun sendWarningMessage(chat: Chat, absSender: AbsSender) {
-        absSender.execute(SendMessage(chat.id, "У вас нет черновика."))
+        absSender.execute(SendMessage(chat.id, messages.getMessage("remove_draft_command_warn")))
     }
 }

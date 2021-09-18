@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.MessageService
 import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.Emoji
 import ru.registration.bot.engine.commands.flow.State
@@ -19,12 +20,16 @@ import ru.registration.bot.repositories.specifications.UpdateRequestField
 private val logger = KotlinLogging.logger {}
 
 class GenderState(
+    private val messages: MessageService,
     private val botRepository: BotRepository,
     private val nextState: State
 ) : State {
     override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
         botRepository.execute(SetUserStatus(userId, GENDER_STATE))
-        absSender.execute(SendMessage(chatId, "Пол:").setReplyMarkup(createInlineKeyboard()))
+        absSender.execute(
+            SendMessage(chatId, messages.getMessage("gender_state_ask"))
+                .setReplyMarkup(createInlineKeyboard())
+        )
     }
 
     private fun createInlineKeyboard() =
@@ -45,7 +50,9 @@ class GenderState(
             nextState.ask(update.userId, update.chatId, absSender)
         } catch (exp: IllegalArgumentException) {
             logger.warn(exp) { "Wrong gender value" }
-            absSender.execute(SendMessage(update.chatId, "Попробуйте еще раз."))
+            absSender.execute(
+                SendMessage(update.chatId, messages.getMessage("gender_state_validation_error"))
+            )
         }
     }
 }
