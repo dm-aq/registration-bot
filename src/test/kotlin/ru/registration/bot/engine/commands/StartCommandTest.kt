@@ -12,12 +12,14 @@ import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.MessageService
 
 class StartCommandTest {
     @Test
     fun `command execution`() {
         // arrange
-        val startCommand = StartCommand()
+        val messages: MessageService = mock()
+        val startCommand = StartCommand(messages)
         val absSender: AbsSender = mock(defaultAnswer = RETURNS_DEEP_STUBS)
         val userId = 123
         val user: User = mock {
