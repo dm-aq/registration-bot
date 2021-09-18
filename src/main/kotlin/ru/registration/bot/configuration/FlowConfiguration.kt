@@ -41,8 +41,8 @@ class FlowConfiguration {
     @Bean("mailState")
     fun mailState(
         botRepository: BotRepository,
-        sexState: State
-    ): State = MailState(botRepository, sexState)
+        genderState: State
+    ): State = MailState(botRepository, genderState)
 
     @Bean("genderState")
     fun genderState(

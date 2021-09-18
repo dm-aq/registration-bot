@@ -7,10 +7,13 @@ import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.MessageService
 import ru.registration.bot.RegistrationBotCommand
 
 @Component
-class StartCommand : RegistrationBotCommand {
+class StartCommand(
+    private val messages: MessageService
+) : RegistrationBotCommand {
 
     override fun getCommandIdentifier() = "start"
 
@@ -27,7 +30,7 @@ class StartCommand : RegistrationBotCommand {
     private fun execute(absSender: AbsSender, chat: Chat) {
 
         absSender.execute(SendMessage(chat.id, """
-            Очень скоро состоится наш ежегодный танцевальный выезд. Я помогу вам зарегистрироваться.
+            ${messages.getMessage("greeting")}
             
             Для того, чтобы начать регистрацию нажмите 
             ${Emoji.POINT_FINGER_RIGHT} /new_registration ${Emoji.POINT_FINGER_LEFT}

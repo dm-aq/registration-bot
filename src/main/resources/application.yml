@@ -48,7 +48,7 @@ dance-styles:
 
 #registration-closed: true
 
-#allowed-user-ids: SiberianGull,Varennik,Nikastrofa,na_dy_mi,dm_aq
+locale: ru
 
 services:
   sheets:

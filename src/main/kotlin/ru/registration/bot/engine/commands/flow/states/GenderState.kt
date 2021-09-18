@@ -51,13 +51,13 @@ class GenderState(
 }
 
 enum class Gender(val value: String) {
-    MALE("М"), FEMALE("Ж");
+    MALE("M"), FEMALE("F");
 
     companion object {
         fun parse(text: String): Gender =
             when (text.toUpperCase()) {
-                "M", "MALE", "М", "МУЖЧИНА" -> MALE
-                "F", "FEMALE", "Ж", "ЖЕНЩИНА" -> FEMALE
+                "M", "MALE" -> MALE
+                "F", "FEMALE" -> FEMALE
                 else -> throw IllegalArgumentException("Illegal gender value: $text")
             }
     }
