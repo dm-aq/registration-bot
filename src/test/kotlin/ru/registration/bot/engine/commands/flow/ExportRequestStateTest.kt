@@ -21,9 +21,8 @@ import ru.registration.bot.engine.commands.flow.states.ExportRequestState
 import ru.registration.bot.engine.user
 import ru.registration.bot.engine.userId
 import ru.registration.bot.google.GoogleSheetsService
+import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.ExecSpecification
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.SetUserStatusByReqId
 import ru.registration.bot.repositories.specifications.UpdateRequestField
@@ -37,15 +36,14 @@ class ExportRequestStateTest {
         val chatId = 1L
         val userName = "some_tg_login"
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
         val request = Request(
             1, null, null, null, null, null, null, null, null, null
         )
-        val requestRepo: RequestRepository = mock {
-            on { query(any()) } doReturn listOf(request)
+        val repo: BotRepository = mock {
+            on { query<Request>(any()) } doReturn listOf(request)
         }
         val googleSheets: GoogleSheetsService = mock()
-        val exportRequestState = ExportRequestState(stateRepo, requestRepo, googleSheets)
+        val exportRequestState = ExportRequestState(repo, googleSheets)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { this.userId } doReturn userId
             on { this.chatId } doReturn chatId
@@ -56,22 +54,20 @@ class ExportRequestStateTest {
         exportRequestState.handle(update, absSender)
 
         // assert
-        val requestCaptor = argumentCaptor<ExecSpecification>()
-        verify(requestRepo).execute(requestCaptor.capture())
+
+        val repoCaptor = argumentCaptor<ExecSpecification>()
+        verify(repo, times(3)).execute(repoCaptor.capture())
         assertEquals(
             UpdateRequestField(update.userId, Pair("telegram_login", update.user?.userName)).sqlParameterSource,
-            (requestCaptor.firstValue as UpdateRequestField).sqlParameterSource
+            (repoCaptor.firstValue as UpdateRequestField).sqlParameterSource
         )
-
-        val statusCaptor = argumentCaptor<ExecSpecification>()
-        verify(stateRepo, times(2)).execute(statusCaptor.capture())
         assertEquals(
             SetUserStatus(userId, REQUEST_APPROVED).sqlParameterSource,
-            (statusCaptor.firstValue as SetUserStatus).sqlParameterSource
+            (repoCaptor.secondValue as SetUserStatus).sqlParameterSource
         )
         assertEquals(
             SetUserStatusByReqId(1, EXPORTED).sqlParameterSource,
-            (statusCaptor.secondValue as SetUserStatusByReqId).sqlParameterSource
+            (repoCaptor.thirdValue as SetUserStatusByReqId).sqlParameterSource
         )
 
         val messageCaptor = argumentCaptor<SendMessage>()
@@ -93,10 +89,9 @@ class ExportRequestStateTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val requestRepo: BotRepository = mock()
         val googleSheets: GoogleSheetsService = mock()
-        val exportRequestState = ExportRequestState(stateRepo, requestRepo, googleSheets)
+        val exportRequestState = ExportRequestState(requestRepo, googleSheets)
 
         // act
         exportRequestState.ask(userId, chatId, absSender)

@@ -17,8 +17,7 @@ import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.flow.states.FullNameState
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.userId
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 
 class FullNameStateAnswerHandlingTest {
     @Test
@@ -27,10 +26,9 @@ class FullNameStateAnswerHandlingTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val repo: BotRepository = mock()
         val nextState: State = mock()
-        val fullNameState = FullNameState(stateRepo, requestRepo, nextState)
+        val fullNameState = FullNameState(repo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "John Smith"
             on { this.userId } doReturn userId
@@ -41,7 +39,7 @@ class FullNameStateAnswerHandlingTest {
         fullNameState.handle(update, absSender)
 
         // assert
-        verify(requestRepo).execute(any())
+        verify(repo).execute(any())
         verify(nextState).ask(eq(userId), eq(chatId), any())
     }
 
@@ -51,10 +49,9 @@ class FullNameStateAnswerHandlingTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val repo: BotRepository = mock()
         val nextState: State = mock()
-        val fullNameState = FullNameState(stateRepo, requestRepo, nextState)
+        val fullNameState = FullNameState(repo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "John Smith John Smith John Smith John Smith"
             on { this.userId } doReturn userId
@@ -65,7 +62,7 @@ class FullNameStateAnswerHandlingTest {
         fullNameState.handle(update, absSender)
 
         // assert
-        verifyZeroInteractions(requestRepo)
+        verifyZeroInteractions(repo)
         verifyZeroInteractions(nextState)
 
         val messageCaptor = argumentCaptor<SendMessage>()
@@ -80,10 +77,9 @@ class FullNameStateAnswerHandlingTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val repo: BotRepository = mock()
         val nextState: State = mock()
-        val fullNameState = FullNameState(stateRepo, requestRepo, nextState)
+        val fullNameState = FullNameState(repo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn ""
             on { this.userId } doReturn userId
@@ -94,7 +90,7 @@ class FullNameStateAnswerHandlingTest {
         fullNameState.handle(update, absSender)
 
         // assert
-        verifyZeroInteractions(requestRepo)
+        verifyZeroInteractions(repo)
         verifyZeroInteractions(nextState)
 
         val messageCaptor = argumentCaptor<SendMessage>()

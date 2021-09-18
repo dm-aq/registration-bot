@@ -12,20 +12,18 @@ import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.StateType.GENDER_STATE
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.userId
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
 private val logger = KotlinLogging.logger {}
 
 class GenderState(
-    private val stateRepo: StateRepository,
-    private val requestRepository: RequestRepository,
+    private val botRepository: BotRepository,
     private val nextState: State
 ) : State {
     override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
-        stateRepo.execute(SetUserStatus(userId, GENDER_STATE))
+        botRepository.execute(SetUserStatus(userId, GENDER_STATE))
         absSender.execute(SendMessage(chatId, "Пол:").setReplyMarkup(createInlineKeyboard()))
     }
 
@@ -43,7 +41,7 @@ class GenderState(
     override fun handle(update: Update, absSender: AbsSender) {
         try {
             val gender: Gender = Gender.parse(update.text ?: "")
-            requestRepository.execute(UpdateRequestField(update.userId, Pair("gender", gender.value)))
+            botRepository.execute(UpdateRequestField(update.userId, Pair("gender", gender.value)))
             nextState.ask(update.userId, update.chatId, absSender)
         } catch (exp: IllegalArgumentException) {
             logger.warn(exp) { "Wrong gender value" }

@@ -9,8 +9,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.commands.flow.StateType.NEIGHBORS_STATE
 import ru.registration.bot.engine.commands.flow.states.NeighborsState
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
 class NeighborsStateAskTest {
@@ -21,10 +20,9 @@ class NeighborsStateAskTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val repo: BotRepository = mock()
         val nextState: State = mock()
-        val neighborsState = NeighborsState(stateRepo, requestRepo, nextState)
+        val neighborsState = NeighborsState(repo, nextState)
 
         // act
         neighborsState.ask(userId, chatId, absSender)
@@ -32,7 +30,7 @@ class NeighborsStateAskTest {
         // assert
 
         val statusCaptor = argumentCaptor<SetUserStatus>()
-        verify(stateRepo).execute(statusCaptor.capture())
+        verify(repo).execute(statusCaptor.capture())
         Assertions.assertEquals(
             SetUserStatus(userId, NEIGHBORS_STATE).sqlParameterSource,
             statusCaptor.firstValue.sqlParameterSource

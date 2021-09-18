@@ -15,8 +15,7 @@ import ru.registration.bot.engine.commands.Request
 import ru.registration.bot.engine.commands.flow.states.DraftReadyState
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.userId
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 
 class DraftReadyStateAnswerHandlingTest {
 
@@ -26,16 +25,15 @@ class DraftReadyStateAnswerHandlingTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
         val request = Request(
             1, null, null, null, null, null, null, null, null, null
         )
-        val requestRepo: RequestRepository = mock {
-            on { query(any()) } doReturn listOf(request)
+        val repo: BotRepository = mock {
+            on { query<Request>(any()) } doReturn listOf(request)
         }
         val removeDraftComponent: RemoveDraftComponent = mock()
         val nextState: State = mock()
-        val draftReadyState = DraftReadyState(stateRepo, requestRepo, removeDraftComponent, nextState)
+        val draftReadyState = DraftReadyState(repo, removeDraftComponent, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "отправить"
             on { this.userId } doReturn userId
@@ -55,16 +53,15 @@ class DraftReadyStateAnswerHandlingTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
         val request = Request(
             1, null, null, null, null, null, null, null, null, null
         )
-        val requestRepo: RequestRepository = mock {
-            on { query(any()) } doReturn listOf(request)
+        val repo: BotRepository = mock {
+            on { query<Request>(any()) } doReturn listOf(request)
         }
         val removeDraftComponent: RemoveDraftComponent = mock()
         val nextState: State = mock()
-        val draftReadyState = DraftReadyState(stateRepo, requestRepo, removeDraftComponent, nextState)
+        val draftReadyState = DraftReadyState(repo, removeDraftComponent, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "удалить"
             on { this.userId } doReturn userId
@@ -75,7 +72,7 @@ class DraftReadyStateAnswerHandlingTest {
         draftReadyState.handle(update, absSender)
 
         // assert
-        verifyZeroInteractions(requestRepo)
+        verifyZeroInteractions(repo)
         verifyZeroInteractions(nextState)
 
         verify(removeDraftComponent).removeDraft(any(), any(), any())

@@ -15,81 +15,71 @@ import ru.registration.bot.engine.commands.flow.states.PhoneNumberState
 import ru.registration.bot.engine.commands.flow.states.RoomCategoryState
 import ru.registration.bot.engine.commands.flow.states.StartState
 import ru.registration.bot.google.GoogleSheetsService
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 
 @Configuration
 class FlowConfiguration {
 
     @Bean("startState")
     fun startState(
-        requestRepository: RequestRepository,
+        botRepository: BotRepository,
         phoneNumberState: State
-    ): State = StartState(requestRepository, phoneNumberState)
+    ): State = StartState(botRepository, phoneNumberState)
 
     @Bean("phoneNumberState")
     fun phoneNumberState(
-        stateRepo: StateRepository,
-        requestRepository: RequestRepository,
+        botRepository: BotRepository,
         fullNameState: State
-    ): State = PhoneNumberState(stateRepo, requestRepository, fullNameState)
+    ): State = PhoneNumberState(botRepository, fullNameState)
 
     @Bean("fullNameState")
     fun fullNameState(
-        stateRepo: StateRepository,
-        requestRepository: RequestRepository,
+        botRepository: BotRepository,
         mailState: State
-    ): State = FullNameState(stateRepo, requestRepository, mailState)
+    ): State = FullNameState(botRepository, mailState)
 
     @Bean("mailState")
     fun mailState(
-        stateRepo: StateRepository,
-        requestRepository: RequestRepository,
+        botRepository: BotRepository,
         sexState: State
-    ): State = MailState(stateRepo, requestRepository, sexState)
+    ): State = MailState(botRepository, sexState)
 
     @Bean("genderState")
     fun genderState(
-        stateRepo: StateRepository,
-        requestRepository: RequestRepository,
+        botRepository: BotRepository,
         roomCategoryState: State
-    ): State = GenderState(stateRepo, requestRepository, roomCategoryState)
+    ): State = GenderState(botRepository, roomCategoryState)
 
     @Bean("roomCategoryState")
     fun roomCategoryState(
-        stateRepo: StateRepository,
-        requestRepository: RequestRepository,
+        botRepository: BotRepository,
         roomCategoryProperties: RoomCategoryProperties,
         danceStyleState: State
-    ): State = RoomCategoryState(stateRepo, requestRepository, roomCategoryProperties, danceStyleState)
+    ): State = RoomCategoryState(botRepository, roomCategoryProperties, danceStyleState)
 
     @Bean("danceStyleState")
     fun danceStyleState(
-        stateRepo: StateRepository,
-        requestRepository: RequestRepository,
+        botRepository: BotRepository,
         danceStyleProperties: DanceStyleProperties,
         neighborsState: State
-    ): State = DanceStyleState(stateRepo, requestRepository, danceStyleProperties, neighborsState)
+    ): State = DanceStyleState(botRepository, danceStyleProperties, neighborsState)
 
     @Bean("neighborsState")
     fun neighborsState(
-        stateRepo: StateRepository,
-        requestRepository: RequestRepository,
+        botRepository: BotRepository,
         draftState: State
-    ): State = NeighborsState(stateRepo, requestRepository, draftState)
+    ): State = NeighborsState(botRepository, draftState)
 
     @Bean("draftState")
     fun draftState(
-        stateRepo: StateRepository,
-        requestRepository: RequestRepository,
+        botRepository: BotRepository,
         removeDraftComponent: RemoveDraftComponent,
         exportState: State
-    ): State = DraftReadyState(stateRepo, requestRepository, removeDraftComponent, exportState)
+    ): State = DraftReadyState(botRepository, removeDraftComponent, exportState)
 
     @Bean("exportState")
     fun exportRequestState(
-        stateRepo: StateRepository,
-        requestRepository: RequestRepository,
+        botRepository: BotRepository,
         googleSheets: GoogleSheetsService
-    ): State = ExportRequestState(stateRepo, requestRepository, googleSheets)
+    ): State = ExportRequestState(botRepository, googleSheets)
 }

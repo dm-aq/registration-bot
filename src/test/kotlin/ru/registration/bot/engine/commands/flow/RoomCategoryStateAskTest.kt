@@ -12,8 +12,7 @@ import ru.registration.bot.configuration.Category
 import ru.registration.bot.configuration.RoomCategoryProperties
 import ru.registration.bot.engine.commands.flow.StateType.ROOM_STATE
 import ru.registration.bot.engine.commands.flow.states.RoomCategoryState
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
 class RoomCategoryStateAskTest {
@@ -23,20 +22,19 @@ class RoomCategoryStateAskTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val repo: BotRepository = mock()
         val nextState: State = mock()
         val roomProperties = RoomCategoryProperties(
             mapOf(1 to Category("100", "test category"))
         )
-        val roomCategoryState = RoomCategoryState(stateRepo, requestRepo, roomProperties, nextState)
+        val roomCategoryState = RoomCategoryState(repo, roomProperties, nextState)
 
         // act
         roomCategoryState.ask(userId, chatId, absSender)
 
         // assert
         val statusCaptor = argumentCaptor<SetUserStatus>()
-        verify(stateRepo).execute(statusCaptor.capture())
+        verify(repo).execute(statusCaptor.capture())
         assertEquals(
             SetUserStatus(userId, ROOM_STATE).sqlParameterSource,
             statusCaptor.firstValue.sqlParameterSource

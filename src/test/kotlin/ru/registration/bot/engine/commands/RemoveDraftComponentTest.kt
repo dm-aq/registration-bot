@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.commands.flow.StateType.PHONE_STATE
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
 class RemoveDraftComponentTest {
@@ -18,7 +18,7 @@ class RemoveDraftComponentTest {
     @Test
     fun `removing draft`() {
         // arrange
-        val stateRepo: StateRepository = mock()
+        val stateRepo: BotRepository = mock()
         val absSender: AbsSender = mock()
         val removeDraftComponent = RemoveDraftComponent(stateRepo)
         val userId = 123

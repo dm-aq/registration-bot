@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
 import ru.registration.bot.engine.commands.flow.states.Gender
 import ru.registration.bot.engine.configuration.annotation.SpringBootIT
-import ru.registration.bot.repositories.RequestRepository
+import ru.registration.bot.repositories.BotRepository
 import java.util.UUID
 import kotlin.random.Random
 
@@ -19,7 +19,7 @@ class UserRequestIT {
     lateinit var jdbcTemplate: NamedParameterJdbcTemplate
 
     @Autowired
-    lateinit var requestRepository: RequestRepository
+    lateinit var requestRepository: BotRepository
 
     @Test
     fun `selecting user request`() {

@@ -17,8 +17,7 @@ import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.flow.states.GenderState
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.userId
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 
 class GenderStateAnswerHandlingTest {
     @Test
@@ -27,10 +26,9 @@ class GenderStateAnswerHandlingTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val repo: BotRepository = mock()
         val nextState: State = mock()
-        val sexState = GenderState(stateRepo, requestRepo, nextState)
+        val sexState = GenderState(repo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "F"
             on { this.userId } doReturn userId
@@ -41,7 +39,7 @@ class GenderStateAnswerHandlingTest {
         sexState.handle(update, absSender)
 
         // assert
-        verify(requestRepo).execute(any())
+        verify(repo).execute(any())
         verify(nextState).ask(eq(userId), eq(chatId), any())
     }
 
@@ -51,10 +49,9 @@ class GenderStateAnswerHandlingTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val repo: BotRepository = mock()
         val nextState: State = mock()
-        val sexState = GenderState(stateRepo, requestRepo, nextState)
+        val sexState = GenderState(repo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "invalid_value"
             on { this.userId } doReturn userId
@@ -65,7 +62,7 @@ class GenderStateAnswerHandlingTest {
         sexState.handle(update, absSender)
 
         // assert
-        verifyZeroInteractions(requestRepo)
+        verifyZeroInteractions(repo)
         verifyZeroInteractions(nextState)
 
         val messageCaptor = argumentCaptor<SendMessage>()

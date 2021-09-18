@@ -11,19 +11,17 @@ import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.StateType.ROOM_STATE
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.userId
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
 class RoomCategoryState(
-    private val stateRepo: StateRepository,
-    private val requestRepository: RequestRepository,
+    private val botRepository: BotRepository,
     private val roomCategoryProperties: RoomCategoryProperties,
     private val nextState: State
 ) : State {
     override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
-        stateRepo.execute(SetUserStatus(userId, ROOM_STATE))
+        botRepository.execute(SetUserStatus(userId, ROOM_STATE))
         absSender.execute(
             SendMessage(chatId, "Выберите тип размещения:\n${getCategories()}")
                 .setReplyMarkup(getInlineKeyboard())
@@ -45,7 +43,7 @@ class RoomCategoryState(
     override fun handle(update: Update, absSender: AbsSender) {
         try {
             if (update.text.isValid()) {
-                requestRepository.execute(
+                botRepository.execute(
                     UpdateRequestField(
                         update.userId,
                         Pair("room_type", (update.text?.toInt() ?: 0))

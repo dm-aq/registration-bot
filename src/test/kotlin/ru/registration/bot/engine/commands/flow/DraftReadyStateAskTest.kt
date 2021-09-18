@@ -13,8 +13,7 @@ import ru.registration.bot.engine.commands.RemoveDraftComponent
 import ru.registration.bot.engine.commands.Request
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
 import ru.registration.bot.engine.commands.flow.states.DraftReadyState
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 
 class DraftReadyStateAskTest {
@@ -24,16 +23,15 @@ class DraftReadyStateAskTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
         val request = Request(
             null, null, null, null, null, null, null, null, null, null
         )
-        val requestRepo: RequestRepository = mock {
-            on { query(any()) } doReturn listOf(request)
+        val repo: BotRepository = mock {
+            on { query<Request>(any()) } doReturn listOf(request)
         }
         val removeDraftComponent: RemoveDraftComponent = mock()
         val nextState: State = mock()
-        val draftReadyState = DraftReadyState(stateRepo, requestRepo, removeDraftComponent, nextState)
+        val draftReadyState = DraftReadyState(repo, removeDraftComponent, nextState)
 
         // act
         draftReadyState.ask(userId, chatId, absSender)
@@ -41,7 +39,7 @@ class DraftReadyStateAskTest {
         // assert
 
         val statusCaptor = argumentCaptor<SetUserStatus>()
-        verify(stateRepo).execute(statusCaptor.capture())
+        verify(repo).execute(statusCaptor.capture())
         Assertions.assertEquals(
             SetUserStatus(userId, REQUEST_READY).sqlParameterSource,
             statusCaptor.firstValue.sqlParameterSource

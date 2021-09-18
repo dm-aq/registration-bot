@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import ru.registration.bot.engine.commands.flow.StateType.EXPORTED
 import ru.registration.bot.engine.commands.flow.StateType.REQUEST_APPROVED
 import ru.registration.bot.engine.configuration.annotation.SpringBootIT
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 import java.util.UUID
 import kotlin.random.Random
 
@@ -19,7 +19,7 @@ class SetUserStatusByReqIdIT {
     lateinit var jdbcTemplate: NamedParameterJdbcTemplate
 
     @Autowired
-    lateinit var stateRepo: StateRepository
+    lateinit var stateRepo: BotRepository
 
     @Test
     fun `setting user status by request id`() {

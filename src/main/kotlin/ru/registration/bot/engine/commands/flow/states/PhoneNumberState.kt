@@ -8,26 +8,24 @@ import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.StateType.PHONE_STATE
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.userId
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
 class PhoneNumberState(
-    private val stateRepo: StateRepository,
-    private val requestRepository: RequestRepository,
+    private val botRepository: BotRepository,
     private val nextState: State
 ) : State {
 
     override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
-        stateRepo.execute(SetUserStatus(userId, PHONE_STATE))
+        botRepository.execute(SetUserStatus(userId, PHONE_STATE))
         absSender.execute(SendMessage(chatId, "Введите ваш номер телефона:"))
     }
 
     override fun handle(update: Update, absSender: AbsSender) {
         val text = update.text ?: ""
         if (isValid(text)) {
-            requestRepository.execute(UpdateRequestField(update.userId, Pair("phone", text)))
+            botRepository.execute(UpdateRequestField(update.userId, Pair("phone", text)))
             nextState.ask(update.userId, update.chatId, absSender)
         } else {
             absSender.execute(SendMessage(update.chatId, """

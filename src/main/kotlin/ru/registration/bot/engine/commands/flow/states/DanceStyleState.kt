@@ -11,19 +11,17 @@ import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.StateType.DANCESTYLE_STATE
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.userId
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 
 class DanceStyleState(
-    private val stateRepo: StateRepository,
-    private val requestRepository: RequestRepository,
+    private val botRepository: BotRepository,
     private val danceStyleProperties: DanceStyleProperties,
     private val nextState: State
 ) : State {
     override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
-        stateRepo.execute(SetUserStatus(userId, DANCESTYLE_STATE))
+        botRepository.execute(SetUserStatus(userId, DANCESTYLE_STATE))
         absSender.execute(
             SendMessage(chatId, "Выберите танцевальное направление:")
                 .setReplyMarkup(getInlineKeyboard())
@@ -42,7 +40,7 @@ class DanceStyleState(
     override fun handle(update: Update, absSender: AbsSender) {
         val text = update.text ?: ""
         if (text.isValid()) {
-            requestRepository.execute(UpdateRequestField(update.userId, Pair("dance_type", text)))
+            botRepository.execute(UpdateRequestField(update.userId, Pair("dance_type", text)))
             nextState.ask(update.userId, update.chatId, absSender)
         } else {
             absSender.execute(SendMessage(update.chatId, "Неверное значение. Попробуйте еще раз."))

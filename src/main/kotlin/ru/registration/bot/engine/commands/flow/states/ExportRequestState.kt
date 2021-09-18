@@ -11,16 +11,14 @@ import ru.registration.bot.engine.commands.flow.StateType.REQUEST_APPROVED
 import ru.registration.bot.engine.user
 import ru.registration.bot.engine.userId
 import ru.registration.bot.google.GoogleSheetsService
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.SetUserStatusByReqId
 import ru.registration.bot.repositories.specifications.UpdateRequestField
 import ru.registration.bot.repositories.specifications.UserRequest
 
 class ExportRequestState(
-    private val stateRepo: StateRepository,
-    private val requestRepository: RequestRepository,
+    private val botRepository: BotRepository,
     private val googleSheets: GoogleSheetsService
 ) : State {
 
@@ -29,8 +27,8 @@ class ExportRequestState(
     }
 
     override fun handle(update: Update, absSender: AbsSender) {
-        requestRepository.execute(UpdateRequestField(update.userId, Pair("telegram_login", update.user?.userName)))
-        stateRepo.execute(SetUserStatus(update.userId, REQUEST_APPROVED))
+        botRepository.execute(UpdateRequestField(update.userId, Pair("telegram_login", update.user?.userName)))
+        botRepository.execute(SetUserStatus(update.userId, REQUEST_APPROVED))
 
         absSender.execute(SendMessage(update.chatId, """
             Круто, что вы едете с нами в этом году! 
@@ -49,12 +47,12 @@ class ExportRequestState(
             ${Emoji.POINT_FINGER_RIGHT} /new_registration ${Emoji.POINT_FINGER_LEFT}
         """.trimIndent()))
 
-        val request = requestRepository
+        val request = botRepository
             .query(UserRequest(update.userId, REQUEST_APPROVED))
             .first()
 
         googleSheets.send(request)
 
-        stateRepo.execute(SetUserStatusByReqId(request.requestId, EXPORTED))
+        botRepository.execute(SetUserStatusByReqId(request.requestId, EXPORTED))
     }
 }

@@ -7,16 +7,16 @@ import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.StateType.START_STATE
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.userId
-import ru.registration.bot.repositories.RequestRepository
+import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.specifications.InitUserRequest
 
 class StartState(
-    private val requestRepository: RequestRepository,
+    private val botRepository: BotRepository,
     private val nextState: State
 ) : State {
 
     override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
-        requestRepository.execute(InitUserRequest(userId, START_STATE))
+        botRepository.execute(InitUserRequest(userId, START_STATE))
 
         nextState.ask(userId, chatId, absSender)
     }

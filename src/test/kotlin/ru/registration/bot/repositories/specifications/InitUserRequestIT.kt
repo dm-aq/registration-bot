@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import ru.registration.bot.engine.commands.flow.StateType.PHONE_STATE
 import ru.registration.bot.engine.configuration.annotation.SpringBootIT
-import ru.registration.bot.repositories.RequestRepository
+import ru.registration.bot.repositories.BotRepository
 import kotlin.random.Random
 
 @SpringBootIT
@@ -17,7 +17,7 @@ class InitUserRequestIT {
     lateinit var jdbcTemplate: NamedParameterJdbcTemplate
 
     @Autowired
-    lateinit var requestRepo: RequestRepository
+    lateinit var requestRepo: BotRepository
 
     @Test
     fun `init user request`() {

@@ -17,8 +17,7 @@ import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.flow.states.NeighborsState
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.userId
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 
 class NeighborsStateAnswerHandlingTest {
 
@@ -28,10 +27,9 @@ class NeighborsStateAnswerHandlingTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val repo: BotRepository = mock()
         val nextState: State = mock()
-        val neighborsState = NeighborsState(stateRepo, requestRepo, nextState)
+        val neighborsState = NeighborsState(repo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "Jonh Smith"
             on { this.userId } doReturn userId
@@ -42,7 +40,7 @@ class NeighborsStateAnswerHandlingTest {
         neighborsState.handle(update, absSender)
 
         // assert
-        verify(requestRepo).execute(any())
+        verify(repo).execute(any())
         verify(nextState).ask(eq(userId), eq(chatId), any())
     }
 
@@ -52,10 +50,9 @@ class NeighborsStateAnswerHandlingTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val repo: BotRepository = mock()
         val nextState: State = mock()
-        val neighborsState = NeighborsState(stateRepo, requestRepo, nextState)
+        val neighborsState = NeighborsState(repo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "Jonh Smith".repeat(14)
             on { this.userId } doReturn userId
@@ -66,7 +63,7 @@ class NeighborsStateAnswerHandlingTest {
         neighborsState.handle(update, absSender)
 
         // assert
-        verifyZeroInteractions(requestRepo)
+        verifyZeroInteractions(repo)
         verifyZeroInteractions(nextState)
 
         val messageCaptor = argumentCaptor<SendMessage>()

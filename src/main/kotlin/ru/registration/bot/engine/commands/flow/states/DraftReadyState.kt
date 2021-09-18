@@ -13,20 +13,18 @@ import ru.registration.bot.engine.commands.flow.StateType.REQUEST_READY
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.user
 import ru.registration.bot.engine.userId
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.specifications.SetUserStatus
 import ru.registration.bot.repositories.specifications.UserRequest
 
 class DraftReadyState(
-    private val stateRepo: StateRepository,
-    private val requestRepository: RequestRepository,
+    private val botRepository: BotRepository,
     private val removeDraftComponent: RemoveDraftComponent,
     private val nextState: State
 ) : State {
     override fun ask(userId: Int, chatId: Long, absSender: AbsSender) {
-        stateRepo.execute(SetUserStatus(userId, REQUEST_READY))
-        val request = requestRepository.query(UserRequest(userId, REQUEST_READY)).first()
+        botRepository.execute(SetUserStatus(userId, REQUEST_READY))
+        val request = botRepository.query(UserRequest(userId, REQUEST_READY)).first()
 
         val message = """
             Проверьте пожалуйста данные заявки:

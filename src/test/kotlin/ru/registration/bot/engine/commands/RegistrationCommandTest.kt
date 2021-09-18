@@ -20,8 +20,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.states.GenderState
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 
 class RegistrationCommandTest {
 
@@ -74,10 +73,9 @@ class RegistrationCommandTest {
             on { this.chat } doReturn chat
         }
 
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val repo: BotRepository = mock()
         val nextState: State = mock()
-        val state = GenderState(stateRepo, requestRepo, nextState)
+        val state = GenderState(repo, nextState)
         given { commonFactory.create(any()) }.willReturn(state)
 
         // act

@@ -7,13 +7,14 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import ru.registration.bot.engine.commands.flow.State
+import ru.registration.bot.engine.commands.flow.StateType
 import ru.registration.bot.engine.commands.flow.StateType.MAIL_STATE
 import ru.registration.bot.engine.commands.flow.StateType.START_STATE
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 
 class CommonFactoryTest {
 
-    lateinit var stateRepo: StateRepository
+    lateinit var stateRepo: BotRepository
     lateinit var states: Map<String, State>
     lateinit var commonFactory: CommonFactory
 
@@ -27,7 +28,7 @@ class CommonFactoryTest {
     @Test
     fun `new customer`() {
         // arrange
-        given { stateRepo.query(any()) }.willReturn(emptyList())
+        given { stateRepo.query<StateType>(any()) }.willReturn(emptyList())
 
         // act
         val res = commonFactory.currentUserStateType(123)
@@ -39,7 +40,7 @@ class CommonFactoryTest {
     @Test
     fun `existing customer`() {
         // arrange
-        given { stateRepo.query(any()) }.willReturn(listOf(MAIL_STATE))
+        given { stateRepo.query<StateType>(any()) }.willReturn(listOf(MAIL_STATE))
 
         // act
         val res = commonFactory.currentUserStateType(123)

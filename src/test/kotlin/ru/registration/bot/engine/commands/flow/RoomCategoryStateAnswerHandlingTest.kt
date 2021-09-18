@@ -19,8 +19,7 @@ import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.flow.states.RoomCategoryState
 import ru.registration.bot.engine.text
 import ru.registration.bot.engine.userId
-import ru.registration.bot.repositories.RequestRepository
-import ru.registration.bot.repositories.StateRepository
+import ru.registration.bot.repositories.BotRepository
 
 class RoomCategoryStateAnswerHandlingTest {
 
@@ -30,13 +29,12 @@ class RoomCategoryStateAnswerHandlingTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val repo: BotRepository = mock()
         val nextState: State = mock()
         val roomProperties = RoomCategoryProperties(
             mapOf(1 to Category("100", "test category"))
         )
-        val roomCategoryState = RoomCategoryState(stateRepo, requestRepo, roomProperties, nextState)
+        val roomCategoryState = RoomCategoryState(repo, roomProperties, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "1"
             on { this.userId } doReturn userId
@@ -47,7 +45,7 @@ class RoomCategoryStateAnswerHandlingTest {
         roomCategoryState.handle(update, absSender)
 
         // assert
-        verify(requestRepo).execute(any())
+        verify(repo).execute(any())
         verify(nextState).ask(eq(userId), eq(chatId), any())
     }
 
@@ -57,11 +55,10 @@ class RoomCategoryStateAnswerHandlingTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val stateRepo: StateRepository = mock()
-        val requestRepo: RequestRepository = mock()
+        val repo: BotRepository = mock()
         val nextState: State = mock()
         val roomProperties = RoomCategoryProperties(emptyMap())
-        val roomCategoryState = RoomCategoryState(stateRepo, requestRepo, roomProperties, nextState)
+        val roomCategoryState = RoomCategoryState(repo, roomProperties, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "1"
             on { this.userId } doReturn userId
@@ -72,7 +69,7 @@ class RoomCategoryStateAnswerHandlingTest {
         roomCategoryState.handle(update, absSender)
 
         // assert
-        verifyZeroInteractions(requestRepo)
+        verifyZeroInteractions(repo)
         verifyZeroInteractions(nextState)
 
         val messageCaptor = argumentCaptor<SendMessage>()

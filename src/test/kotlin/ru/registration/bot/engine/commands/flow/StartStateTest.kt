@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.flow.states.StartState
 import ru.registration.bot.engine.userId
-import ru.registration.bot.repositories.RequestRepository
+import ru.registration.bot.repositories.BotRepository
 
 class StartStateTest {
 
@@ -23,7 +23,7 @@ class StartStateTest {
         val userId = 213
         val chatId = 1L
         val absSender: AbsSender = mock()
-        val requestRepo: RequestRepository = mock()
+        val requestRepo: BotRepository = mock()
         val nextState: State = mock()
         val startState = StartState(requestRepo, nextState)
         val update: Update = mock(defaultAnswer = Answers.RETURNS_DEEP_STUBS) {
@@ -49,7 +49,7 @@ class StartStateTest {
             on { message?.text } doReturn "another command"
         }
         val absSender: AbsSender = mock()
-        val requestRepo: RequestRepository = mock()
+        val requestRepo: BotRepository = mock()
         val nextState: State = mock()
         val startState = StartState(requestRepo, nextState)
 
