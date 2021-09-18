@@ -2,6 +2,7 @@ package ru.registration.bot.configuration
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import ru.registration.bot.MessageService
 import ru.registration.bot.engine.commands.RemoveDraftComponent
 import ru.registration.bot.engine.commands.flow.State
 import ru.registration.bot.engine.commands.flow.states.DanceStyleState
@@ -28,9 +29,10 @@ class FlowConfiguration {
 
     @Bean("phoneNumberState")
     fun phoneNumberState(
+        messages: MessageService,
         botRepository: BotRepository,
         fullNameState: State
-    ): State = PhoneNumberState(botRepository, fullNameState)
+    ): State = PhoneNumberState(messages, botRepository, fullNameState)
 
     @Bean("fullNameState")
     fun fullNameState(

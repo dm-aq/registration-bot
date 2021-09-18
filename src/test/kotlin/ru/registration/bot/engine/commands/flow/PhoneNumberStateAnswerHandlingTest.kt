@@ -13,6 +13,7 @@ import org.mockito.Answers.RETURNS_DEEP_STUBS
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.MessageService
 import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.flow.states.PhoneNumberState
 import ru.registration.bot.engine.text
@@ -25,10 +26,11 @@ class PhoneNumberStateAnswerHandlingTest {
         // arrange
         val userId = 213
         val chatId = 1L
+        val messages: MessageService = mock()
         val absSender: AbsSender = mock()
         val repo: BotRepository = mock()
         val nextState: State = mock()
-        val phoneState = PhoneNumberState(repo, nextState)
+        val phoneState = PhoneNumberState(messages, repo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "89261234567"
             on { this.userId } doReturn userId
@@ -48,10 +50,13 @@ class PhoneNumberStateAnswerHandlingTest {
         // arrange
         val userId = 213
         val chatId = 1L
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
         val absSender: AbsSender = mock()
         val repo: BotRepository = mock()
         val nextState: State = mock()
-        val phoneState = PhoneNumberState(repo, nextState)
+        val phoneState = PhoneNumberState(messages, repo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn "invalid-number"
             on { this.userId } doReturn userId
@@ -68,7 +73,6 @@ class PhoneNumberStateAnswerHandlingTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertEquals("Номер телефона должен быть в следующем формате: 8XXXYYYZZZZ", messageCaptor.firstValue.text)
     }
 
     @Test
@@ -76,10 +80,13 @@ class PhoneNumberStateAnswerHandlingTest {
         // arrange
         val userId = 213
         val chatId = 1L
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
         val absSender: AbsSender = mock()
         val repo: BotRepository = mock()
         val nextState: State = mock()
-        val phoneState = PhoneNumberState(repo, nextState)
+        val phoneState = PhoneNumberState(messages, repo, nextState)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { text } doReturn null
             on { this.userId } doReturn userId
@@ -96,6 +103,5 @@ class PhoneNumberStateAnswerHandlingTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertEquals("Номер телефона должен быть в следующем формате: 8XXXYYYZZZZ", messageCaptor.firstValue.text)
     }
 }
