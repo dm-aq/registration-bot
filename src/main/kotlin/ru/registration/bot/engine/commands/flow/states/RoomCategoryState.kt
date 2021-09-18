@@ -44,7 +44,7 @@ class RoomCategoryState(
 
     override fun handle(update: Update, absSender: AbsSender) {
         try {
-            if(update.text.isValid()){
+            if (update.text.isValid()) {
                 requestRepository.execute(
                     UpdateRequestField(
                         update.userId,
@@ -55,7 +55,7 @@ class RoomCategoryState(
             } else {
                 sendErrorMessage(update.chatId, absSender)
             }
-        }catch (exp: NumberFormatException) {
+        } catch (exp: NumberFormatException) {
             sendErrorMessage(update.chatId, absSender)
         }
     }

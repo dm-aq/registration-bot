@@ -41,7 +41,7 @@ class DanceStyleState(
 
     override fun handle(update: Update, absSender: AbsSender) {
         val text = update.text ?: ""
-        if (text.isValid()){
+        if (text.isValid()) {
             requestRepository.execute(UpdateRequestField(update.userId, Pair("dance_type", text)))
             nextState.ask(update.userId, update.chatId, absSender)
         } else {
