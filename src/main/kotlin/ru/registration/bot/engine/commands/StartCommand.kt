@@ -27,7 +27,7 @@ class StartCommand : RegistrationBotCommand {
     private fun execute(absSender: AbsSender, chat: Chat) {
 
         absSender.execute(SendMessage(chat.id, """
-            12-14 июня состоится наш ежегодный #иваравыезд2021. Я помогу вам зарегистрироваться.
+            Очень скоро состоится наш ежегодный танцевальный выезд. Я помогу вам зарегистрироваться.
             
             Для того, чтобы начать регистрацию нажмите 
             ${Emoji.POINT_FINGER_RIGHT} /new_registration ${Emoji.POINT_FINGER_LEFT}
