@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5434/reg_bot
     username: postgres
-    password: Passw9rd0
+    password: 12345678
     hikari:
       connection-test-query: SELECT 1
       validation-timeout: 3500
@@ -22,35 +22,12 @@ spring:
     change_log: classpath:liquibase/changelog-master.yaml
 
 bot:
-  username: IvaraTestBot
-  token: 1979121327:AAG8unXmc37yXJ_I3MgehO_AAmDipbE8t4s
-
-room:
-  categories:
-    2:
-      price: 11500
-      description: Двухместный номер
-    3:
-      price: 9900
-      description: Трехместный номер
-    4:
-      price: 9900
-      description: Четырехместный номер
-
-dance-styles:
-  values:
-    - хастл
-    - wcs
-    - бачата
-    - буги
-    - танго
-    - другое
+  username: "<your-bot-name>"
+  token: "<your-bot-token>"
 
 #registration-closed: true
 
-#allowed-user-ids: SiberianGull,Varennik,Nikastrofa,na_dy_mi,dm_aq
-
 services:
   sheets:
-    spread-sheet-id: "11DKYgL_3CPgRh8rl-q7-H02nQSOW1qgscojYzLoMRaM"
-    range: "Ответы на форму (1)!A2:D"
+    spread-sheet-id: "<your-spread-sheet-id>"
+    range: "<list-name>"

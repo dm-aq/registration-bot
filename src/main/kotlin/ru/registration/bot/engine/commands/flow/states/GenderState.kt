@@ -37,8 +37,8 @@ class GenderState(
             .setKeyboard(
                 listOf(
                     listOf(
-                        InlineKeyboardButton().setText(Emoji.DANCING_MAN.toString()).setCallbackData("М"),
-                        InlineKeyboardButton().setText(Emoji.DANCING_WOMAN.toString()).setCallbackData("Ж")
+                        InlineKeyboardButton().setText(Emoji.DANCING_MAN.toString()).setCallbackData("M"),
+                        InlineKeyboardButton().setText(Emoji.DANCING_WOMAN.toString()).setCallbackData("F")
                     )
                 )
             )

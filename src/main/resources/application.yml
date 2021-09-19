@@ -29,22 +29,21 @@ room:
   categories:
     2:
       price: 11500
-      description: Двухместный номер
+      description: Double
     3:
       price: 9900
-      description: Трехместный номер
+      description: Triple
     4:
       price: 9900
-      description: Четырехместный номер
+      description: Quadruple
 
 dance-styles:
   values:
-    - хастл
+    - hustle
     - wcs
-    - бачата
-    - буги
-    - танго
-    - другое
+    - bachata
+    - boogie-woogie
+    - tango
 
 #registration-closed: true
 
@@ -52,5 +51,5 @@ locale: ru
 
 services:
   sheets:
-    spread-sheet-id: "11DKYgL_3CPgRh8rl-q7-H02nQSOW1qgscojYzLoMRaM"
-    range: "Ответы на форму (1)!A2:D"
+    spread-sheet-id: "<your-spread-sheet-id>"
+    range: "<list-name>"

@@ -35,7 +35,7 @@ class GoogleSheetsService(
 
     private fun obtainCredentials(): Credentials? {
         return ServiceAccountCredentials
-            .fromStream(GoogleSheetsService::class.java.getResourceAsStream("/trst-269816-eca0f3ec2434.json"))
+            .fromStream(GoogleSheetsService::class.java.getResourceAsStream("/google-account-credentials.json"))
             .createScoped(listOf("https://www.googleapis.com/auth/spreadsheets"))
     }
 
