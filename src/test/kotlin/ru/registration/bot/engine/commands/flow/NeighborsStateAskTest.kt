@@ -45,6 +45,6 @@ class NeighborsStateAskTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         Assertions.assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        Assertions.assertTrue(messageCaptor.firstValue.text.startsWith("С кем будете жить"))
+        Assertions.assertTrue(messageCaptor.firstValue.text.startsWith("some-message"))
     }
 }

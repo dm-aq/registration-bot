@@ -43,6 +43,6 @@ class MailStateAskTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertEquals("Адрес электронной почты:", messageCaptor.firstValue.text)
+        assertEquals("some-message", messageCaptor.firstValue.text)
     }
 }

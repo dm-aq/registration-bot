@@ -43,6 +43,6 @@ class GenderStateAskTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertEquals("Пол:", messageCaptor.firstValue.text)
+        assertEquals("some-message", messageCaptor.firstValue.text)
     }
 }

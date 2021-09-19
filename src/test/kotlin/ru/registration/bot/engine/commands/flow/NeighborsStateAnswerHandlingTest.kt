@@ -76,6 +76,6 @@ class NeighborsStateAnswerHandlingTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertEquals("Слишком много букв. Будьте скромнее.", messageCaptor.firstValue.text)
+        assertEquals("some-message", messageCaptor.firstValue.text)
     }
 }

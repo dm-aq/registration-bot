@@ -16,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.Chat
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.MessageService
 import ru.registration.bot.engine.CommonFactory
 import ru.registration.bot.engine.commands.flow.StateType
 
@@ -23,13 +24,15 @@ class RemoveDraftCommandTest {
 
     lateinit var commonFactory: CommonFactory
     lateinit var removeDraftComponent: RemoveDraftComponent
+    lateinit var messages: MessageService
     lateinit var removeDraftCommand: RemoveDraftCommand
 
     @BeforeEach
     fun setUp() {
         commonFactory = mock()
         removeDraftComponent = mock()
-        removeDraftCommand = RemoveDraftCommand(commonFactory, removeDraftComponent)
+        messages = mock()
+        removeDraftCommand = RemoveDraftCommand(messages, commonFactory, removeDraftComponent)
     }
 
     @Test
@@ -78,6 +81,7 @@ class RemoveDraftCommandTest {
         }
 
         given { commonFactory.currentUserStateType(any()) }.willReturn(StateType.EXPORTED)
+        given { messages.getMessage(any()) }.willReturn("some-message")
 
         // act
         removeDraftCommand.processMessage(absSender, message, null)
@@ -88,6 +92,6 @@ class RemoveDraftCommandTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertEquals("У вас нет черновика.", messageCaptor.firstValue.text)
+        assertEquals("some-message", messageCaptor.firstValue.text)
     }
 }

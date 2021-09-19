@@ -75,7 +75,7 @@ class FullNameStateAnswerHandlingTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertEquals("Имя слишком длинное.", messageCaptor.firstValue.text)
+        assertEquals("some-message", messageCaptor.firstValue.text)
     }
 
     @Test
@@ -106,6 +106,6 @@ class FullNameStateAnswerHandlingTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertEquals("Что-то не так. Тут нет вашего имени.", messageCaptor.firstValue.text)
+        assertEquals("some-message", messageCaptor.firstValue.text)
     }
 }

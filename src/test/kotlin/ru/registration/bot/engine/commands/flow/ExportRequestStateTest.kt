@@ -13,6 +13,7 @@ import org.mockito.Answers.RETURNS_DEEP_STUBS
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.bots.AbsSender
+import ru.registration.bot.MessageService
 import ru.registration.bot.engine.chatId
 import ru.registration.bot.engine.commands.Request
 import ru.registration.bot.engine.commands.flow.StateType.EXPORTED
@@ -43,7 +44,10 @@ class ExportRequestStateTest {
             on { query<Request>(any()) } doReturn listOf(request)
         }
         val googleSheets: GoogleSheetsService = mock()
-        val exportRequestState = ExportRequestState(repo, googleSheets)
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
+        val exportRequestState = ExportRequestState(messages, repo, googleSheets)
         val update: Update = mock(defaultAnswer = RETURNS_DEEP_STUBS) {
             on { this.userId } doReturn userId
             on { this.chatId } doReturn chatId
@@ -74,10 +78,10 @@ class ExportRequestStateTest {
         verify(absSender, times(2)).execute(messageCaptor.capture())
 
         assertEquals(1, messageCaptor.firstValue.chatId.toInt())
-        assertTrue(messageCaptor.firstValue.text.startsWith("Круто, что вы едете с нами в этом году!"))
+        assertTrue(messageCaptor.firstValue.text.startsWith("some-message"))
 
         assertEquals(1, messageCaptor.secondValue.chatId.toInt())
-        assertTrue(messageCaptor.secondValue.text.startsWith("Обратите внимание"))
+        assertTrue(messageCaptor.secondValue.text.startsWith("some-message"))
 
         verify(googleSheets).send(any())
     }
@@ -91,7 +95,10 @@ class ExportRequestStateTest {
         val absSender: AbsSender = mock()
         val requestRepo: BotRepository = mock()
         val googleSheets: GoogleSheetsService = mock()
-        val exportRequestState = ExportRequestState(requestRepo, googleSheets)
+        val messages: MessageService = mock {
+            on { getMessage(any()) } doReturn "some-message"
+        }
+        val exportRequestState = ExportRequestState(messages, requestRepo, googleSheets)
 
         // act
         exportRequestState.ask(userId, chatId, absSender)
@@ -100,6 +107,6 @@ class ExportRequestStateTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertEquals(messageCaptor.firstValue.text, "У вас уже есть заполненная заявка.")
+        assertEquals(messageCaptor.firstValue.text, "some-message")
     }
 }

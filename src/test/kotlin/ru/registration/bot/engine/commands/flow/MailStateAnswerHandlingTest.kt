@@ -75,7 +75,7 @@ class MailStateAnswerHandlingTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertEquals("Адрес какой-то не такой :(", messageCaptor.firstValue.text)
+        assertEquals("some-message", messageCaptor.firstValue.text)
     }
 
     @Test
@@ -106,6 +106,6 @@ class MailStateAnswerHandlingTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(1, messageCaptor.firstValue.chatId.toLong())
-        assertEquals("Адрес какой-то не такой :(", messageCaptor.firstValue.text)
+        assertEquals("some-message", messageCaptor.firstValue.text)
     }
 }

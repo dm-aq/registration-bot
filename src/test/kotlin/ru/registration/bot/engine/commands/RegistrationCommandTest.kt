@@ -92,7 +92,7 @@ class RegistrationCommandTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender, times(2)).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertEquals("Давайте заполним оставшиеся поля в черновике.", messageCaptor.firstValue.text)
+        assertEquals("some-message", messageCaptor.firstValue.text)
     }
 
     @Test
@@ -126,7 +126,7 @@ class RegistrationCommandTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertEquals("Регистрация на выезд закрыта", messageCaptor.firstValue.text)
+        assertEquals("some-message", messageCaptor.firstValue.text)
 
         verifyZeroInteractions(startState)
     }

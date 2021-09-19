@@ -49,6 +49,6 @@ class RoomCategoryStateAskTest {
         val messageCaptor = argumentCaptor<SendMessage>()
         verify(absSender).execute(messageCaptor.capture())
         assertEquals(chatId, messageCaptor.firstValue.chatId.toLong())
-        assertTrue(messageCaptor.firstValue.text.startsWith("Выберите тип размещения:"))
+        assertTrue(messageCaptor.firstValue.text.startsWith("some-message"))
     }
 }
