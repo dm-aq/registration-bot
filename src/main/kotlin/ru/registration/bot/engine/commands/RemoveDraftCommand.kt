@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.MessageService
 import ru.registration.bot.RegistrationBotCommand
-import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.UserStateFactory
 import ru.registration.bot.engine.commands.flow.StateType.DANCESTYLE_STATE
 import ru.registration.bot.engine.commands.flow.StateType.FULL_NAME_STATE
 import ru.registration.bot.engine.commands.flow.StateType.GENDER_STATE
@@ -21,7 +21,7 @@ import ru.registration.bot.engine.commands.flow.StateType.ROOM_STATE
 @Component
 class RemoveDraftCommand(
     private val messages: MessageService,
-    private val commonFactory: CommonFactory,
+    private val userStateFactory: UserStateFactory,
     private val removeDraftComponent: RemoveDraftComponent
 ) : RegistrationBotCommand {
 
@@ -39,7 +39,7 @@ class RemoveDraftCommand(
 
     fun execute(absSender: AbsSender, user: User, chat: Chat) {
 
-        when (commonFactory.currentUserStateType(user.id)) {
+        when (userStateFactory.currentUserStateType(user.id)) {
             PHONE_STATE, FULL_NAME_STATE, MAIL_STATE,
             GENDER_STATE, DANCESTYLE_STATE, ROOM_STATE,
             NEIGHBORS_STATE, REQUEST_READY -> removeDraftComponent.removeDraft(user.id, chat.id, absSender)

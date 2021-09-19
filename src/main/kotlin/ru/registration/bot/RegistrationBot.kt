@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException
-import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.UserStateFactory
 import ru.registration.bot.engine.chat
 import ru.registration.bot.engine.user
 import ru.registration.bot.engine.userId
@@ -17,7 +17,7 @@ private val logger = KotlinLogging.logger {}
 class RegistrationBot(
     @Value("\${bot.username}") private val botName: String,
     @Value("\${bot.token}") private val token: String,
-    private val commonFactory: CommonFactory,
+    private val userStateFactory: UserStateFactory,
     commands: List<RegistrationBotCommand>
 ) : BaseTelegramLongPollingBot(botName, token) {
 
@@ -34,7 +34,7 @@ class RegistrationBot(
         update?.let {
             update.chat?.let {
                 update.user?.let {
-                    commonFactory.create(
+                    userStateFactory.create(
                         update.userId
                     )?.handle(update, this)
                 }

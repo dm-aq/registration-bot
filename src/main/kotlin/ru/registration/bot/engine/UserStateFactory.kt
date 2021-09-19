@@ -8,7 +8,7 @@ import ru.registration.bot.repositories.BotRepository
 import ru.registration.bot.repositories.specifications.CurrentUserState
 
 @Component
-class CommonFactory(
+class UserStateFactory(
     private val botRepository: BotRepository,
     private val states: Map<String, State>
 ) {

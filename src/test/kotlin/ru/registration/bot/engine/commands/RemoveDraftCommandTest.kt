@@ -17,22 +17,22 @@ import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.MessageService
-import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.UserStateFactory
 import ru.registration.bot.engine.commands.flow.StateType
 
 class RemoveDraftCommandTest {
 
-    lateinit var commonFactory: CommonFactory
+    lateinit var userStateFactory: UserStateFactory
     lateinit var removeDraftComponent: RemoveDraftComponent
     lateinit var messages: MessageService
     lateinit var removeDraftCommand: RemoveDraftCommand
 
     @BeforeEach
     fun setUp() {
-        commonFactory = mock()
+        userStateFactory = mock()
         removeDraftComponent = mock()
         messages = mock()
-        removeDraftCommand = RemoveDraftCommand(messages, commonFactory, removeDraftComponent)
+        removeDraftCommand = RemoveDraftCommand(messages, userStateFactory, removeDraftComponent)
     }
 
     @Test
@@ -53,7 +53,7 @@ class RemoveDraftCommandTest {
             on { this.chat } doReturn chat
         }
 
-        given { commonFactory.currentUserStateType(any()) }.willReturn(StateType.GENDER_STATE)
+        given { userStateFactory.currentUserStateType(any()) }.willReturn(StateType.GENDER_STATE)
 
         // act
         removeDraftCommand.processMessage(absSender, message, null)
@@ -80,7 +80,7 @@ class RemoveDraftCommandTest {
             on { this.chat } doReturn chat
         }
 
-        given { commonFactory.currentUserStateType(any()) }.willReturn(StateType.EXPORTED)
+        given { userStateFactory.currentUserStateType(any()) }.willReturn(StateType.EXPORTED)
         given { messages.getMessage(any()) }.willReturn("some-message")
 
         // act

@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.User
 import org.telegram.telegrambots.meta.bots.AbsSender
 import ru.registration.bot.MessageService
 import ru.registration.bot.RegistrationBotCommand
-import ru.registration.bot.engine.CommonFactory
+import ru.registration.bot.engine.UserStateFactory
 import ru.registration.bot.engine.commands.flow.states.DanceStyleState
 import ru.registration.bot.engine.commands.flow.states.FullNameState
 import ru.registration.bot.engine.commands.flow.states.GenderState
@@ -20,7 +20,7 @@ import ru.registration.bot.engine.commands.flow.states.RoomCategoryState
 class RegistrationCommand(
     @Value("\${registration-closed:false}") private val registrationClosed: Boolean,
     private val messages: MessageService,
-    private val commonFactory: CommonFactory
+    private val userStateFactory: UserStateFactory
 ) : RegistrationBotCommand {
 
     override fun getCommandIdentifier() = "new_registration"
@@ -42,7 +42,7 @@ class RegistrationCommand(
             return
         }
 
-        val currentState = commonFactory.create(user.id)
+        val currentState = userStateFactory.create(user.id)
 
         when (currentState) {
             is FullNameState -> sendContinueMessage(absSender, chat)
