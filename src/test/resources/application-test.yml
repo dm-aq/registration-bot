@@ -1,0 +1,10 @@
+bot:
+  username: test-registration-bot
+  token: bot_token
+
+spring:
+  main:
+    lazy-initialization: true
+  datasource:
+    username: postgres
+    password: postgres
