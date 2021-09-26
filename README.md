@@ -18,11 +18,11 @@ A registration request can be exported to google spread sheet at the end of the 
 
 Originally application was created with Russian locale, but now it has English one as well.
 
-##Architectural overview
+## Architectural overview
 [State](src/main/kotlin/ru/registration/bot/engine/commands/flow/State.kt) is a base interface representing one interaction with the bot. In other words the bot should ask a question and handle an answer. State interface has a number of implementations for asking and handling several questions to get information we mentioned above. There are a few technical states for export request to a google spread sheet.
 Full status model is presented in [StateType](src/main/kotlin/ru/registration/bot/engine/commands/flow/StateType.kt) class. This is the list of different statutes which will be persisted to the database during passing through registration flow.
 
-##Quick start
+## Quick start
 First of all in order to use the application you have to register your own telegram bot via [@BotFather](https://telegram.me/BotFather) and get username and token for new bot
 
 Put telegram username and token to appropriate parameters (bot.username and bot.token) in [application-local.yml](src/main/resources/application-local.yml)
