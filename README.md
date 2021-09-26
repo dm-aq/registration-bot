@@ -1,7 +1,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/dm-aq/registration-bot/blob/main/LICENSE)
 
-About
+
 This telegram bot application was designed for registration process in annual dance event in order to replace registration with google forms.
 It asks customer a few questions to collect the following data:
 1. Mobile phone number
